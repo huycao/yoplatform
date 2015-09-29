@@ -1,0 +1,189 @@
+.mb12{
+	margin-bottom: 12px;
+}
+
+.fb_theme{
+	background-color: #e9eaed;
+	font-size: 12px;
+}
+
+.fb_theme .main-wrapper{
+	padding: 12px;
+}
+
+.fb_theme .wrapper-nav .navbar-default .navbar-nav>.active>a, 
+.fb_theme .wrapper-nav .navbar-default .navbar-nav>.active>a:hover, 
+.fb_theme .wrapper-nav .navbar-default .navbar-nav>.active>a:focus{
+	background: #2f477a !important;
+}
+
+.fb_theme .wrapper-nav .navbar-default .navbar-nav a:hover,
+.fb_theme .wrapper-nav .navbar-default .navbar-nav a:focus{
+	background:#2f477a !important;
+}
+
+.fb_theme .wrapper-nav #navbar-top{
+	background-size: 1px 42px;
+	background-color: #4e69a2;
+	border-bottom: 1px solid #223770;
+	height: 42px;
+	position: relative;
+	width: 100%;
+	z-index: 1000;
+}
+
+.fb_theme .table{
+	margin: 0px;
+}
+
+.fb_theme .table-striped>tbody>tr:nth-child(odd){
+	background: #fff;
+}
+
+.fb_theme .table-striped>tbody>tr:nth-child(even){
+	background: #f6f7f8;
+}
+
+.fb_theme .table th, 
+.fb_theme .table td{
+	border-top: none;
+	padding: 12px 8px;
+	border-left: 1px solid #dddedf;
+}
+
+.fb_theme .filter-wrapper .table th, 
+.fb_theme .filter-wrapper .table td{
+	border-left: 0;
+}
+
+.fb_theme .table-hover > tbody > tr:hover > td,
+.fb_theme .table-hover > tbody > tr:hover > th {
+  background-color: #e9eaed;
+}
+
+
+.fb_theme .table th:first-child,
+.fb_theme .table td:first-child
+{
+	border-left: 0;
+}
+
+.fb_theme form .table th,
+.fb_theme form .table td
+{
+	padding: 6px;
+}
+
+.fb_theme form .filter-wrapper .table th:first-child,
+.fb_theme form .filter-wrapper .table td:first-child
+{
+	padding-left: 0;
+}
+
+.fb_theme .table tr:last-child td,
+.fb_theme .table tfoot th
+{
+	border-bottom: 0;
+}
+
+.fb_theme .table th{
+	color: #000;
+	border-bottom: 1px solid #c9ced4;
+}
+
+.fb_theme .table th a{
+	color: #000;
+}
+
+.fb_theme .table td{
+	color: #4e5665;
+}
+
+.fb_theme .table td a{
+	/*color: #4e5665;*/
+}
+
+.fb_theme .part{
+	background: #fff;
+	border: 1px solid #d3d7dc;
+	-webkit-border-radius: 3px;
+	margin-bottom: 12px;
+	padding: 12px;
+}
+
+.fb_theme .admin-pagination{
+}
+
+.fb_theme .box{
+	background: #fff;
+	border: 1px solid;
+	border-color: #e9eaed #dfe0e4 #d0d1d5;
+	-webkit-border-radius: 3px;
+}
+
+.fb_theme .box .head{
+	background: -webkit-gradient(linear, center top, center bottom, from(#ffffff), to(#f7f7f7));
+	background: -webkit-linear-gradient(to bottom, #ffffff 0%,#f7f7f7 100%);
+	background: #f6f7f8;
+	height: 47px;
+	padding: 0 12px;
+	line-height: 47px;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.fb_theme .box .content{
+	padding: 12px;
+	border-top: 1px solid #e5e5e5;
+}
+
+.fb_theme .box .content.wrap-table{
+	padding: 0px;
+	border-top: 0;
+}
+
+.fb_theme .box .filter-wrapper table {
+	border-top: 0;
+}
+
+.fb_theme .box table{
+	border-top: 1px solid #e5e5e5;
+}
+
+.fb_theme table tfoot{
+	border-top: 1px solid #c9ced4;
+}
+
+.fb_theme #right{
+	padding-top: 0px;
+}
+
+.fb_theme #right .right-wrap{
+	/*padding: 20px 15px 0px;*/
+}
+
+.fb_theme .btn{
+	font-size: 12px;
+}
+
+.fb_theme .btn-filter{
+	color: #000;
+	display: block; 
+}
+
+.fb_theme form .lbl{
+	color: #4e5665;
+	display: block;
+	font-size: 12px;
+	line-height: 20px;
+	margin-bottom: 4px;
+}
+
+.fb_theme .form-cms .form-group{
+	border-bottom: 0;
+	padding-bottom: 0px;
+}
+
+.fb_theme .box .head a.btn-filter{
+	text-decoration: none;
+}

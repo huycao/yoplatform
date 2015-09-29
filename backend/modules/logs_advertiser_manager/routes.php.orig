@@ -1,0 +1,37 @@
+<?php
+Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.uri').'/'.Config::get('backend.group_advertiser_manager_url') ),function(){
+    Route::group(array('prefix' => 'logs' ),function() {
+        $prefixName = Str::studly(pathinfo(__DIR__, PATHINFO_BASENAME));
+        $prefixSlug = Str::snake($prefixName,'-');
+        //--Show List
+<<<<<<< HEAD
+        Route::get('show-list',     array('as'  =>  $prefixName.'ShowList','uses'   =>  $prefixName.'Controller@showList'));
+        Route::post('get-list',     array('as'  =>  $prefixName.'GetList','uses'    =>  $prefixName.'Controller@getList'));
+        Route::get('delete/{id}',   array('as'    =>  $prefixName.'ShowDelete','uses' =>  $prefixName.'Controller@showDelete'));
+        Route::post('delete/{id}',  array('as'   =>  $prefixName.'ShowDelete','uses' =>  $prefixName.'Controller@showDelete'));
+=======
+        Route::get('show-list',     array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'  =>  $prefixName.'ShowList','uses'   =>  $prefixName.'Controller@showList'));
+        Route::post('get-list',     array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'  =>  $prefixName.'GetList','uses'    =>  $prefixName.'Controller@getList'));
+        //--Create
+        Route::get('create',        array('before' =>   'hasPermissions:'.$prefixSlug.'-create','as'    =>  $prefixName.'ShowCreate','uses' =>  $prefixName.'Controller@showUpdate'));
+        Route::post('create',       array('before' =>   'hasPermissions:'.$prefixSlug.'-create|csrf','as'   =>  $prefixName.'ShowCreate','uses' =>  $prefixName.'Controller@showUpdate'));
+        //--View
+        Route::get('view/{id}',        array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'ShowView','uses' =>  $prefixName.'Controller@showView'));
+        // order
+        Route::get('order/{id}',        array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'ShowOrder','uses' =>  $prefixName.'Controller@showOrder'));
+        Route::post('saveOrder',        array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'SaveOrder','uses' =>  $prefixName.'Controller@saveOrder'));
+        //--Select Publisher
+        Route::get('select-website/{id}',        array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'ShowSelectWebsite','uses' =>  $prefixName.'Controller@ShowSelectWebsite'));
+        //--Update
+        Route::get('delete/{id}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'    =>  $prefixName.'ShowDelete','uses' =>  $prefixName.'Controller@showDelete'));
+        Route::post('delete/{id}',  array('before' =>   'hasPermissions:'.$prefixSlug.'-edit|csrf','as'   =>  $prefixName.'ShowDelete','uses' =>  $prefixName.'Controller@showDelete'));
+        //--Delete
+        Route::post('delete',       array('before' =>   'hasPermissions:'.$prefixSlug.'-delete','as'    =>  $prefixName.'Delete','uses' =>  $prefixName.'Controller@delete'));
+        Route::post('flightdatedelete',       array('before' =>   'hasPermissions:'.$prefixSlug.'-delete','as'    =>  $prefixName.'FlightDateDelete','uses' =>  $prefixName.'Controller@flightdatedelete'));
+	
+	//--Revert
+        Route::get('revert/{id}',     array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'  =>  $prefixName.'ShowRevert','uses'   =>  $prefixName.'Controller@revert'));
+ 
+>>>>>>> origin/dev
+    });
+});?>

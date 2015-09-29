@@ -1,0 +1,48 @@
+.nav-publisher{background: #449d44 !important;}
+#navbar-top.navbar-default .navbar-nav > li.active > a, 
+#navbar-top.navbar-default .navbar-nav > li.active > a:hover, 
+#navbar-top.navbar-default .navbar-nav > li.active > a:focus{
+	background: none repeat scroll 0 0 #348d34;
+}
+#navbar-top.navbar-default .navbar-nav > li > a, 
+#navbar-top.navbar-default .navbar-nav > li > a:hover, 
+#navbar-top.navbar-default .navbar-nav > li > a:focus
+{
+	background: none repeat scroll 0 0 #449d44;	
+}
+#navbar-top.navbar-default .navbar-nav > li > a{
+	border: 1px solid #449d44;
+}
+#myTabContent{padding: 15px 0;}
+.padding-none{padding:0;}
+.form-update label span{color: #DF0000;}
+.bnt-manage-country button{width: 84px;}
+.bnt-manage-country button:first-child{margin-top:56px;}
+.box-update{padding-bottom: 20px;}
+.fixed-disapprove{padding:5px 15px;border:1px solid #F0F0EE;background: #F5F3F5;}
+.fixed-disapprove button, .fixed-disapprove a{margin-left: 10px;}
+.p-fixed-disapprove{padding:7px 0;}
+.p-fixed-disapprove p{margin:0;}
+.p-fixed-disapprove p strong{color: #5FC910;}
+
+.p-fixed-disapprove p b{font-weight: normal;color: #827B7C;}
+.margin-button-view{padding-bottom: 40px;}
+.table-edit-publisher{border: none;}
+.table-edit-publisher tr td:first-child{width: 30%;}
+.table-edit-publisher tr td:first-child span{color: #EB3A21;}
+.table-edit-publisher tr td{border:none !important;}
+.table-edit-publisher .form-group{margin-bottom: 0;}
+.margin-btn-country button:first-child{margin-top:56px;}
+#btn-ganerate-pass{margin-top:15px;}
+#show-register-user{display: none;}
+#show-register-user label span{color: #eb3a21;}
+.table-tools tr td a{color: #2b2b2b;}
+#select-monthly{width: 100px;padding: 6px 6px 9px;border: 1px solid #ccc;
+    border-radius: 3px;text-align: right;}
+.title-view-publisher{display: inline-block;border-bottom: 1px solid;} 
+.filter-radio{margin-top: 29px;
+    text-align: right;} 
+#tableList th {
+    background: none repeat scroll 0 0 #449d44 !important;color: #FFF;
+}      
+#tableList th a{color: #FFF;text-decoration: none;}

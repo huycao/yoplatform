@@ -1,0 +1,1 @@
+ALTER TABLE `pt_ad` ADD `bar_height` INT NULL AFTER `height_2`;

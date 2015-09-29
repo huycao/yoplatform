@@ -1,0 +1,1 @@
+ALTER TABLE `pt_ad` CHANGE `ad_type` `ad_type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;

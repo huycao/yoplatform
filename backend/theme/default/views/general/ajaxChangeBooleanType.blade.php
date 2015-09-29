@@ -1,0 +1,1 @@
+<a href="javascript:;" onclick="changeBooleanType('{{$item->id}}', '{{ $item->{$field} }}','{{$field}}')"><i class="{{ AdminGetTypeContent::getClassTypeBoolean($item->{$field}) }}"></i></a>

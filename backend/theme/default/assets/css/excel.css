@@ -1,0 +1,59 @@
+body{font: arial, tahoma;}
+.brand,.brand_y,.brand_b,.brand_r{
+	font-size: 24px;
+	background: #00a9bb;
+	text-align: center;
+	color: #ffffff;
+	margin-bottom: 20px;
+	height: 32px;
+}
+.brand_y{
+    background: #ffff00;
+    color: #000;
+    font-size: 14pt;
+}
+.brand_t{
+    color: #006400;
+    font-size: 26pt;
+}
+.brand_b{
+    background: #CCC;
+    color: #000;
+    font-size: 14pt;
+    text-align: left;
+}
+.brand_r{
+    background: #008000;
+    color: #FFF;
+    font-size: 16pt;
+}
+.table th{
+	background: #00a9bb;
+	color: #fff
+}
+
+.border-dash{
+	border-bottom: 1px dashed #fff;
+}
+
+.table td{
+	border-bottom: 1px dashed #fff;
+}
+
+.bg-primary{
+	font-size: 14px;
+	background: #00a9bb;
+	color: #ffffff;
+	font-weight: bold;
+}
+
+.mb12{
+	margin-bottom: 12px;
+}
+
+.info{
+	border-bottom: 1px dotted #000;
+}
+.text-bold{
+    font-weight: bold;
+}

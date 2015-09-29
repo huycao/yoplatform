@@ -1,0 +1,1 @@
+ALTER TABLE `pt_ad` ADD `vast_include` TINYINT(1) NOT NULL DEFAULT '0' AFTER `skipads`;

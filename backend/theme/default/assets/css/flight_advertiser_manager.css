@@ -1,0 +1,40 @@
+.fw_normal {font-weight:normal;}
+.sub_form {
+	margin-left: 10px;
+	margin-top: 10px;
+}
+.sub_form .form-group {
+	margin-bottom: 0px;
+}
+
+.date-range {background-color: #F2F7F9}
+.nav-pills>li>a {
+  border-radius: 4px;
+}
+.pager li>a, .pager li>span {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+.previous>a, .next>a, .cancel>a, .save>button {
+  float: left !important;
+  margin-left:5px;
+  color: #428bca;
+}
+.number {
+	font-size:16px;
+	margin-right: 5px;
+}
+.date-range span a {
+	font-size: 12px;
+}
+.date-range span.label {
+	  padding: 1.2em .6em 1.2em;
+}
+.date-range {
+	  margin-top: 5px;
+	  padding-top: 7px;
+}
+.pl0{padding-left: 0 !important;}

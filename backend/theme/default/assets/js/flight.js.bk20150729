@@ -1,0 +1,86 @@
+
+var FlightApp = function(){
+    var loadList             = $('#loadWebsiteList');
+    var loadModal            = $('#loadWebsiteModal');
+
+    this.update = function(){
+
+        var input = $('#formUpdateWebsite').serializeArray();
+        var url = root+"flight/updateWebiste";
+
+        $.post(
+            url,
+            input,
+            function(data){
+                // console.log(data);
+                // $('#formUpdatePublisherMessage').html(data.message);
+                if( data.status == true ){
+                    $('#formUpdateWebsite')[0].reset();
+                    loadList.html(data.view);
+                    $('#websiteModal').modal('hide');
+                }
+            },
+            'JSON'
+        )
+    }
+
+
+    this.delete = function(id){
+        if (confirm("You want to delete?")) {
+            var url = root+"flight/deleteWebsite";
+            $.post(
+                url,
+                {
+                    id : id
+                },
+                function(data){
+                    if( data.status == true ){
+                        loadList.html(data.view);
+                    }else if( data.message == "access-denied" ){
+                        alert("Access Denied");
+                    }
+                }
+            );
+        }
+    }    
+
+    this.loadModal = function(id, flightId, websiteId, websiteName){
+        var url = root+"flight/loadModal";
+        $.post(
+            url,
+            {
+                id : id,
+                flightId : flightId,
+                websiteId : websiteId,
+                websiteName : websiteName
+            },
+            function(data){
+                if( data.status == true ){
+                    loadModal.html(data.view);
+                    $('#websiteModal').modal('show');
+                }
+            }
+        );
+
+    } 
+    
+    this.getAddDateInfo = function(mode, index){
+    	$('#loadAddDateInfo').html('');
+        $('#dateInfo').modal('hide');
+        var url = root+"flight/add-date/"+mode+"/"+index;
+        $.get(
+            url,
+            function(data){
+            	$('#loadAddDateInfo').html(data.view);
+                $('#dateInfo').modal('show');
+            }
+        );
+    }
+       
+}
+
+var Flight = new FlightApp();
+
+
+
+

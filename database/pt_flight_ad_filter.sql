@@ -1,0 +1,1 @@
+ALTER TABLE `pt_flight` ADD `filter` TEXT NULL AFTER `retargeting_number`;
