@@ -420,7 +420,7 @@ class Delivery extends Eloquent{
 															->get();
 															
 					if($flightWebsites){
-					    $redis = new RedisBaseModel(Config::get('redis.redis_4.host'), Config::get('redis.redis_4.port'));
+					    $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'), false);
 						foreach ($flightWebsites as $fw) {
 						    $cacheKey = "FlightWebsite_{$fw->website_id}_{$flight->ad_format_id}";
 		                    $cachField = $fw->id;
@@ -461,7 +461,7 @@ class Delivery extends Eloquent{
 	}
 
 	public function getFlightWebsite($flightWebsiteID = '', $websiteID, $adFormatID, $renewCache = false){
-	    $redis = new RedisBaseModel(Config::get('redis.redis_4.host'), Config::get('redis.redis_4.port'));
+	    $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'), false);
 		$cacheKey = "FlightWebsite_{$websiteID}_{$adFormatID}";
 		$cachField = $flightWebsiteID;
 		if ($cachField != '') {
@@ -510,7 +510,7 @@ class Delivery extends Eloquent{
 	}
 	
 	public function getAdzone($zoneID, $renewCache = false){
-	    $redis = new RedisBaseModel(Config::get('redis.redis_4.host'), Config::get('redis.redis_4.port'));
+	    $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'), false);
 		$cacheKey = "Adzone";
 	    $cacheField = $zoneID;
 		$retval = $redis->hGet($cacheKey, $cacheField);
@@ -533,7 +533,7 @@ class Delivery extends Eloquent{
 	}
 
 	public function getAd($adID, $renewCache = false){
-	    $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'));
+	    $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'), false);
 		$cacheKey = "Ad";
 		$cacheField = $adID;
 		$retval = $redis->hGet($cacheKey, $cacheField);
@@ -589,7 +589,7 @@ class Delivery extends Eloquent{
 	}
 
 	public function getAlternateAds($zoneID, $renewCache = false){
-	    $redis = new RedisBaseModel(Config::get('redis.redis_1.host'), Config::get('redis.redis_1.port'));
+	    $redis = new RedisBaseModel(Config::get('redis.redis_3.host'), Config::get('redis.redis_3.port'),false);
 		$cacheKey = "PublisherAlternateAd";
 		$cacheField= $zoneID;
 		$retval = $redis->hGet($cacheKey, $cacheField);
@@ -612,7 +612,7 @@ class Delivery extends Eloquent{
      * @param bool $renewCache
      */
     public function getFlight($id, $renewCache=false) {
-        $redis = new RedisBaseModel(Config::get('redis.redis_4.host'), Config::get('redis.redis_4.port'));
+        $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'),false);
         $cacheKey = "Flight";
         $cacheField= $id;
         $retval = $redis->hGet($cacheKey, $cacheField);
@@ -638,7 +638,7 @@ class Delivery extends Eloquent{
     }
     
     public function getFlightDate($flightID, $renewCache=false) {
-        $redis = new RedisBaseModel(Config::get('redis.redis_1.host'), Config::get('redis.redis_1.port'));
+        $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'),false);
         $cacheKey = "FlightDate";
         $cacheField = $flightID;
         $retval = $redis->hGet($cacheKey, $cacheField);
@@ -683,7 +683,7 @@ class Delivery extends Eloquent{
 	 * @param bool $renewCache
 	 */
 	public function getPublisherSite($id, $renewCache=false) {
-	    $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'));
+	    $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'),false);
 	    $cacheKey = "PublisherSite";
 	    $cacheField = $id;
 		$retval = $redis->hGet($cacheKey, $cacheField);
@@ -707,7 +707,7 @@ class Delivery extends Eloquent{
      * @param bool $renewCache
      */
 	public function getPublisherAdZone($zoneID, $renewCache = false){
-	    $redis = new RedisBaseModel(Config::get('redis.redis_1.host'), Config::get('redis.redis_1.port'));
+	    $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'),false);
 		$cacheKey = "PublisherAdZone";
 		$cacheField = $zoneID;
 		$retval = $redis->hGet($cacheKey, $cacheField);
@@ -731,7 +731,7 @@ class Delivery extends Eloquent{
 	 * @param bool $renewCache
 	 */
 	public function getCampaign($campaignID, $renewCache = false) {
-	    $redis = new RedisBaseModel(Config::get('redis.redis_1.host'), Config::get('redis.redis_1.port'));
+	    $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'),false);
 	    $cacheKey = "Campaign";
 	    $cacheField = $campaignID;
 		$retval = $redis->hGet($cacheKey, $cacheField);
