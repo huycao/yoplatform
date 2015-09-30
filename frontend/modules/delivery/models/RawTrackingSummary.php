@@ -12,7 +12,7 @@ class RawTrackingSummary{
 
 
     public static function connection() {
-        $redis = new RedisBaseModel(Config::get('redis.redis_3.host'), Config::get('redis.redis_3.port'));
+        $redis = new RedisBaseModel(Config::get('database.redis.default.host'), Config::get('redis.redis_3.port'));
         self::$redis_connection = $redis->connection;
         return self::$redis_connection;
     }

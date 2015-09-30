@@ -21,7 +21,7 @@ class Conversion extends Eloquent{
 	}
     
     function getConversion($conversionID, $renewCache = false) {
-        $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'));
+        $redis = new RedisBaseModel(Config::get('database.redis.default.host'), Config::get('redis.redis_2.port'));
 	    $cacheKey = "Conversion";
 	    $cacheField = $conversionID;
 		$retval = $redis->hGet($cacheKey, $cacheField);

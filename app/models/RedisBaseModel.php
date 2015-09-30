@@ -4,15 +4,18 @@ use Predis\Client as Client;
 class RedisBaseModel {
     public $connection;
     
-    public function __construct($host, $port, $scheme = 'tcp') {
-       $parameters = ["tcp://" . Config::get('database.redis.default.host') . ':' . Config::get('database.redis.default.port') ];
-       $options    = ['cluster' => 'redis'];
-       $this->connection = new Client($parameters, $options);
-       /*$this->connection = new Client([
-            'scheme' => $scheme,
-            'host'   => $host,
-            'port'   => $port
-        ],['cluster' => 'redis']);*/
+    public function __construct($host, $port, $cluster = true) {
+        if ($cluster) {
+            $parameters = ["tcp://" . Config::get('database.redis.default.host') . ':' . Config::get('database.redis.default.port') ];
+            $options    = ['cluster' => 'redis'];
+            $this->connection = new Client($parameters, $options);
+        } else {
+            $this->connection = new Client([
+            	'scheme' => 'tcp',
+            	'host'   => $host,
+            	'port'   => $port
+            ]);
+        }
     }
     
     public function set($key, $objValue, $ex=0) {
