@@ -239,6 +239,7 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
 
                 if ($item = $this->model->create($updateData)) {
                     $this->data['id'] = $item->id;
+                    (new Delivery())->renewCache('ad', $item->id);
                     Session::flash('flash-message', 'Create Ad Success!');
                     return TRUE;
                 }
@@ -388,6 +389,7 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
         $newItem->display_type = $item->display_type;
         $newItem->vast_include= $item->vast_include;
         $newItem->save();
+        (new Delivery())->renewCache('ad', $newItem->id);
         return Redirect::to($this->moduleURL . 'show-list');
 
     }
