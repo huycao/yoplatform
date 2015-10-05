@@ -11,7 +11,7 @@ class GeoBaseModel extends Eloquent {
     public $timestamps = false;
 
     public function getCountry() {
-        $redis = new RedisBaseModel(Config::get('redis.redis_3.host'), Config::get('redis.redis_3.port'));
+        $redis = new RedisBaseModel(Config::get('redis.redis_3.host'), Config::get('redis.redis_3.port'), true);
         $cacheKey = 'GeoBaseModel:CountryList:All';
         $retval = $redis->get($cacheKey);
         if (!$retval) {
@@ -31,7 +31,7 @@ class GeoBaseModel extends Eloquent {
      * @param array $country_code country code
      */
     public function getRegionByCountry($country_code = array()) {
-        $redis = new RedisBaseModel(Config::get('redis.redis_3.host'), Config::get('redis.redis_3.port'));
+        $redis = new RedisBaseModel(Config::get('redis.redis_3.host'), Config::get('redis.redis_3.port'), true);
         $result = array();
         if (!empty($country_code)) {
             foreach ($country_code as $value) {
