@@ -153,6 +153,7 @@ EOF;
                     AND b.ad_id = c.id
                     AND b.id = d.flight_id
                     AND b.status = 1
+                    AND d.status = 1
                     AND '$current_date' >= a.start_date
                     AND '$current_date' <= a.end_date
                     ORDER BY a.id, b.id, d.id ASC
@@ -269,13 +270,15 @@ EOF;
                     $sql = <<<EOF
                     SELECT code, weight
                     FROM pt_publisher_alternate_ad
-                    WHERE id = $publisher_ad_zone_id
+                    WHERE publisher_ad_zone_id = $publisher_ad_zone_id
 EOF;
 
                     $result = $conn->query($sql);
                     $arrTmp = array();
                     if ($result->num_rows > 0) {
-                        $arrTmp = $result->fetch_assoc();
+                        while($row = $result->fetch_assoc()) {
+                            $arrTmp[] = $row;
+                        }
                     } 
                     $data['alternateAds'] = $arrTmp;
                     
