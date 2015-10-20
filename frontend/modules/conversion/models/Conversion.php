@@ -21,7 +21,7 @@ class Conversion extends Eloquent{
 	}
     
     function getConversion($conversionID, $renewCache = false) {
-        $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'));
+        $redis = new RedisBaseModel(Config::get('redis.redis_2.host'), Config::get('redis.redis_2.port'), false);
 	    $cacheKey = "Conversion";
 	    $cacheField = $conversionID;
 		$retval = $redis->hGet($cacheKey, $cacheField);
@@ -39,8 +39,10 @@ class Conversion extends Eloquent{
 			                ->first();
             if ($retval) {
                 $retval->param = json_decode($retval->param);
+                $redis->hSet("CaimpConv_{$retval->campaign_id}", $conversionID, $conversionID);
             }
 			$redis->hSet($cacheKey, $cacheField, $retval);
+			
 		}
 		return $retval;
 	}
