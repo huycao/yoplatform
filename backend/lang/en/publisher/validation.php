@@ -68,4 +68,5 @@ return array(
 
      "phone.required"    =>  "Phone required",
      "contact_phone.required"    =>  "Phone contact required",
+	"username.unique"    =>  "Username is already exist",
 );

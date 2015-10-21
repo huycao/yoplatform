@@ -60,6 +60,7 @@ class PublisherBaseModel extends Eloquent {
             "page-view"         =>  "required",
             "selected_site-channel"      =>  "required",
             "selected_serve-country"     =>  "required",
+            "username"          =>  "unique:users"
         );
     }
 
@@ -103,6 +104,7 @@ class PublisherBaseModel extends Eloquent {
             "access-to-all-channels.required"    =>  trans("backend::publisher/validation.access-to-all-channels.required"),
             "newsletter.required"                =>  trans("backend::publisher/validation.newsletter.required"),
             "enable-report-by-model.required"    =>  trans("backend::publisher/validation.enable-report-by-model.required"),
+            "username.unique"    =>  trans("backend::publisher/validation.username.unique"),
         );
        
     }
