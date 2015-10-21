@@ -195,16 +195,59 @@ function setCache($type, $arrData=array()){
             $cacheKey = 'Campaign';
             $arrCampaign = $redis->hgetall($cacheKey);
             
+            $servername = DB_HOST . ":" . DB_PORT;
+            $username = DB_USERNAME;
+            $password = DB_PASSWORD;
+            $dbname = DB_NAME;
+            
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            } 
+            
             foreach ($arrData as $data) {
                 if (!empty($data)) {
                     //print_r($data);
                     $redis->hset($cacheKey, $data['id'], json_encode($data));  
-                     unset($arrCampaign[$data['id']]);                
+                    unset($arrCampaign[$data['id']]);             
+                    $campaign_id = $data['id'];
+                    $campConvKey = "CampConv_{$campaign_id}";
+                    $arrCampConv = $redis->hgetall($campConvKey);
+                    
+                    $sql = <<<EOF
+                    SELECT id, campaign_id
+                    FROM pt_conversion
+                    WHERE  status = 1
+                    AND campaign_id = $campaign_id
+EOF;
+
+                    $result = $conn->query($sql);
+                    $arrTmp = array();
+                    if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                            $arrTmp[] = $row;
+                        }
+                    } 
+                    
+                    foreach ($arrTmp as $item) {
+                        $redis->hSet($campConvKey, $item['id'], $item['id']);
+                        if (!empty($arrCampConv[$item['id']])) {
+                            unset($arrCampConv[$item['id']]);
+                        }
+                    }
+                    
+                    if (!empty($arrCampConv)) {
+                        foreach ($arrCampConv as $key=>$val) {
+                            $redis->hdel($campConvKey, $key);
+                        }
+                    }
                 }
             }
             if(!empty($arrCampaign)) {
                 foreach ($arrCampaign as $id=>$campaign) {
                     $redis->hdel($cacheKey, $id);
+                    $redis->del("CampConv_{$id}");
                 }
             }
             break;
