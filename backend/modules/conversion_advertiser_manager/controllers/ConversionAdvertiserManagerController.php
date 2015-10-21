@@ -85,7 +85,7 @@ class ConversionAdvertiserManagerController extends AdvertiserManagerController 
                 $updateData['created_by'] = $this->user->id;
                 if ($item = $this->model->create($updateData)) {
                     $this->data['id'] = $item->id;
-                    (new Delivery())->renewCache('conversion', $item->id);
+                    (new Conversion())->renewCache('conversion', $item->id);
                     return TRUE;
                 }
             } else {

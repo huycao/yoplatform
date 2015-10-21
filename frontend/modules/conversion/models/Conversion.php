@@ -27,6 +27,9 @@ class Conversion extends Eloquent{
 		$retval = $redis->hGet($cacheKey, $cacheField);
 		if(Input::get('cleared') || $renewCache){
 		    $redis->hDel($cacheKey, $cacheField);
+		    if (!empty($retval->campaign_id)) {
+		        $redis->hDel("CampConv_{$retval->campaign_id}", $cacheField);
+		    }
 			$retval = 0;
 		}
 		if(!$retval){
@@ -39,8 +42,10 @@ class Conversion extends Eloquent{
 			                ->first();
             if ($retval) {
                 $retval->param = json_decode($retval->param);
+                $redis->hSet("CampConv_{$retval->campaign_id}", $conversionID, $conversionID);
             }
 			$redis->hSet($cacheKey, $cacheField, $retval);
+			
 		}
 		return $retval;
 	}
