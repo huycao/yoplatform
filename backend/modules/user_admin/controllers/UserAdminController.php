@@ -165,7 +165,7 @@ class UserAdminController extends AdminController
 				    if (is_array($groupID)) {
 				    	foreach ($groupID as $aGroupID) {
 				    		if( $aGroupID != 0 && is_numeric($aGroupID) ){
-						    	$groupItem = Sentry::findGroupById($groupID);
+						    	$groupItem = Sentry::findGroupById($aGroupID);
 							    $user->addGroup($groupItem);
 							}
 				    	}
