@@ -693,3 +693,40 @@ if(!function_exists('getFilter')){
         return $filters;
     }
 }
+if(!function_exists('getMonths')){
+    function getMonths(){
+        $months = array();
+        $months[0] = 'All';
+        for($m=1; $m <= 12; $m++){
+            $months[$m] = date('F', mktime(0,0,0,$m,1,date('Y')));
+        }
+        return $months;
+    }
+}
+
+if(!function_exists('getYears')){
+    function getYears(){
+        $years = array();
+        $current_year = date('Y');
+        $years[0] = 'All';
+        for($y=$current_year; $y >=2014; $y--){
+            $years[$y] = $y;
+        }
+        return $years;
+    }
+}
+
+if(!function_exists('getStatusPaymentReq')){
+    function getStatusPaymentReq(){
+        return array(STATUS_WAITING=> STATUS_WAITING, STATUS_REQUEST=> STATUS_REQUEST, STATUS_APPROVE=>STATUS_APPROVE, STATUS_DECLINE=>STATUS_DECLINE);
+    }
+}
+//format: Y-m
+if(!function_exists('customFormatDate')){
+    function customFormatDate($month, $year){
+        if($month<10){
+            $month = "0".$month;
+        }
+        return $year."-".$month;
+    }
+}

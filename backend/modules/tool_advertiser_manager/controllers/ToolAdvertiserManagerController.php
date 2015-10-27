@@ -120,7 +120,7 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController
     public function getListAd($keyword, $parent, $id){
         $model = new AdAdvertiserManagerModel;
         if ($id > 0) {
-            $this->data['listAd'] = $modell->where('id', $id)->get();
+            $this->data['listAd'] = $model->where('id', $id)->get();
         } else {
             $this->data['listAd'] = $model->searchByCapital($keyword, $parent);
         }

@@ -37,7 +37,7 @@ class FlightAdvertiserManagerController extends AdvertiserManagerController {
      */
     function showUpdate($id = 0) {
         $this->data['id'] = $id;
-                
+
         View::share('jsTag', HTML::script("{$this->assetURL}js/select.js") . HTML::script("{$this->assetURL}js/flight.js"));
 
         // get list Category

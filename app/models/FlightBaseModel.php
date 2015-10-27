@@ -261,6 +261,10 @@ class FlightBaseModel extends Eloquent {
         return $this->where('campaign_id', $campaignId)->lists('id');
     }
 
+    public static function getListFlightByCampaign($campaignId){
+        return DB::table('flight')->where('campaign_id', $campaignId)->get();
+    }
+
     public function getByRangeId($range) {
         if (!empty($range)) {
             return $this->whereIn('id', $range)->get();

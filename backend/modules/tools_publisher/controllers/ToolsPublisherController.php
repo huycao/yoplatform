@@ -25,7 +25,6 @@ class ToolsPublisherController extends PublisherBackendController
     	$this->data['itemPublisher']=$this->model->with('country')->where('id',$this->getPublisher()->id)->first();
     	
     	if (Request::isMethod('post')) {
-            
             // check validate
 	        $validate = Validator::make(Input::all(), $this->model->getUpdateUserRules(), $this->model->getUpdateUserLangs());
 	        $flag=$this->checkValidatePass($this->data);
@@ -80,46 +79,58 @@ class ToolsPublisherController extends PublisherBackendController
         $this->layout->content = View::make('myProfile', $this->data);
     }
 
-   	
-   	public function paymentRequest(){
+	/**
+	 * function name: paymentRequest
+	 * @return mixed
+	 */
+   	public function paymentRequest($page = 1){
    		$pubInfo = Sentry::getUser();
    		$uid = $pubInfo->id;
-        $item = PublisherBaseModel::where('user_id', $uid)->first();
-        if (!$item) {
+		$paymentReq = new PaymentRequestBaseModel;
+		$publisher = new PublisherBaseModel;
+		$item = $publisher->getItem($uid);
+		if (!$item) {
             return Redirect::to($this->moduleURL . 'show-list');
         }
-        $this->data['id'] = $item->id;
 
-        $item->createMonthlyPaymentRequest();
-
-
-        $this->data['listPaymentRequests'] = PaymentRequestBaseModel::where(array(
-            'publisher_id'  =>   $item->id,
-        ))->orderBy('created_at','desc')->get();
         $this->data['routeExport'] = "ToolsPublisher";
-        
+		$options = array();
+		if(Request::ajax()){
+			$dataPaging['items'] = $paymentReq->getItems($item->id, ITEM_PER_PAGE, $page)->lists('id', 'amount', 'created_at');
+			return Response::json($dataPaging);
+		}else{
+			$dataPaging['items'] = $paymentReq->getItems($item->id, ITEM_PER_PAGE, $page);
+			$this->data['listItems'] = View::make('advertiser_manager.publisher_advertiser_manager.paymentRequestPaging', $dataPaging);
+		}
         $this->layout->content = View::make('advertiser_manager.publisher_advertiser_manager.showPaymentRequest', $this->data);
-
     }
+
+	/*
+	 * ajax load for show payment request
+	 */
+	public function sendPaymentRequest(){
+		//process send request
+		$paymentReq = new PaymentRequestBaseModel;
+		$ids = Input::has('ids') ? Input::get('ids'):'';
+		$re = array();
+		if(Request::ajax()){
+			//return json
+			$total = $paymentReq->sumItemsByIds($ids);
+			if($total>=300){
+				$paymentReq->updateStatus($ids);
+				$re['status'] = 'ok';
+			}else{
+				$re['status'] = 'error';
+			}
+		}
+		echo json_encode($re);
+	}
 
     public function paymentRequestDetail($id){
     	$model = new PaymentRequestDetailBaseModel;
-        $data['data'] = PaymentRequestDetailBaseModel::where('payment_request_id', $id)->with('campaign','publisher')->get();
-
-        if( $data['data']->count() ){
-         	
-	        $data['data'] = $model->where('payment_request_id', $id)->with('campaign','publisher')->get();
-
-	        if( $data['data']->count() ){
-	            $data['publisher'] = $data['data']['0']->publisher;
-	            $data['pubName'] = Sentry::getUser()->username;
-	            return $model->exportExcel($data);
-	        }
-
-	        return false;
-
-        }
-
+		$data['payment'] = PaymentRequestBaseModel::find($id);
+		$items = $model->getItemsByPaymentRequestId($id);
+		$data['items'] = $items;
+		$this->layout->content = View::make('advertiser_manager.publisher_advertiser_manager.paymentRequestDetail',$data);
     }
-
 }

@@ -58,6 +58,7 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
         Route::get('{fwid}/preview/{id}',        array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'ShowPreview','uses' =>  $prefixName.'Controller@showPreview'));
         Route::get('previewVast/{id}',        array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'ShowPreviewVast','uses' =>  $prefixName.'Controller@previewVast'));
         // Report publiser
+
         Route::get('report',     array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'  =>  $prefixName.'Report','uses'   =>  $prefixName.'Controller@report'));
         Route::post('report',     array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'  =>  $prefixName.'ReportPost','uses'   =>  $prefixName.'Controller@report'));
         Route::any('reportExport',     array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'  =>  $prefixName.'ReportExport','uses'   =>  $prefixName.'Controller@reportExport'));

@@ -22,3 +22,10 @@ define('KEY_TRACKING_TOTAL_INVENTORY', 'Tracking:total_inventory:');
 define('STATIC_URL', 'http://static.yomedia.vn/');
 define('DEBUG_ERROR', 'DebugError');
 define('DEBUG_CONTENT', 'DebugContent');
+
+//paging
+define('ITEM_PER_PAGE', 30);
+define('STATUS_WAITING', 'waiting');
+define('STATUS_REQUEST', 'request');
+define('STATUS_APPROVE', 'approve');
+define('STATUS_DECLINE', 'decline');

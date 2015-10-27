@@ -60,7 +60,6 @@ class PublisherBaseModel extends Eloquent {
             "page-view"         =>  "required",
             "selected_site-channel"      =>  "required",
             "selected_serve-country"     =>  "required",
-            "username"          =>  "unique:users"
         );
     }
 
@@ -75,7 +74,7 @@ class PublisherBaseModel extends Eloquent {
             "unique-visitor.required"    =>  trans("backend::publisher/validation.unique-visitor.required"),
 
             "page-view.required"         =>  trans("backend::publisher/validation.page-view.required"),
-           // "daily-view.required"        =>  trans("backend::publisher/validation.daily-view.required"),
+            // "daily-view.required"        =>  trans("backend::publisher/validation.daily-view.required"),
             "payment-to.required"        =>  trans("backend::publisher/validation.payment-to.required"),
             "company.required"           =>  trans("backend::publisher/validation.company.required"),
             "company.min"                =>  trans("backend::publisher/validation.company.min"),
@@ -104,9 +103,8 @@ class PublisherBaseModel extends Eloquent {
             "access-to-all-channels.required"    =>  trans("backend::publisher/validation.access-to-all-channels.required"),
             "newsletter.required"                =>  trans("backend::publisher/validation.newsletter.required"),
             "enable-report-by-model.required"    =>  trans("backend::publisher/validation.enable-report-by-model.required"),
-            "username.unique"    =>  trans("backend::publisher/validation.username.unique"),
         );
-       
+
     }
 
     public function getUpdateProfileRules(){
@@ -133,10 +131,10 @@ class PublisherBaseModel extends Eloquent {
             "email.required"            =>  trans("backend::publisher/validation.email.required"),
             "email.email"               =>  trans("backend::publisher/validation.email.email"),
             "email.min"                 =>  trans("backend::publisher/validation.email.min"),
-        );   
+        );
     }
 
-    public function getShowField(){        
+    public function getShowField(){
         return array(
             'company'         =>  array(
                 'label'         =>  trans("backend::publisher/text.company"),
@@ -145,7 +143,7 @@ class PublisherBaseModel extends Eloquent {
             'site_url'         =>  array(
                 'label'         =>  trans("backend::publisher/text.site_url"),
                 'type'          =>  'text'
-            ),            
+            ),
             'pageview'         =>  array(
                 'label'         =>  trans("backend::publisher/text.pageview"),
                 'type'          =>  'text'
@@ -154,7 +152,7 @@ class PublisherBaseModel extends Eloquent {
                 'label'         =>  trans("backend::publisher/text.unique_visitor"),
                 'type'          =>  'text',
                 'alias'         => 'uniqueVisitorFormat'
-            ),            
+            ),
             'email'  =>  array(
                 'label'         =>  trans("backend::publisher/text.email"),
                 'type'          =>  'text',
@@ -169,11 +167,11 @@ class PublisherBaseModel extends Eloquent {
                 'label'         =>  trans("backend::publisher/text.date_registered"),
                 'type'          =>  'text'
             )
-        );   
+        );
     }
 
     public function user(){
-        return $this->belongsTo('User');        
+        return $this->belongsTo('User');
     }
 
     public function payment() {
@@ -248,8 +246,8 @@ class PublisherBaseModel extends Eloquent {
         $websiteModel->updateAllStatus($this->id, $status);
         return $this;
     }
-	
-	public function updateUser(){
+
+    public function updateUser(){
 
         if( $this->user_id == 0 ){
             // create user
@@ -338,7 +336,7 @@ class PublisherBaseModel extends Eloquent {
     public function storeDataRelation(){
 
         if( Input::get('selected_serve-country') && count(Input::get('selected_serve-country')) ){
-            $this->serveCountry()->attach(Input::get('selected_serve-country'));       
+            $this->serveCountry()->attach(Input::get('selected_serve-country'));
         }
 
         if( Input::get('selected_site-channel') && count(Input::get('selected_site-channel')) ){
@@ -376,9 +374,9 @@ class PublisherBaseModel extends Eloquent {
 
             if(!empty($idCate))
                 $query->where('category', $idCate);
-            
+
             if(isset($status) && $status !=-1){
-                $query->where('status', $status);               
+                $query->where('status', $status);
             }
 
             if(!empty($keyword)){
@@ -387,14 +385,14 @@ class PublisherBaseModel extends Eloquent {
                 }else
                     $query->where('email', 'LIKE', DB::raw("'%{$keyword}%'"));
             }
-            
+
         }else{
             if($status==Config::get('backend.publisher_approved')){
                 $query=$query->where('status',Config::get('backend.publisher_approved'));
             }else
                 $query->where('status','0');
-        }      
-        
+        }
+
         return $query;
     }
 
@@ -430,7 +428,7 @@ class PublisherBaseModel extends Eloquent {
                         case 'name':
                             $query->where($search['name'], 'LIKE', "%{$search['value']}%");
                             break;
-                        
+
                         default:
                             $query->where($search['name'], $search['value']);
                             break;
@@ -440,9 +438,9 @@ class PublisherBaseModel extends Eloquent {
         }
         return $query;
     }
-    
+
     public function getCategoryByIdAttribute(){
-        $modelCate=new CategoryBaseModel;      
+        $modelCate=new CategoryBaseModel;
         $item=$modelCate->where('id',$this->category)->select('id','name')->first();
         if(!empty($item)) return $item->name;
         else return FALSE;
@@ -478,6 +476,7 @@ class PublisherBaseModel extends Eloquent {
     public function createMonthlyPaymentRequest(){
 
         $startDate = Carbon::now()->firstOfMonth()->subMonth();
+
         $endDate   = Carbon::now()->firstOfMonth()->subMonth()->lastOfMonth();
         $date      = $startDate->format('Y-m');
 
@@ -493,7 +492,7 @@ class PublisherBaseModel extends Eloquent {
             $data             = $tracking->sumEarnPerCampaign($websiteLists, $startDate, $endDate);
             $campaigns        = $data['campaign'];
             $total            = $data['total'];
-            
+
             $pr               = new PaymentRequestBaseModel;
             $pr->publisher_id = $this->id;
             $pr->date         = $date;
@@ -513,22 +512,18 @@ class PublisherBaseModel extends Eloquent {
                     if( $campaign['click'] != 0 && $campaign['impression'] != 0 ){
                         $prd->ctr = $campaign['click'] / $campaign['impression'];
                     }else{
-                        $prd->ctr = 0;   
+                        $prd->ctr = 0;
                     }
                     $prd->date               = $date;
                     $prd->payment_request_id = $pr->id;
                     $prd->save();
-
                 }
-
             }
-
-
         }
-
-
     }
 
-
-
+    public function getItem($uid)
+    {
+        return $this->where('user_id', $uid)->first();
+    }
 }

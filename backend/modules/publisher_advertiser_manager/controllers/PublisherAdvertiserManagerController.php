@@ -20,7 +20,6 @@ class PublisherAdvertiserManagerController extends AdvertiserManagerController
 
     public function getListData()
     {
-
         if (!empty($this->searchData)) {
             $this->searchData = array_reindex($this->searchData, 'name');
         }

@@ -28,9 +28,9 @@
 		<![endif]-->
         <script type="text/javascript">
 
-            var root    = "{{{ URL::to('/') }}}/{{{ Config::get('backend.uri').'/publisher-manager' }}}/";
-            var assetURL =   "{{{ URL::to('/') }}}/public/";
-            var module  = "{{{ Request::segment(3) }}}";
+            var root    = "{{ URL::to('/') }}}/{{ Config::get('backend.uri').'/publisher-manager' }}/";
+            var assetURL =   "{{ URL::to('/') }}/public/";
+            var module  = "{{ Request::segment(3) }}";
 
         </script>
 
@@ -38,8 +38,9 @@
         {{ HTML::script("{$assetURL}js/vendor/jquery-1.10.2.min.js") }}
         {{ HTML::script("{$assetURL}js/plugins.js") }}
         {{ HTML::script("{$assetURL}js/bootstrap.min.js") }}
-        {{ HTML::script("{$assetURL}js/admin.js") }}        
-
+        {{ HTML::script("{$assetURL}js/admin.js") }}
+        {{ HTML::script("{$assetURL}js/jquery.sumoselect.min.js") }}
+        {{ HTML::style("{$assetURL}css/sumoselect.css") }}
 
     </head>
     <body>        

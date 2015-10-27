@@ -1,31 +1,34 @@
 <div class="row mb12">
 	<div class="col-md-12">
+		<h3>Payment</h3>
 		<div class="box">
-			<div class="head">List Payment Request</div>
-			<table class="table table-striped table-hover table-condensed ">
-			    <thead>
-					<tr>
-						<th>Month</th>
-						<th>Amount(Ä‘)</th>
-						<th>Report</th>
-					</tr>
-			    </thead>
-				
-				<tbody>
-					
-					@if( $listPaymentRequests->count()  )
-						@foreach( $listPaymentRequests as $item )
-						<tr>
-							<td>{{$item->date}}</td>
-							<td>{{number_format($item->amount)}}</td>
-							<td><a href="{{URL::Route(!empty($routeExport) ? $routeExport . 'PaymentRequestDetail' : 'PublisherAdvertiserManagerPaymentRequestDetail', $item->id)}}">Report</a></td>
-						</tr>
-						@endforeach
-					@else
-						<tr><td colspan="3">No data</td>
-					@endif
-				</tbody>
-			</table>
-		</div>		
+			<div class="content col-xs-12">
+				<div class="alert alert-danger fade in request-fail" style="display:none">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">x</a>
+					<strong>Warning!</strong> Your request fail. Please try again <br/>(<i>Note: Total income for selected months should be greater than or equal to 300,000 VND</i>)
+				</div>
+				<!-- warning selected month!-->
+				<div class="alert alert-danger fade in non-month " style="display:none">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">x</a>
+					<strong>Warning!</strong> Please select month that you want to send request.
+				</div>
+
+				<div class="alert alert-success fade in" style="display:none">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+					<strong>Success!</strong> Your request success.
+				</div>
+				{{ Form::open(array('id'=>'form-request','method'=>'post', 'onsubmit'=>'return false')) }}
+				<div class="row">
+					<div class="col-sm-3 right-side">
+						{{ Form::submit('Send Request', ['class'=>'btn btn-default', 'id'=>'request-btn']) }}
+					</div>
+				</div>
+				{{ Form::close() }}
+			</div>
+		</div>
+		<div id="results">
+			{{$listItems}}
+		</div>
 	</div>
 </div>
+
