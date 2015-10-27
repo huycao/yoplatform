@@ -5,7 +5,6 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
     Route::group(array('prefix' => 'approve-tools' ),function() {
         $prefixName = Str::studly(pathinfo(__DIR__, PATHINFO_BASENAME));
         $prefixSlug = Str::snake($prefixName,'-');
-        
         //--Show List
         Route::get('/',     array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'  =>  $prefixName.'ShowList','uses'   =>  $prefixName.'Controller@showList'));
         //-------manager user---------//
@@ -27,6 +26,9 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
         Route::get('profile',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'    =>  $prefixName.'Profile','uses' =>  $prefixName.'Controller@myProfile'));
         Route::post('profile',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'    =>  $prefixName.'Profile','uses' =>  $prefixName.'Controller@myProfile'));
         //--------end manager user--------//
-       
+        Route::any('payment-request/{status}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'    =>  $prefixName.'PaymentRequest','uses' =>  $prefixName.'Controller@paymentRequest'));
+        Route::get('payment-request-detail/{id}',   array('as' =>  $prefixName.'PaymentRequestDetail',  'uses' =>  $prefixName.'Controller@paymentRequestDetail'));
+        Route::post('changeStatusPaymentRequest',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as' =>  $prefixName.'ChangeStatusPaymentRequest','uses' =>  $prefixName.'Controller@changeStatusPaymentRequest'));
+
     });
 });

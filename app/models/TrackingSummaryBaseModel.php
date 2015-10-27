@@ -539,10 +539,11 @@ class TrackingSummaryBaseModel extends Eloquent {
     public function sumEarnPerCampaign($websiteLists, $startDate, $endDate){
 
         $data = $this->getEarnPerFlight($websiteLists, $startDate, $endDate);
+
         $campaign = array();
         $total = 0;
 
-        if( $data->count() ){
+        if( count($data)){
 
             foreach( $data as $item ){
 
@@ -588,8 +589,7 @@ class TrackingSummaryBaseModel extends Eloquent {
     }
 
     public function getEarnPerFlight($websiteLists, $startDate, $endDate){
-
-        return $this->select(
+        $this->select(
                 'flight.campaign_id',
                 'flight.cost_type',
                 'tracking_summary.flight_id',
@@ -611,8 +611,6 @@ class TrackingSummaryBaseModel extends Eloquent {
             ->where('ovr',0)
             ->groupBy('flight_website.flight_id','tracking_summary.publisher_base_cost')
             ->get();
-
-
     }
     public function getEarnReport($startDate, $endDate){
 
@@ -881,6 +879,31 @@ class TrackingSummaryBaseModel extends Eloquent {
                 ->groupBy('website_id')
                 ->get();
 
+    }
+    //lists Flight base on campaign_id
+    static function getListFlight($campaignId, $month, $year){
+       $query = TrackingSummaryBaseModel::select(
+            'flight.campaign_id',
+            'flight.cost_type',
+            'tracking_summary.flight_id',
+            'tracking_summary.flight_website_id',
+            DB::raw('ROUND(pt_flight_website.publisher_base_cost,2) as ecpm'),
+            DB::raw('SUM(impression) as impression'),
+            DB::raw('SUM(unique_impression) as total_unique_impression'),
+            DB::raw('SUM(click) as click'),
+            DB::raw('ROUND(SUM(impression)/SUM(unique_impression),2) as frequency'),
+            DB::raw('ROUND(SUM(click)/SUM(impression)*100,2) as ctr'),
+            DB::raw('ROUND(pt_tracking_summary.publisher_base_cost/1000*SUM(impression),2) as amount_impression'),
+            DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click')
+        )
+        ->join('flight_website', 'tracking_summary.flight_website_id', '=', 'flight_website.id')
+        ->join('flight', 'flight.id', '=', 'flight_website.flight_id')
+        ->whereRaw('MONTH(pt_tracking_summary.date)="'.$month.'" AND YEAR(pt_tracking_summary.date)="'.$year.'"')
+        ->where('ovr',0)
+        ->where('flight.campaign_id', '=', $campaignId)
+        ->groupBy('flight_website.flight_id','tracking_summary.publisher_base_cost')
+        ->get();
+        return $query;
     }
 }
     

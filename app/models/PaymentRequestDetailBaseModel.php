@@ -35,4 +35,8 @@ class PaymentRequestDetailBaseModel extends Eloquent {
         $excel->download('xls');
         exit();
 	}
+
+    public function getItemsByPaymentRequestId($id){
+        return $this->where('payment_request_id', $id)->with('campaign','publisher')->get();
+    }
 }

@@ -1,0 +1,1 @@
+ALTER TABLE `pt_payment_request` CHANGE `status` `status` VARCHAR(10) NULL;

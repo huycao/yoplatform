@@ -439,3 +439,13 @@ margin-bottom: 10px;
 	margin-bottom: 5px !important;
 	margin-right: 10px !important;
 }
+.upper-text{text-transform: uppercase}
+.status-text{text-transform: lowercase}
+.filter-publisher{margin:10px 0;padding:10px;background:#d9edf7;}
+.filter-publisher label{font-weight: normal}
+.show-flight{text-decoration: none!important;}
+.custom-table-border{border:2px solid #01AAC5}
+.custom-table-border tr th{background:#01AAC5; color:#fff!important}
+.custom-table-border tr td{background:#fff}
+.list-flight{margin:0px 20px 0 0!important; padding:0!important; background:#fff!important}
+.list-flight h5{color:#01AAC5;padding:5px 10px}

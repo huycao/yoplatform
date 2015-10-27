@@ -65,7 +65,7 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 
 		$this->loadLeftMenu('menu.campaignList');
 
-		// WHEN UPDATE SHOW CURRENT INFOMATION
+		// WHEN UPDATE SHOW CURRENT INFORMATION
 		if( $id != 0 ){
 			$item = $this->model->with('agency','advertiser','sale', 'campaign_manager')->find($id);
 
