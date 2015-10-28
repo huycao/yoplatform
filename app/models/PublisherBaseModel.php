@@ -526,4 +526,15 @@ class PublisherBaseModel extends Eloquent {
     {
         return $this->where('user_id', $uid)->first();
     }
+
+    public static function getPublisherName($id){
+        $query = DB::table('publisher')->select('username')->join('users', 'users.id', '=', 'publisher.user_id')->where('publisher.id', $id)->get();
+        if(!empty($query)){
+            return $query[0]->username;
+        }else{
+            return '';
+        }
+
+
+    }
 }

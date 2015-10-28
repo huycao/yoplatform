@@ -1,11 +1,22 @@
+<div class="filter-wrapper">
+	<fieldset>
+		<legend>Payment</legend>
+		<div>
+			<div>
+				<label style="width:80px">Publisher: </label>
+				{{ PublisherBaseModel::getPublisherName($payment->publisher_id)}}
+			</div>
+			<div>
+				<label style="width:80px">Date:</label> {{date('Y-m', strtotime($payment->created_at))}}
+			</div>
+			<div>
+				<label style="width:80px">Amount:</label> {{number_format($payment->amount,0,'',',')}} VND
+			</div>
+		</div>
+
+	</fieldset>
+</div>
 <div class="box mb12">
-	<div>
-		<table class="table table-striped table-hover">
-			<tr>
-				<td>Date: {{date('Y-m', strtotime($payment->created_at))}} - Amount: {{number_format($payment->amount,0,'',',')}} VND </td>
-			</tr>
-		</table>
-	</div>
 
 		<table class="table table-striped table-border table-hover">
 			<tr>
@@ -40,7 +51,7 @@
 									<th>Click</th>
 									<th>CTR</th>
 								</tr>
-								<?php $flights = TrackingSummaryBaseModel::getListFlight($item->campaign_id, date('m', strtotime($item->created_at)), date('Y',strtotime($item->created_at)));
+								<?php $flights = TrackingSummaryBaseModel::getListFlight($item->campaign_id, $item->publisher_id, date('m', strtotime($item->created_at)), date('Y',strtotime($item->created_at)));
 								?>
 								@if(count($flights)>0)
 									<?php $num=1;?>

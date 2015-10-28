@@ -46,7 +46,6 @@ class ApproveToolsPublisherManagerController extends PublisherManagerController
 		$this->layout->content = View::make('publisher_manager.approve_tools_publisher_manager.paymentRequest', $this->data);
 	}
 
-
 	public function paymentRequestDetail($id){
 		$model = new PaymentRequestDetailBaseModel;
 		$data['payment'] = PaymentRequestBaseModel::find($id);
