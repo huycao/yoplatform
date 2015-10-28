@@ -23,7 +23,16 @@
 			@else
 				<th class="sorting"><a href="javascript:;" onclick="actionSort('payment_request.created_at','desc')">Month</a></th>
 			@endif
-			<th>Amount (VND)</th>
+
+			@if(isset($options['field']) && $options['field'] == 'amount')
+				@if(isset($options['order']) && $options['order'] == 'desc')
+					<th class="sorting_asc"><a href="javascript:;" onclick="actionSort('amount','asc')">Amount (VND)</a></th>
+				@else
+					<th class="sorting_desc"><a href="javascript:;" onclick="actionSort('amount','desc')">Amount (VND)</a></th>
+				@endif
+			@else
+				<th class="sorting"><a href="javascript:;" onclick="actionSort('amount','desc')">Amount (VND)</a></th>
+			@endif
 			<th>Status</th>
 			<th></th>
 		</tr>

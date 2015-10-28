@@ -39,7 +39,7 @@
 							<label>Year</label>
 							{{Form::select('year', getYears(), Input::get('year')?Input::get('year'):'',['id'=>'year','class'=>'form-control'])}}
 						</div>
-						{{--{{Form::submit('Filter', ['class'=>'btn btn-primary'])}}--}}
+						{{Form::submit('Search', ['class'=>'btn btn-primary'])}}
 						{{Form::close()}}
 					</div>
 					<div id="results">
@@ -78,25 +78,25 @@
 		})
 	}
 	$(document).ready(function(){
-		$("#publisher").keyup(function(){
-			pub_val = $("#publisher").val();
-			month_val = $("#month").find("option:selected").val();
-			year_val = $("#year").find("option:selected").val();
-			sendRequest(pub_val, month_val, year_val);
-		})
-		//month
-		$("#month").change(function(){
-			month_val = $(this).val();
-			year_val = $("#year").find("option:selected").val();
-			pub_val = $("#publisher").val();
-			sendRequest(pub_val, month_val, year_val);
-		})
-
-		$("#year").change(function(){
-			month_val = $("#month").find("option:selected").val();
-			year_val = $(this).val();
-			pub_val = $("#publisher").val();
-			sendRequest(pub_val, month_val, year_val);
-		})
+//		$("#publisher").keyup(function(){
+//			pub_val = $("#publisher").val();
+//			month_val = $("#month").find("option:selected").val();
+//			year_val = $("#year").find("option:selected").val();
+//			sendRequest(pub_val, month_val, year_val);
+//		})
+//		//month
+//		$("#month").change(function(){
+//			month_val = $(this).val();
+//			year_val = $("#year").find("option:selected").val();
+//			pub_val = $("#publisher").val();
+//			sendRequest(pub_val, month_val, year_val);
+//		})
+//
+//		$("#year").change(function(){
+//			month_val = $("#month").find("option:selected").val();
+//			year_val = $(this).val();
+//			pub_val = $("#publisher").val();
+//			sendRequest(pub_val, month_val, year_val);
+//		})
 	})
 </script>
