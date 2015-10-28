@@ -1,4 +1,5 @@
 <style>.pagination{margin:0 5px 0 0}
+	.form-horizontal{display:none}
 </style>
 <div class="box box-body">
 	<table id="tableList" class="table table-striped table-hover table-condensed ">

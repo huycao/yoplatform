@@ -6,7 +6,7 @@ define('DB_HOST', '127.0.0.1');
 define('DB_PORT', 3306);
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
-define('DB_NAME', 'yomedia_vn1');
+define('DB_NAME', 'yomedia_vn2');
 
 //run
 processingPaymentRequest();
@@ -54,6 +54,7 @@ function processingPaymentRequest(){
                         }else{
                             $ctr = 0;
                         }
+
                         insertPaymentRequestDetail($pid, $cpid, $prid, $amount, $impression, $click, $ctr, $date);
                     }
                 }
@@ -69,7 +70,7 @@ function checkExistPaymentRequest($pid, $date){
     $conn = connectDB();
     $sql = "SELECT id FROM pt_payment_request WHERE (publisher_id=$pid AND MONTH(created_at)='".$m."' AND YEAR(created_at) = '".$y."')";
     $result = $conn->query($sql);
-    if($result->num_rows>0){
+    if($result && $result->num_rows>0){
         return true;
     }else{
         return false;
@@ -148,11 +149,12 @@ function sumEarnPerCampaign($websites, $date){
 
 //getEarnPerFlight
 function getEarnPerFlight($websites, $date){
-    $m = date('m', strtotime($date));
-    $y = date('Y', strtotime($date));
-    $re = array();
-    $conn = connectDB();
-    $sql = "SELECT `pt_flight`.`campaign_id`, `pt_flight`.`cost_type`, `pt_tracking_summary`.`flight_id`, `pt_tracking_summary`.`flight_website_id`,
+    if(!empty($websites)){
+        $m = date('m', strtotime($date));
+        $y = date('Y', strtotime($date));
+        $re = array();
+        $conn = connectDB();
+        $sql = "SELECT `pt_flight`.`campaign_id`, `pt_flight`.`cost_type`, `pt_tracking_summary`.`flight_id`, `pt_tracking_summary`.`flight_website_id`,
        ROUND(pt_flight_website.publisher_base_cost,2) as ecpm,
        SUM(impression) as total_impression,
        SUM(unique_impression) as total_unique_impression,
@@ -167,14 +169,15 @@ function getEarnPerFlight($websites, $date){
        where `pt_tracking_summary`.`website_id` in (".implode(",",$websites).") and MONTH(`pt_tracking_summary`.`date`)= '".$m."'
        and YEAR(`pt_tracking_summary`.`date`) = '".$y."' and `ovr` = 0
        group by `pt_flight_website`.`flight_id`, `pt_tracking_summary`.`publisher_base_cost`";
-    $result = $conn->query($sql);
-    if($result->num_rows>0){
-        while($row = $result->fetch_object()) {
-            $re[]= $row;
+        $result = $conn->query($sql);
+        if(isset($result) && isset($result->num_rows) && $result->num_rows>0){
+            while($row = $result->fetch_object()) {
+                $re[]= $row;
+            }
         }
+        $conn->close();
+        return $re;
     }
-    $conn->close();
-    return $re;
 }
 
 //insert 1 item payment request
