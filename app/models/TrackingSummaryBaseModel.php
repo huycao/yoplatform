@@ -881,7 +881,7 @@ class TrackingSummaryBaseModel extends Eloquent {
 
     }
     //lists Flight base on campaign_id
-    static function getListFlight($campaignId, $month, $year){
+    static function getListFlight($campaignId,$publisher_id, $month, $year){
        $query = TrackingSummaryBaseModel::select(
             'flight.campaign_id',
             'flight.cost_type',
@@ -898,6 +898,9 @@ class TrackingSummaryBaseModel extends Eloquent {
         )
         ->join('flight_website', 'tracking_summary.flight_website_id', '=', 'flight_website.id')
         ->join('flight', 'flight.id', '=', 'flight_website.flight_id')
+           ->join('publisher_site', 'publisher_site.id','=','flight_website.website_id')
+           ->join('publisher', 'publisher.id', '=', 'publisher_site.publisher_id')
+           ->where('publisher.id', $publisher_id)
         ->whereRaw('MONTH(pt_tracking_summary.date)="'.$month.'" AND YEAR(pt_tracking_summary.date)="'.$year.'"')
         ->where('ovr',0)
         ->where('flight.campaign_id', '=', $campaignId)

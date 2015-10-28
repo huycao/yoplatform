@@ -1,6 +1,6 @@
 <div class="filter-wrapper">
 	<fieldset>
-		<legend>Tools</legend>
+		<legend>Payment</legend>
 	</fieldset>
 </div>
 
