@@ -29,6 +29,7 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
         Route::any('payment-request/{status}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'    =>  $prefixName.'PaymentRequest','uses' =>  $prefixName.'Controller@paymentRequest'));
         Route::get('payment-request-detail/{id}',   array('as' =>  $prefixName.'PaymentRequestDetail',  'uses' =>  $prefixName.'Controller@paymentRequestDetail'));
         Route::post('changeStatusPaymentRequest',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as' =>  $prefixName.'ChangeStatusPaymentRequest','uses' =>  $prefixName.'Controller@changeStatusPaymentRequest'));
+        Route::get('export-payment-request/{id}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as' =>  $prefixName.'ExportExcelPaymentDetail','uses' =>  $prefixName.'Controller@exportExcelPaymentDetail'));
 
     });
 });

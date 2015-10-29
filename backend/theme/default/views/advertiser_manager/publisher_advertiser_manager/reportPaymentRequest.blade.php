@@ -8,11 +8,11 @@
 <table>
 	<tr>
 		<td colspan="3">Tên công ty : .....................................</td>
-		<td colspan="3">Khách hàng : CÔNG TY CỔ PHẦN PINE MULTIMEDIA TECHNOLOGIES</td>
+		<td colspan="3">Khách hàng : CÔNG TY CỔ PHẦN NEW PINE MULTIMEDIA TECHNOLOGIES</td>
 	</tr>
 	<tr>
 		<td colspan="3">Địa chỉ     : .....................................</td>
-		<td colspan="3">Địa chỉ     : Block C tòa nhà An Khang, p.An Phú, Q.2, TP.HCM</td>
+		<td colspan="3">Địa chỉ     : 28 Phùng Khắc Khoan, Phường Đa Kao, Quận 1, TP.HCM</td>
 	</tr>
 	<tr>
 		<td colspan="3">Mã số thuế  : .....................................</td>
@@ -31,7 +31,7 @@
 	<tr><td colspan="6" align="center" style="font-size:18px">BẢNG KÊ CHI TIẾT QUẢNG CÁO</td></tr>
 	<tr><td colspan="6" align="center">(Số...................... Ngày..................................)</td></tr>
 	<tr><td colspan="6" align="left">Kèm theo Hóa Đơn Số: ...................... Ngày.........tháng.........năm.........</td></tr>
-	<tr><td colspan="6" align="left">Thời gian: {{$data[0]->date}}</td></tr>
+	<tr><td colspan="6" align="left">Thời gian: {{date('Y-m', strtotime($data[0]->created_at))}}</td></tr>
 	<tr><td colspan="6" align="left">Publisher: {{!empty($pubName) ? $pubName : ''}}</td></tr>
 	<tr><td colspan="6">&nbsp;</td></tr>
 </table>
@@ -67,23 +67,23 @@
 		<td align="right">{{number_format($item->ctr *100, 2)}}%</td>
 	</tr>
 	@endforeach
-
+	<?php
+	if($totalAmount == 0){
+		$vat = 0;
+	}else{
+		$vat = $totalAmount * 10 / 110;
+	}
+	?>
 	<tr>
 		<th class="border-dash"></th>
-		<th align="center" class="border-dash">Tổng cộng (gồm thuế GTGT)</th>
+		<th align="center" class="border-dash">Tổng cộng (bao gồm thuế GTGT)</th>
 		<th class="border-dash">{{$totalAmount}}</th>
 		<th class="border-dash">{{$totalImpression}}</th>
 		<th class="border-dash">{{$totalClick}}</th>
 		<th class="border-dash">
 		</th>
 	</tr>
-	<?php
-		if($totalAmount == 0){
-			$vat = 0;
-		}else{
-			$vat = $totalAmount * 10 / 110;
-		}
-	?>
+
 	<tr>
 		<th class="border-dash"></th>
 		<th align="center" class="border-dash">Thuế GTGT 10%</th>
@@ -94,7 +94,7 @@
 	</tr>
 	<tr>
 		<th class="border-dash"></th>
-		<th align="center" class="border-dash">Số tiền (chưa gồm thuế GTGT)</th>
+		<th align="center" class="border-dash">Số tiền (gồm thuế GTGT)</th>
 		<th class="border-dash">{{$totalAmount - $vat}}</th>
 		<th class="border-dash"></th>
 		<th class="border-dash"></th>
@@ -116,7 +116,7 @@
 		<td></td>
 		<td align="center" colspan="2"><b>{{$publisher->company}}</b></td>
 		<td></td>
-		<td align="center" colspan="2"><b>CÔNG TY CỔ PHẦN PINE MULTIMEDIA TECHNOLOGIES</b></td>
+		<td align="center" colspan="2"><b>CÔNG TY CỔ PHẦN NEW PINE MULTIMEDIA TECHNOLOGIES</b></td>
 	</tr>
 	<tr>
 		<td></td>

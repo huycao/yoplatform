@@ -449,3 +449,4 @@ margin-bottom: 10px;
 .custom-table-border tr td{background:#fff}
 .list-flight{margin:0px 20px 0 0!important; padding:0!important; background:#fff!important}
 .list-flight h5{color:#01AAC5;padding:5px 10px}
+.export-excel a{text-decoration: none;font-size:15px;font-weight: bold;}

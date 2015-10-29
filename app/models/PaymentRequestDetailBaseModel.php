@@ -12,9 +12,11 @@ class PaymentRequestDetailBaseModel extends Eloquent {
 		return $this->hasOne('PublisherBaseModel','id','publisher_id');
 	}
 
-
+    /*
+     * function name: exportExcel
+     */
 	public function exportExcel($data){
-        $excel = Excel::create('PaymentRequest',function($excel){
+        $excel = Excel::create('Payment',function($excel){
             // Set the title
             $excel->setTitle('Payment Request');
             // Chain the setters

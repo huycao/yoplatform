@@ -62,5 +62,26 @@ class ApproveToolsPublisherManagerController extends PublisherManagerController
 			$paymentRe->updateItem($id, array('status'=>$status));
 		}
 	}
+
+	/*
+	 * function name: exportExcelPaymentDetail
+	 * @params: $id
+	 */
+	public function exportExcelPaymentDetail($id){
+		$model = new PaymentRequestDetailBaseModel;
+		$data['data'] = $model->getItemsByPaymentRequestId($id);
+		if( $data['data']->count() ){
+			$data['publisher'] = $data['data']['0']->publisher;
+			if($data['publisher']){
+				$pid = $data['publisher']->id;
+				$data['pubName'] = PublisherBaseModel::getPublisherName($pid);
+			}else{
+				$data['pubName'] = '';
+			}
+			return $model->exportExcel($data);
+		}else{
+			return false;
+		}
+	}
 	/*----------------------------- END DELETE --------------------------------*/
 }
