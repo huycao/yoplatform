@@ -15,6 +15,7 @@
         <?php
             $action=Request::segment(4);           
             $param1=Request::segment(5);
+
         ?>
         <div class="container">
         <div class="row">
@@ -25,8 +26,15 @@
                 </li>
                 <li class="{{ isMenuActive('ApproveReportPublisherManagerShowList',$action,'active',$param1) }}">
                     <a href="{{URL::Route('ApproveReportPublisherManagerShowList')}}">{{trans('backend::publisher/text.report')}}</a>
-                </li>                        
-                <li class="{{ isMenuActive('ApproveToolsPublisherManagerShowList',$action,'active',$param1) }}">
+                </li>
+                <li class="{{($action=='payment-request' || $action == 'payment-request-detail')?'active':''}}">
+                    <a href="{{URL::to(Route('ApproveToolsPublisherManagerPaymentRequest',['request']))}}">Payment</a>
+                </li>
+                @if(($action!='payment-request' && $action != 'payment-request-detail'))
+                    <li class="{{ isMenuActive('ApproveToolsPublisherManagerShowList',$action,'active',$param1) }}">
+                @else
+                    <li>
+                @endif
                     <a href="{{URL::Route('ApproveToolsPublisherManagerShowList')}}">{{trans('backend::publisher/text.tools')}}</a>
                 </li>
                  <li class="{{ isMenuActive('','ApproveToolsPublisherManagerProfile','active',$param1) }}">
