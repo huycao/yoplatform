@@ -109,19 +109,23 @@ class ToolsPublisherController extends PublisherBackendController
 	 * ajax load for show payment request
 	 */
 	public function sendPaymentRequest(){
-		//process send request
-		$paymentReq = new PaymentRequestBaseModel;
-		$ids = Input::has('ids') ? Input::get('ids'):'';
-		$re = array();
-		if(Request::ajax()){
-			//return json
-			$total = $paymentReq->sumItemsByIds($ids);
-			if($total>=300){
-				$paymentReq->updateStatus($ids);
-				$re['status'] = 'ok';
-			}else{
-				$re['status'] = 'error';
+		if(checkSendRequest()){
+			//process send request
+			$paymentReq = new PaymentRequestBaseModel;
+			$ids = Input::has('ids') ? Input::get('ids'):'';
+			$re = array();
+			if(Request::ajax()){
+				//return json
+				$total = $paymentReq->sumItemsByIds($ids);
+				if($total>=300){
+					$paymentReq->updateStatus($ids);
+					$re['status'] = 'ok';
+				}else{
+					$re['status'] = 'error';
+				}
 			}
+		}else{
+			$re['status'] = 'error';
 		}
 		echo json_encode($re);
 	}
