@@ -35,9 +35,9 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
         //--View
         Route::get('view/{id}',        array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'ShowView','uses' =>  $prefixName.'Controller@showView'));
         Route::get('review/{id}',        array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'ReviewPublisher','uses' =>  $prefixName.'Controller@reviewPublisher'));
-        //--Update
-        Route::get('payment-request/{id}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'    =>  $prefixName.'PaymentRequest','uses' =>  $prefixName.'Controller@paymentRequest'));
-        Route::get('payment-request-detail/{id}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'    =>  $prefixName.'PaymentRequestDetail','uses' =>  $prefixName.'Controller@paymentRequestDetail'));
+        //--move to publisher
+//        Route::get('payment-request/{id}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'    =>  $prefixName.'PaymentRequest','uses' =>  $prefixName.'Controller@paymentRequest'));
+//        Route::get('payment-request-detail/{id}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'    =>  $prefixName.'PaymentRequestDetail','uses' =>  $prefixName.'Controller@paymentRequestDetail'));
         // Route::post('update/{id}',  array('before' =>   'hasPermissions:'.$prefixSlug.'-edit|csrf','as'   =>  $prefixName.'ShowUpdate','uses' =>  $prefixName.'Controller@showUpdate'));
         //--Delete
         Route::post('delete',       array('before' =>   'hasPermissions:'.$prefixSlug.'-delete','as'    =>  $prefixName.'Delete','uses' =>  $prefixName.'Controller@delete'));

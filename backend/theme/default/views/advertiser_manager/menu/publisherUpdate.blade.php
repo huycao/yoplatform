@@ -21,9 +21,9 @@
                     <li>
                         <a target="_blank" href="{{URL::Route('PublisherAdvertiserManagerReviewPublisher', $pid)}}">Review Publisher</a>
                     </li>
-                    <li>
-                        <a href="{{URL::Route('PublisherAdvertiserManagerPaymentRequest', $pid)}}">Payment Request</a>
-                    </li>
+                    {{--<li>--}}
+                        {{--<a href="{{URL::Route('PublisherAdvertiserManagerPaymentRequest', $pid)}}">Payment Request</a>--}}
+                    {{--</li>--}}
                 </ul>
             </li>
 
