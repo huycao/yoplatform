@@ -2,6 +2,7 @@
 	.form-horizontal{display:none}
 </style>
 <div class="box box-body">
+	<div style="padding:10px 0"><strong>Summary: </strong> {{$total['totalPublisher']}} Publishers - Amount: {{number_format($total['totalAmount'], '0', '', ',')}} VND</div>
 	<table id="tableList" class="table table-striped table-hover table-condensed ">
 		<thead>
 		<tr>
@@ -33,7 +34,7 @@
 			@else
 				<th class="sorting"><a href="javascript:;" onclick="actionSort('amount','desc')">Amount (VND)</a></th>
 			@endif
-			<th>Status</th>
+			<th style="text-align: center">Status</th>
 			<th></th>
 		</tr>
 		</thead>
@@ -44,7 +45,7 @@
 					<td>{{$item->username}}</td>
 					<td>{{date('Y-m',strtotime($item->created_at))}}</td>
 					<td align="right">{{number_format($item->amount)}}</td>
-					<td class="status-text">
+					<td class="status-text" style="text-align: center">
 						<label class="label label-info">{{$item->status}}</label>
 						@if($item->status==STATUS_REQUEST)
 							<button class="btn-action btn btn-xs btn-success status-text" id="_a_{{$item->id}}" data-status="{{STATUS_APPROVE}}">{{STATUS_APPROVE}}</button>

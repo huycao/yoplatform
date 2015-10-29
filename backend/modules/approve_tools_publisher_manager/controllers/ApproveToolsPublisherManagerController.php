@@ -36,8 +36,11 @@ class ApproveToolsPublisherManagerController extends PublisherManagerController
 		$options['field'] = $field;
 		$options['order'] = $order;
 
-		$dataPaging['items'] = $paymentReq->getItems('',ITEM_PER_PAGE, $page, $options);
+		$items = $paymentReq->getItems('',ITEM_PER_PAGE, $page, $options);
+		$dataPaging['items'] = $items;
 		$dataPaging['options'] = array('publisher'=>$publisher, 'month'=>$month, 'year'=>$year, 'field'=>$field, 'order'=>$order);
+		$dataPaging['total'] = $paymentReq->sumAmountPublisher($options);
+
 		if(Request::ajax()){
 			return View::make('publisher_manager.approve_tools_publisher_manager.paymentRequestPaging', $dataPaging);
 		}else{

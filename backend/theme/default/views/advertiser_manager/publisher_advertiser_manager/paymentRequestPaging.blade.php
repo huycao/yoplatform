@@ -2,6 +2,7 @@
 	.pagination{margin:0 5px 0 0}
 	.form-horizontal{display:none}
 </style>
+
 <div class="box box-body">
 	<table class="table table-striped table-hover table-condensed ">
 		<thead>
@@ -30,7 +31,7 @@
 					</td>
 					<td>{{date('Y-m',strtotime($item->created_at))}}</td>
 					<td align="right">{{number_format($item->amount)}}</td>
-					<td>
+					<td align="center">
 						<?php
 							switch($item->status){
 								case STATUS_REQUEST:

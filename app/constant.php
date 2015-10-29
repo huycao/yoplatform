@@ -29,3 +29,4 @@ define('STATUS_WAITING', 'waiting');
 define('STATUS_REQUEST', 'request');
 define('STATUS_APPROVE', 'approve');
 define('STATUS_DECLINE', 'decline');
+define('LIMIT_PAY', 500);
