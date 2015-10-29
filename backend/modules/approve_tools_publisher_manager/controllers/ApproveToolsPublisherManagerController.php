@@ -51,7 +51,12 @@ class ApproveToolsPublisherManagerController extends PublisherManagerController
 		$data['payment'] = PaymentRequestBaseModel::find($id);
 		$items = $model->getItemsByPaymentRequestId($id);
 		$data['items'] = $items;
-		$this->layout->content = View::make('publisher_manager.approve_tools_publisher_manager.paymentRequestDetail',$data);
+		if(count($data['items'])>0){
+			$this->layout->content = View::make('publisher_manager.approve_tools_publisher_manager.paymentRequestDetail',$data);
+		}else{
+			return Redirect::to($this->moduleURL .'payment-request/waiting');
+		}
+
 	}
 
 	public function changeStatusPaymentRequest(){
@@ -70,7 +75,8 @@ class ApproveToolsPublisherManagerController extends PublisherManagerController
 	public function exportExcelPaymentDetail($id){
 		$model = new PaymentRequestDetailBaseModel;
 		$data['data'] = $model->getItemsByPaymentRequestId($id);
-		if( $data['data']->count() ){
+
+		if( count($data['data'])>0){
 			$data['publisher'] = $data['data']['0']->publisher;
 			if($data['publisher']){
 				$pid = $data['publisher']->id;
@@ -80,7 +86,7 @@ class ApproveToolsPublisherManagerController extends PublisherManagerController
 			}
 			return $model->exportExcel($data);
 		}else{
-			return false;
+			return Redirect::to($this->moduleURL .'payment-request/waiting');
 		}
 	}
 	/*----------------------------- END DELETE --------------------------------*/

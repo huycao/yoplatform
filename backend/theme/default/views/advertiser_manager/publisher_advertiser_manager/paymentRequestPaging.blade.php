@@ -8,8 +8,8 @@
 		<tr>
 			<th></th>
 			<th>Month</th>
-			<th>Amount (VND)</th>
-			<th>Status</th>
+			<th style="text-align: center">Amount (VND)</th>
+			<th style="text-align: center">Status</th>
 			<th></th>
 		</tr>
 		</thead>
@@ -25,7 +25,7 @@
 						@endif
 					</td>
 					<td>{{date('Y-m',strtotime($item->created_at))}}</td>
-					<td>{{number_format($item->amount)}}</td>
+					<td align="right">{{number_format($item->amount)}}</td>
 					<td>
 						<?php
 							switch($item->status){
@@ -41,8 +41,10 @@
 						?>
 					</td>
 					<td>
-						<a href="/control-panel/publisher/tools/payment-request-detail/{{$item->id}}">Detail</a> |
-						<a href="/control-panel/publisher/tools/export/{{$item->id}}">Export</a>
+						@if($item->amount>0)
+							<a href="/control-panel/publisher/tools/payment-request-detail/{{$item->id}}">Detail</a> |
+							<a href="/control-panel/publisher/tools/export/{{$item->id}}">Export</a>
+						@endif
 					</td>
 				</tr>
 			@endforeach

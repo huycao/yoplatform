@@ -43,7 +43,7 @@
 				<tr>
 					<td>{{$item->username}}</td>
 					<td>{{date('Y-m',strtotime($item->created_at))}}</td>
-					<td>{{number_format($item->amount)}}</td>
+					<td align="right">{{number_format($item->amount)}}</td>
 					<td class="status-text">
 						<label class="label label-info">{{$item->status}}</label>
 						@if($item->status==STATUS_REQUEST)
@@ -53,8 +53,10 @@
 						@endif
 					</td>
 					<td>
-						<a href="/control-panel/publisher-manager/approve-tools/payment-request-detail/{{$item->id}}">Detail</a> |
-						<a href="/control-panel/publisher-manager/approve-tools/export-payment-request/{{$item->id}}">Export</a>
+						@if($item->amount>0)
+							<a href="/control-panel/publisher-manager/approve-tools/payment-request-detail/{{$item->id}}">Detail</a> |
+							<a href="/control-panel/publisher-manager/approve-tools/export-payment-request/{{$item->id}}">Export</a>
+						@endif
 					</td>
 				</tr>
 			@endforeach
