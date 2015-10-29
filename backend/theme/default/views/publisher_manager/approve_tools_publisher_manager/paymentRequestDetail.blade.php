@@ -1,6 +1,11 @@
 <div class="filter-wrapper">
 	<fieldset>
-		<legend>Payment</legend>
+		<legend>Payment
+			<div class="pull-right export-excel">
+				<a href="/control-panel/publisher-manager/approve-tools/export-payment-request/{{$payment->id}}">
+					<i class="fa fa-file-excel-o"></i> Export
+				</a></div>
+		</legend>
 		<div>
 			<div>
 				<label style="width:80px">Publisher: </label>
@@ -13,11 +18,9 @@
 				<label style="width:80px">Amount:</label> {{number_format($payment->amount,0,'',',')}} VND
 			</div>
 		</div>
-
 	</fieldset>
 </div>
 <div class="box mb12">
-
 		<table class="table table-striped table-border table-hover">
 			<tr>
 				<th></th>

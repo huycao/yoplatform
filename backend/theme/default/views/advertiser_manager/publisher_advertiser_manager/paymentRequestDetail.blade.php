@@ -1,6 +1,12 @@
 <div class="filter-wrapper">
 	<fieldset>
-		<legend>Payment</legend>
+		<legend>Payment
+			<div class="pull-right export-excel">
+				<a href="/control-panel/publisher/tools/export/{{$payment->id}}">
+					<i class="fa fa-file-excel-o"></i> Export
+				</a>
+			</div>
+		</legend>
 		<div>
 			<div>
 				<label style="width:80px">Publisher: </label>

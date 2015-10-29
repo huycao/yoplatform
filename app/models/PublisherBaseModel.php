@@ -534,7 +534,6 @@ class PublisherBaseModel extends Eloquent {
         }else{
             return '';
         }
-
-
     }
+
 }

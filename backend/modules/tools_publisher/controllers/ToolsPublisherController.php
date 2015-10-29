@@ -125,7 +125,10 @@ class ToolsPublisherController extends PublisherBackendController
 		}
 		echo json_encode($re);
 	}
-
+	/*
+	 * function name: paymentRequestDetail
+	 * show detail payment for publisher
+	 */
     public function paymentRequestDetail($id){
     	$model = new PaymentRequestDetailBaseModel;
 		$data['payment'] = PaymentRequestBaseModel::find($id);
@@ -133,4 +136,19 @@ class ToolsPublisherController extends PublisherBackendController
 		$data['items'] = $items;
 		$this->layout->content = View::make('advertiser_manager.publisher_advertiser_manager.paymentRequestDetail',$data);
     }
+	/*
+	 * function name: exportExcelPaymentDetail
+	 * @params: $id - d
+	 */
+	public function exportExcelPaymentDetail($id){
+		$model = new PaymentRequestDetailBaseModel;
+		$data['data'] = $model->getItemsByPaymentRequestId($id);
+		if( $data['data']->count() ){
+			$data['publisher'] = $data['data']['0']->publisher;
+			$data['pubName'] = Sentry::getUser()->username;
+			return $model->exportExcel($data);
+		}else{
+			return false;
+		}
+	}
 }

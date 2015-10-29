@@ -41,7 +41,8 @@
 						?>
 					</td>
 					<td>
-						<a href="/control-panel/publisher/tools/payment-request-detail/{{$item->id}}">Detail</a>
+						<a href="/control-panel/publisher/tools/payment-request-detail/{{$item->id}}">Detail</a> |
+						<a href="/control-panel/publisher/tools/export/{{$item->id}}">Export</a>
 					</td>
 				</tr>
 			@endforeach

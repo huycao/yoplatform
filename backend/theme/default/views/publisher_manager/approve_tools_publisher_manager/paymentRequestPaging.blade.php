@@ -53,7 +53,8 @@
 						@endif
 					</td>
 					<td>
-						<a href="/control-panel/publisher-manager/approve-tools/payment-request-detail/{{$item->id}}">Detail</a>
+						<a href="/control-panel/publisher-manager/approve-tools/payment-request-detail/{{$item->id}}">Detail</a> |
+						<a href="/control-panel/publisher-manager/approve-tools/export-payment-request/{{$item->id}}">Export</a>
 					</td>
 				</tr>
 			@endforeach
