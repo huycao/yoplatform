@@ -12,11 +12,11 @@
 	</tr>
 	<tr>
 		<td colspan="3">Địa chỉ     : .....................................</td>
-		<td colspan="3">Địa chỉ     : 28 Phùng Khắc Khoan, Phường Đa Kao, Quận 1, TP.HCM</td>
+		<td colspan="3">Địa chỉ     : Lô C, toà nhà An kHang, đường 19, P. AN Phú, Q.2</td>
 	</tr>
 	<tr>
 		<td colspan="3">Mã số thuế  : .....................................</td>
-		<td colspan="3">&nbsp;</td>
+		<td colspan="3">Mã số thuế  : 0311955789</td>
 	</tr>
 	<tr>
 		<td colspan="3">Điện thoại  : .....................................</td>
@@ -76,7 +76,7 @@
 	?>
 	<tr>
 		<th class="border-dash"></th>
-		<th align="center" class="border-dash">Tổng cộng (bao gồm thuế GTGT)</th>
+		<th align="center" class="border-dash">Tổng cộng (gồm thuế GTGT)</th>
 		<th class="border-dash">{{$totalAmount}}</th>
 		<th class="border-dash">{{$totalImpression}}</th>
 		<th class="border-dash">{{$totalClick}}</th>
@@ -94,7 +94,7 @@
 	</tr>
 	<tr>
 		<th class="border-dash"></th>
-		<th align="center" class="border-dash">Số tiền (gồm thuế GTGT)</th>
+		<th align="center" class="border-dash">Số tiền (chưa gồm thuế GTGT)</th>
 		<th class="border-dash">{{$totalAmount - $vat}}</th>
 		<th class="border-dash"></th>
 		<th class="border-dash"></th>
