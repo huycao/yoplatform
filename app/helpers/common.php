@@ -730,3 +730,14 @@ if(!function_exists('customFormatDate')){
         return $year."-".$month;
     }
 }
+//check date 1-5 in month
+if(!function_exists('checkSendRequest')){
+    function checkSendRequest(){
+        $today = date('d');
+        if($today >=1 && $today <=5){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}

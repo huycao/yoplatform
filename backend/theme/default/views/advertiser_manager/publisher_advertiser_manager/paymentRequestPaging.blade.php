@@ -19,7 +19,11 @@
 				<tr class="item">
 					<td width="30">
 						@if($item->status=='waiting')
-							<input class="request-item" type="checkbox" value="{{$item->id}}" name="request"/>
+							@if(checkSendRequest())
+								<input class="request-item" type="checkbox" value="{{$item->id}}" name="request"/>
+							@else
+								{{--<input class="request-item" type="checkbox" value="{{$item->id}}" name="request" disabled/>--}}
+							@endif
 						@else
 							<input class="request-item" type="checkbox" value="{{$item->id}}" name="request" disabled/>
 						@endif
