@@ -377,42 +377,41 @@ class PublisherAdvertiserManagerController extends AdvertiserManagerController
         $this->layout->content = View::make('showView', $this->data);
     }
 
-    public function paymentRequest($id)
-    {
-
-        $this->data['id'] = $id;
-        $item = $this->model->find($id);
-        if (!$item) {
-            return Redirect::to($this->moduleURL . 'show-list');
-        }
-
-        $item->createMonthlyPaymentRequest();
-
-        $this->loadLeftMenu('menu.publisherUpdate', array(
-            'pid' => $id
-        ));
-
-        $this->data['listPaymentRequests'] = PaymentRequestBaseModel::where(array(
-            'publisher_id' => $id,
-        ))->orderBy('created_at', 'desc')->get();
-
-        $this->layout->content = View::make('showPaymentRequest', $this->data);
-
-    }
-
-    public function paymentRequestDetail($id)
-    {
-        $model = new PaymentRequestDetailBaseModel;
-        $data['data'] = $model->where('payment_request_id', $id)->with('campaign', 'publisher')->get();
-
-        if ($data['data']->count()) {
-            $data['publisher'] = $data['data']['0']->publisher;
-            $data['pubName'] = $data['publisher']->user->username;
-            return $model->exportExcel($data);
-        }
-
-        return false;
-    }
+//    public function paymentRequest($id)
+//    {
+//        $this->data['id'] = $id;
+//        $item = $this->model->find($id);
+//        if (!$item) {
+//            return Redirect::to($this->moduleURL . 'show-list');
+//        }
+//
+//        $item->createMonthlyPaymentRequest();
+//
+//        $this->loadLeftMenu('menu.publisherUpdate', array(
+//            'pid' => $id
+//        ));
+//
+//        $this->data['listPaymentRequests'] = PaymentRequestBaseModel::where(array(
+//            'publisher_id' => $id,
+//        ))->orderBy('created_at', 'desc')->get();
+//
+//        $this->layout->content = View::make('showPaymentRequest', $this->data);
+//
+//    }
+//
+//    public function paymentRequestDetail($id)
+//    {
+//        $model = new PaymentRequestDetailBaseModel;
+//        $data['data'] = $model->where('payment_request_id', $id)->with('campaign', 'publisher')->get();
+//
+//        if ($data['data']->count()) {
+//            $data['publisher'] = $data['data']['0']->publisher;
+//            $data['pubName'] = $data['publisher']->user->username;
+//            return $model->exportExcel($data);
+//        }
+//
+//        return false;
+//    }
 
     /**
      *     Delete Item of module
