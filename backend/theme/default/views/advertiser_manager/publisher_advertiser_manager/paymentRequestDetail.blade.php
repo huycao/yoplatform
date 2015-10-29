@@ -28,10 +28,10 @@
 			<tr>
 				<th></th>
 				<th>Campaign</th>
-				<th>Amount (VND)</th>
-				<th>Impressions</th>
-				<th>Click</th>
-				<th>CTR</th>
+				<th style="text-align: center">Amount (VND)</th>
+				<th style="text-align: center">Impressions</th>
+				<th style="text-align: center">Click</th>
+				<th style="text-align: center">CTR</th>
 			</tr>
 			@if(count($items)>0)
 				<?php $count = 1;?>
@@ -41,10 +41,10 @@
 							<a class="fa fa-plus-circle show-flight" data-toggle="collapse" data-target="#flight_{{$item->id}}" href="javascript:;"></a>
 						</td>
 						<td><strong>{{$item->campaign->name}}</strong></td>
-						<td width="150">{{number_format($item->amount,0,'',',')}}</td>
-						<td width="150">{{number_format($item->impression, 0,'',',')}}</td>
-						<td width="150">{{$item->click}}</td>
-						<td width="150">{{number_format($item->ctr *100, 2)}}%</td>
+						<td width="150" align="right">{{number_format($item->amount,0,'',',')}}</td>
+						<td width="150" align="right">{{number_format($item->impression, 0,'',',')}}</td>
+						<td width="150" align="right">{{number_format($item->click,0,'',',')}}</td>
+						<td width="150" align="right">{{number_format($item->ctr *100, 2)}}%</td>
 					</tr>
 					<tr id="flight_{{$item->id}}" class="content collapse">
 						<td colspan="6" class="list-flight"><h5>List Flights</h5>
@@ -52,10 +52,10 @@
 								<tr>
 									<th>No.</th>
 									<th>Title</th>
-									<th>Amount (VND)</th>
-									<th>Impressions</th>
-									<th>Click</th>
-									<th>CTR</th>
+									<th style="text-align: center">Amount (VND)</th>
+									<th style="text-align: center">Impressions</th>
+									<th style="text-align: center">Click</th>
+									<th style="text-align: center">CTR</th>
 								</tr>
 								<?php $flights = TrackingSummaryBaseModel::getListFlight($item->campaign_id, $item->publisher_id, date('m', strtotime($item->created_at)), date('Y',strtotime($item->created_at)));
 								?>
@@ -66,10 +66,10 @@
 								<tr>
 									<td width="25">{{$num}}</td>
 									<td>{{$flight->flight->name}}</td>
-									<td width="150">{{number_format($flight->amount_impression,0,'',',')}}</td>
-									<td width="150">{{number_format($flight->impression, 0,'',',')}}</td>
-									<td width="150">{{$flight->click}}</td>
-									<td width="150">{{number_format($flight->ctr, 2)}}%</td>
+									<td width="150" align="right">{{number_format($flight->amount_impression,0,'',',')}}</td>
+									<td width="150" align="right">{{number_format($flight->impression, 0,'',',')}}</td>
+									<td width="150" align="right">{{number_format($flight->click, 0, '', ',')}}</td>
+									<td width="150" align="right">{{number_format($flight->ctr, 2)}}%</td>
 								</tr>
 										<?php $num++;?>
 									@endforeach
