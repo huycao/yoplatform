@@ -61,7 +61,7 @@ function excuteSumPayment($pid, $date){
         $prid = insertPaymentRequest($pid, $date, $data['total']);//payment request id
         if(!empty($campaigns)){
             foreach($campaigns as $cpid => $campaign){
-                $amount       = $campaign['cost'];
+                $amount       = ($campaign['cost']!='')?$campaign['cost']:0;
                 $impression   = $campaign['impression'];
                 $click        = $campaign['click'];
                 if( $click != 0 && $impression != 0 ){
@@ -87,7 +87,6 @@ function checkExistPaymentRequest($pid, $date){
     }else{
         return false;
     }
-
     $conn->close();
 }
 //get all id of publisher
@@ -217,11 +216,13 @@ function insertPaymentRequestDetail($pid, $cpid, $prid, $amount, $impression, $c
     if($conn->query($sql) === TRUE){
 
     }else{
+        print_r($sql);die;
         die('Cannot insert new payment_request_detail record');
     }
     $conn->close();
 }
 
+//get all date from tracking summary but not include current date
 function getAllDateFromTrackingSummary(){
     $conn = connectDB();
     $re = array();
@@ -229,12 +230,25 @@ function getAllDateFromTrackingSummary(){
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            $re[]= $row['date'];
+            if(!checkCurrentMonthAndYear($row['date'])){
+                $re[]= $row['date'];
+            }
         }
     }
     $conn->close();
     return $re;
 }
+
+function checkCurrentMonthAndYear($date){
+    $today = date('Y-m');
+    if(date('Y-m', strtotime($date)) === $today){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+
 
 $m = isset($argv[1])?$argv[1]:'';
 $pid = isset($argv[2])?$argv[2]:'';
