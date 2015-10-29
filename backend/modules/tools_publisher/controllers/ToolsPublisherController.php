@@ -117,7 +117,7 @@ class ToolsPublisherController extends PublisherBackendController
 			if(Request::ajax()){
 				//return json
 				$total = $paymentReq->sumItemsByIds($ids);
-				if($total>=300){
+				if($total>=LIMIT_PAY){
 					$paymentReq->updateStatus($ids);
 					$re['status'] = 'ok';
 				}else{
