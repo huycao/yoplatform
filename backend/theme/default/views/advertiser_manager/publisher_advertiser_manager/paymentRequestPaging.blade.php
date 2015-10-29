@@ -22,7 +22,7 @@
 							@if(checkSendRequest())
 								<input class="request-item" type="checkbox" value="{{$item->id}}" name="request"/>
 							@else
-								{{--<input class="request-item" type="checkbox" value="{{$item->id}}" name="request" disabled/>--}}
+								<input class="request-item" type="checkbox" value="{{$item->id}}" name="request" disabled/>
 							@endif
 						@else
 							<input class="request-item" type="checkbox" value="{{$item->id}}" name="request" disabled/>
