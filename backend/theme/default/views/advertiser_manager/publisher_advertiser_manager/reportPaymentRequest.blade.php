@@ -11,8 +11,8 @@
 		<td colspan="3">Khách hàng : CÔNG TY CỔ PHẦN NEW PINE MULTIMEDIA TECHNOLOGIES</td>
 	</tr>
 	<tr>
-		<td colspan="3">Địa chỉ     : .....................................</td>
-		<td colspan="3">Địa chỉ     : Lô C, toà nhà An kHang, đường 19, P. AN Phú, Q.2</td>
+		<td colspan="3">Địa chỉ: .....................................</td>
+		<td colspan="3">Trụ sở chính : 28 Phùng Khắc Khoan, Phường Đa Kao, Quận 1, TP. Hồ Chí Minh</td>
 	</tr>
 	<tr>
 		<td colspan="3">Mã số thuế  : .....................................</td>
@@ -25,6 +25,10 @@
 	<tr>
 		<td colspan="3">Số FAX      : .....................................</td>
 		<td colspan="3">Số FAX      : (08) 6281 7605</td>
+	</tr>
+	<tr>
+		<td colspan="3"></td>
+		<td colspan="3">Địa chỉ giao dịch: Lô C, toà nhà An Khang, đường 19, Phường An Phú, TP. Hồ Chí Minh</td>
 	</tr>
 </table>
 <table>
