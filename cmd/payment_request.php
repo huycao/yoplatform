@@ -2,18 +2,18 @@
 //insert data to payment_request tbl, and payment_request_detail tbl on 1-5 every month.
 
 //Mysql
-define('DB_HOST', '127.0.0.1');
-define('DB_PORT', 3306);
+define('DB_HOST', '192.168.100.14');
 define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-define('DB_NAME', 'yomedia_vn2');
+define('DB_PASSWORD', '123@qazwsX');
+define('DB_NAME', 'yomedia');
 
 //run
+//connectDB();
 processingPaymentRequest();
 
 function connectDB(){
     //Connect Mysql
-    $servername = DB_HOST . ":" . DB_PORT;
+    $servername = DB_HOST;
     $username = DB_USERNAME;
     $password = DB_PASSWORD;
     $dbname = DB_NAME;
@@ -23,6 +23,7 @@ function connectDB(){
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }else{
+	//die("Connected");
         return $conn;
     }
 }
@@ -30,7 +31,7 @@ function connectDB(){
 //excute
 function processingPaymentRequest(){
     //calulate previous month
-    $date = date('Y-m', strtotime("-1 month"));
+    $date = date('Y-m', strtotime("0 month"));
     //get list publishers
     $pids = getAllIdPublishers();
 

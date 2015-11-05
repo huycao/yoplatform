@@ -24,7 +24,7 @@ return array(
 
     'connections' => array(
         'yostatic' => array(
-            'host'     => '221.132.35.175',
+            'host'     => '221.132.35.173',
             'port'     => 21,
             'username' => 'yostatic',
             'password' => '3edc$RFV',
