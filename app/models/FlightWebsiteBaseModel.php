@@ -195,7 +195,7 @@ class FlightWebsiteBaseModel extends Eloquent {
                     ->where('flight_website.website_id', $wid)
                     ->where('flight.ad_format_id', $ad_format)
                     ->where('flight.status', 1)
-                    ->select('flight_website.id','flight.id as flight_id', 'flight.name', 'flight_website.status', 'flight_website.publisher_base_cost')
+                    ->select('flight_website.id','flight.id as flight_id', 'flight.name', 'flight_website.status', 'flight_website.publisher_base_cost', 'flight_website.website_id')
                     ->orderBy('flight.id', 'DESC')
                     ->get();
         if($rs){
