@@ -90,7 +90,7 @@
                                 <a href="{{URL::Route('PublisherAdvertiserManagerShowUpdateZone', [$pid,$wid,$zone->id])}}" class="btn btn-default">
                                     <span class="glyphicon glyphicon-edit">Edit</span>
                                 </a>
-                                <a href="javascript:;" onclick="viewFlight({{$wid}},{{$zone->ad_format_id}});" class=" view-flight btn btn-default">
+                                <a href="javascript:;" onclick="viewFlight({{$wid}},{{$zone->ad_format_id}}, {{$pid}}, {{$zone->id}});" class=" view-flight btn btn-default">
                                     <span class="fa fa-list"> Flight</span>
                                 </a>
                             </td>
@@ -112,14 +112,14 @@
 
 <script><!--
     
-    function viewFlight(wid, ad_format) {
+    function viewFlight(wid, ad_format, pid, zid) {
     	$('#myModal .modal-dialog').css("width","800px");
         $('#myModal .modal-body').html('<img src="{{ $assetURL.'img/loading-d.GIF' }}"/>');
         $('#myModal').modal("show");
 
         $.ajax({
             url:'{{ Url::route("PublisherAdvertiserManagerShowListFlight") }}',
-            data:{website:wid,ad_format:ad_format},
+            data:{website:wid,ad_format:ad_format,pid:pid,zid:zid},
             type:'POST',
             success:function(data){
                 $('#myModal .modal-body').html(data);

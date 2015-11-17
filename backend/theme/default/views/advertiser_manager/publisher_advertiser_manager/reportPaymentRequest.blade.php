@@ -28,7 +28,7 @@
 	</tr>
 	<tr>
 		<td colspan="3"></td>
-		<td colspan="3">Địa chỉ giao dịch: Lô C, toà nhà An Khang, đường 19, Phường An Phú, TP. Hồ Chí Minh</td>
+		<td colspan="3">Địa chỉ giao dịch: Lô C, toà nhà An Khang, đường 19, Phường An Phú, Quận 2, TP. Hồ Chí Minh</td>
 	</tr>
 </table>
 <table>

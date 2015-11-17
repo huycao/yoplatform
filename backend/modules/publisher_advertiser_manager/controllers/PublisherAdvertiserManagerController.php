@@ -705,6 +705,9 @@ class PublisherAdvertiserManagerController extends AdvertiserManagerController
             $ad_format = Input::get('ad_format');
             $flightWebsiteBaseModel = new FlightWebsiteBaseModel();
             $this->data['data'] = $flightWebsiteBaseModel->getFlight($wid, $ad_format);
+            $this->data['pid'] = Input::get('pid');
+            $this->data['zid'] = Input::get('zid');
+            
             return View::make('ajaxListFlight', $this->data);
         }
     }
@@ -899,5 +902,40 @@ class PublisherAdvertiserManagerController extends AdvertiserManagerController
                 ->update(['publisher_base_cost' => $data->publisher_base_cost]);
         }
         return "";
+    }
+
+    function saveCodeSingleFlight($pid = 0, $wid = 0, $zid = 0, $fwid = 0) {
+        $adZoneModel = new PublisherAdZoneBaseModel;
+        $item = $adZoneModel->where('id', $zid)->first();
+
+        if ($item) {
+            View::addLocation(base_path() .'/backend/theme/'.$this->theme.'/views/partials');
+            $view = "code".$item->adFormat->code_view;
+            //$view = Config::get("ad_format_code.$item->ad_format_id");
+
+
+            $data['wid'] = $item->publisher_site_id;
+            $data['zid'] = $zid;
+            $data['pid'] = $pid;
+            $data['fwid'] = $fwid;
+            $data['el_id'] = $item->element_id;
+            $data['width'] = $item->width;
+            $data['height'] = $item->height;
+
+            $contents = View::make($view . 'Save', $data);
+            $response = Response::make($contents, '200');
+
+            $response->header('Content-Description', 'File Transfer');
+            $response->header('Content-Type', 'application/octet-stream');
+            $response->header('Content-Disposition', "attachment; filename={$item->site->name}_{$item->adFormat->name}_{$fwid}.txt");
+            $response->header('Content-Transfer-Encoding', 'binary');
+            $response->header('Expires', '0');
+            $response->header('Cache-Control', 'must-revalidate');
+            $response->header('Pragma', 'public');
+
+
+            return $response;
+        }
+
     }
 }
