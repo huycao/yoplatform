@@ -99,6 +99,14 @@ $filters =  getFilter(Input::get('filter',array()));
                                     @endif
                                 </td>
                             </tr>
+                            @if(!empty($flight->audience) || !empty($flight->ad->audience_id))
+                            <tr>
+                                <td width="25%">Audience</td>
+                                <td>
+                                    <input type="button" class="btn btn-primary" onclick="getReportAudience({{ $flight->ad->id }})" value="Export CSV">
+                                </td>
+                            </tr>
+                            @endif
                         </table>
                     </div>
                 </div>
@@ -435,7 +443,11 @@ $filters =  getFilter(Input::get('filter',array()));
                 this.checked = false;  //select all checkboxes with class "checkbox1"
             });
         });
-    })
+    });
+
+    function getReportAudience(bid) {
+        window.open('/control-panel/advertiser-manager/campaign/export-audience/' + bid);
+    }
 
 </script>
 

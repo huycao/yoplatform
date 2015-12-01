@@ -129,4 +129,8 @@ class RedisBaseModel {
     public function zcount($key, $fromScore, $toScore){
         return $this->connection->zcount($key, $fromScore, $toScore);
     }
+
+    public function pfcount($key){
+        return $this->connection->pfcount($key);
+    }
 }

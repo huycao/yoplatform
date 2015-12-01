@@ -16,5 +16,13 @@ return array(
 	'redis_4' => array(
 		'host'     => '192.168.100.17',
 		'port'     => 6393
+	),
+	'redis_5' => array(
+		'host'     => '192.168.100.17',
+		'port'     => 6394
+	),
+	'redis_6' => array(
+		'host'     => '192.168.100.17',
+		'port'     => 6395
 	)
 );

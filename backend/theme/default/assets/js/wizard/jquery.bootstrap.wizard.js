@@ -86,7 +86,7 @@ var bootstrapWizardCreate = function(element, options) {
 					$('#save').hide();
 				}
 			}else {
-				('#next').show();
+				$('#next').show();
 				$('#save').show();
 			}
 		}

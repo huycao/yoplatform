@@ -447,6 +447,13 @@
            </div>
         </div>
      	</div>
+      <!-- AUDIENCE -->
+      <div class="form-group ad-info">
+          <label class="col-md-2">Audience</label>
+          <div class="col-md-10" id="audience">
+           
+          </div>
+       </div>
      	<!-- THIRD-PARTY TRACKING -->
      	<div class="form-group ad-info">
             <label class="col-md-2">{{trans('text.third_party_tracking_event')}}</label>
@@ -639,6 +646,7 @@
                	$("#source_image_upload").addClass("hidden");
            	}
        	});
+
        	$(".source_backup").click(function () {
            	$adtype = $(this).val();
            	$("#source_backup_url").removeClass("show");
@@ -655,6 +663,7 @@
                	$("#source_backup_upload").addClass("hidden");
            	}
        	});
+       
        	// add tracking-item
        	$(".add-item").click(function(){
            	$i = parseInt($("#count-tracking").html()) + 1;
@@ -679,6 +688,16 @@
    		$('.ad-view-type').click(function() {
    			setAdView();
    		});
+      //audience
+      showAudience();
+      oldcampaign = $("#campaign_id").val();
+      setInterval(function() { 
+        newcampaign = $("#campaign_id").val();
+        if(oldcampaign!=newcampaign){
+          oldcampaign = $("#campaign_id").val();
+          showAudience();
+        }
+      }, 100);
    	});
    
    	function showVideoTag(value) {
@@ -736,12 +755,28 @@
    	function setAdView() {
    		$('#ad-view').removeClass('show');
    		$('#ad-view').removeClass('hidden');
-		if (1 == $("[name='ad_view_type']:checked").val()) {
-			$('#ad-view').addClass('show');
-		} else {
-			$('#ad-view').val('');
-			$('#ad-view').addClass('hidden');
-		}
+  		if (1 == $("[name='ad_view_type']:checked").val()) {
+  			$('#ad-view').addClass('show');
+  		} else {
+  			$('#ad-view').val('');
+  			$('#ad-view').addClass('hidden');
+  		}
    	}
+
+    function showAudience(){
+      campaign_id = $("#campaign_id").val();
+      ad_id = '{{(isset($item->id)?$item->id:0)}}'
+      if(campaign_id==''){
+        campaign_id = 0;
+      }
+      $.ajax({
+        type:'get',
+        url:'/control-panel/advertiser-manager/ad/get-list-audiences/'+campaign_id+"/"+ad_id,
+        success: function(data){
+          $("#audience").html(data);
+        }
+      })
+    }
+
    
 </script>

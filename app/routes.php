@@ -239,3 +239,9 @@ Route::get('mDelKey', function(){
     }
     pr('complete');
 });
+
+Route::get('reportAudience', function(){
+    $tracking = new RawTrackingAudience;
+    $data = $tracking->reportAudience();
+    pr($data);
+});

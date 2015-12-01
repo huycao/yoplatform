@@ -624,7 +624,7 @@ class Delivery extends Eloquent{
             $retval = DB::table('flight')->select('id','name','ad_id','ad_format_id','campaign_id','start_hour','end_hour',
             								'frequency_cap','frequency_cap_time','campaign_retargeting','age','sex','country',
             								'province','total_inventory','value_added','cost_type','event','is_fix_inventory',
-            								'day','status','retargeting_url','retargeting_show','retargeting_number','category_id')
+            								'day','status','retargeting_url','retargeting_show','retargeting_number','category_id', 'audience')
                                          ->where('id', $id)
                                          ->where('status', 1)
                                          ->first();

@@ -47,6 +47,11 @@
                                     <i class="fa fa-desktop"></i>
                                 </a>
                             </li>
+                             <li>
+                                <a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Audiences" href="{{ URL::Route($moduleRoutePrefix.'ShowListAudiences',$item->id) }}">
+                                    <i class="fa fa-users"></i>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </td>                               

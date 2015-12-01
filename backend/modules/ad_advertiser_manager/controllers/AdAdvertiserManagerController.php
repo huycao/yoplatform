@@ -2,9 +2,10 @@
 
 class AdAdvertiserManagerController extends AdvertiserManagerController {
 
-    public function __construct(AdAdvertiserManagerModel $model) {
+    public function __construct(AdAdvertiserManagerModel $model, AudienceModel $audience) {
         parent::__construct(pathinfo(dirname(__DIR__), PATHINFO_BASENAME));
         $this->model = $model;
+        $this->audience = $audience;
         $this->loadLeftMenu('menu.Ad');
     }
 
@@ -43,6 +44,7 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
      *     @param  integer $id 
      */
     function showUpdate($id = 0) {
+
         $this->loadLeftMenu('menu.Ad');
 
         $this->data['id'] = $id;
@@ -71,9 +73,11 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
         
         /* Phuong-VM 2015/06/30 */
         $this->data['listPlatform'] = Config::get('data.platform');
-
+        $this->data['audiences'] = array();
         // WHEN UPDATE SHOW CURRENT INFOMATION
         if ($id != 0) {
+             //get list Audience
+            $this->data['audiences'] = $this->audience->getItems($id);
             $this->loadLeftMenu('menu.adUpdate');
             $item = $this->model->find($id);
             // $this->data['adMapFlight'] = $item->flight->lists('name', 'id');
@@ -100,6 +104,7 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
      *     @param  integer $id 
      */
     function postUpdate($id = 0) {
+        
         // check validate
         $validate = Validator::make(Input::all(), $this->model->getUpdateRules(), $this->model->getUpdateLangs());
 
@@ -174,7 +179,8 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
                 'skipads'                => Input::get('skipads'),
                 'display_type'           => Input::get('display_type'),
                 'bar_height'             => Input::get('bar_height'),
-                'vast_include'           => Input::get('vast_include', 0)
+                'vast_include'           => Input::get('vast_include', 0),
+                'audience_id'            => Input::get('audience_id',0)
             );
             
             if (!$updateData['ad_view_type']) {
@@ -480,5 +486,117 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
 
         return "fail";
 
+    }
+    /*
+    * Show List Audiences
+    *
+    * @param int $id
+    * @return Response
+    */
+    public function showListAudiences($id){
+          $this->loadLeftMenu('menu.Ad');
+        $this->data['id'] = $id;
+        $this->layout->content = View::make('showListAudiences', $this->data);
+    }
+
+    /*
+    * Get List Audiences
+    *
+    * @param int $id
+    * @return Response
+    */
+    public function getListAudiences($id){
+        $this->showNumber = 20; 
+        $this->defaultField = 'audience_update';
+        $this->defaultOrder = 'desc';
+        $this->data['lists'] = $this->audience->getItems($id);    
+        return View::make('ajaxShowListAudiences', $this->data);
+    }
+
+    /*
+    * Show Create Audience
+    *
+    * @param int $id
+    * @return 
+    */
+    public function showCreateAudience($id){
+        $item = $this->model->find($id);
+        if($item){
+            $this->data['id'] = $id;
+            $this->data['campaign_id'] = $item->campaign_id;
+            $this->data['username'] = $this->user->username;
+            $validate = Validator::make(Input::all(), $this->audience->getCreateRules(), $this->audience->getCreateLangs());
+            
+            if(Request::isMethod('post')){
+                if($validate->passes()){
+                    $this->audience->createItem(Input::all());
+                    Session::flash('flash-message', 'Create Audience Success!');
+                }else{
+                    $this->data['errors'] = $validate->messages();    
+                }
+            }
+
+            $this->layout->content = View::make('showCreateAudience', $this->data);
+        }else{
+            return Redirect::to($this->moduleURL . 'show-list');
+        }
+       
+    }
+
+     /*
+    * Show Edit Audience
+    *
+    * @param int $id
+    * @return 
+    */
+    public function ShowUpdateAudience($id){
+        $item = $this->audience->getItemById($id);
+        if($item){
+            $this->data['item'] = $item;
+            $ad_id = $item->ad_id;
+            $this->data['id'] = $ad_id;
+            $this->data['username'] = $this->user->username;
+            $validate = Validator::make(Input::all(), $this->audience->getUpdateRules(), $this->audience->getUpdateLangs());
+            
+            if(Request::isMethod('post')){
+                if($validate->passes()){
+                    $this->audience->updateItem(Input::all(), $id);
+                    Session::flash('flash-message', 'Update Audience Success!');
+                    return Redirect::to($this->moduleURL . 'show-list-audiences/'.$ad_id);        
+                }else{
+                    $this->data['errors'] = $validate->messages();    
+                }
+            }
+            
+            $this->layout->content = View::make('showUpdateAudience', $this->data);
+        }else{
+            return Redirect::to($this->moduleURL . 'show-list');
+        }
+    }
+
+    /*
+    * Delete Audiences
+    *
+    * @param Request $request
+    * @return boolean
+    */
+    public function deleteAudiences(){
+        $ids = Input::get('ids');
+        $this->audience->deleteAudiences($ids);
+    }
+
+    /*
+    * Get List Audience By Campaign
+    * @param Request $request
+    * @return response
+    */
+    public function getListAudiencesByCampaign($id, $ad_id){
+        $selected_audience='';
+        if($ad_id!=0){
+            $ad = $this->model->select('audience_id')->find($ad_id);
+            $selected_audience = $ad->audience_id;
+        }
+        $audiences = $this->audience->getItems($id, 'campaign_id');
+        return View::make('ajaxAudiences', compact('audiences', 'selected_audience'));
     }
 }

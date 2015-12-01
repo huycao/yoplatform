@@ -69,6 +69,7 @@ class FlightAdvertiserManagerController extends AdvertiserManagerController {
         // WHEN UPDATE SHOW CURRENT INFOMATION
         if (Request::isMethod('get')) {
             $this->data['listKeyword'] = array();
+            $this->data['audiences'] = array();
             if ($id != 0) {
     
                 $this->loadLeftMenu('menu.flightUpdate');
@@ -84,8 +85,7 @@ class FlightAdvertiserManagerController extends AdvertiserManagerController {
                     $this->data['ageSelected'] = json_decode($item->age);
                     $this->data['item'] = $item;
                     $this->data['getdate'] = $item->getDate;
-                    $this->data['gettime'] = $item->getTime();
-                    
+                    $this->data['gettime'] = $item->getTime();                    
                     if (!empty($item->filter)) {
                         $this->data['listKeyword'] = explode(',', $item->filter);
                     }
@@ -159,6 +159,21 @@ class FlightAdvertiserManagerController extends AdvertiserManagerController {
             $retargeting_number             = Input::get('retargeting_number');
             $listKeyword               = Input::get('list_keyword', array());
 
+            //use retargeting
+            $retargeting = Input::get('use_retargeting', 2);
+            if($retargeting == 1){
+                $operator = Input::get('operator');
+                $audience_id = Input::get('audience_id');
+                
+                if($operator!='' && $audience_id!=''){
+                    $audience = json_encode(array('operator'=>$operator, 'audience_id'=>$audience_id));    
+                }else{
+                    $audience = "";
+                }
+            }else{
+                $audience = "";
+            }
+
             $updateData = array(
                 'campaign_id'                  => $campaignId,
                 'type'                         => Input::get('type'),
@@ -204,7 +219,8 @@ class FlightAdvertiserManagerController extends AdvertiserManagerController {
                 'retargeting_show'               => $retargeting_show,
                 'retargeting_number'               => $retargeting_number,
                 'updated_by'                   => $this->user->id,
-                'filter'                       => !empty($listKeyword) ? implode(',', $listKeyword) : NULL
+                'filter'                       => !empty($listKeyword) ? implode(',', $listKeyword) : NULL,
+                'audience'                     => $audience
             );
 
             // store sale id from campaign
@@ -819,8 +835,26 @@ class FlightAdvertiserManagerController extends AdvertiserManagerController {
                 return "success";
             }
         }
-
         return "fail";
 
+    }
+
+    /*
+    * get list audiences
+    * @param int $id
+    * @return
+    */
+    public function getListAudiences($id, $flight_id=0){
+        $operator = '';
+        $audience_id = '';
+        if($flight_id!=0){
+            $selectAudience =  $this->model->select('audience')->find($flight_id);            
+            $selectAudience = json_decode($selectAudience->audience, true);
+            $operator = $selectAudience['operator'];
+            $audience_id = $selectAudience['audience_id'];
+        }
+        $audience = new AudienceModel;
+        $audiences = $audience->getItems($id, 'campaign_id');
+        return View::make('ajaxAudiences', compact('audiences', 'operator', 'audience_id'));
     }
 }
