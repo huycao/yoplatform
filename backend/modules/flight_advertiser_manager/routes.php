@@ -36,6 +36,7 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
         //renew cache
         Route::post('renew-cache/{id}',  array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'   =>  $prefixName.'renewCache','uses' =>  $prefixName.'Controller@renewCache'));
         Route::post('renew-cache-website/{id}',  array('before' =>   'hasPermissions:'.$prefixSlug.'-edit','as'   =>  $prefixName.'RenewCacheFlightWebsite','uses' =>  $prefixName.'Controller@renewCacheFlightWebsite'));
+        Route::get('get-list-audiences/{id}/{fid}',  array('as'   =>  $prefixName.'GetListAudiences','uses' =>  $prefixName.'Controller@getListAudiences'));
         
     });
 });

@@ -19,6 +19,7 @@
                 				<!-- <li class=""><a href="#tab5" data-toggle="tab" aria-expanded="false"><span class="number">5.</span>Audience</a></li> -->
                 				<li class=""><a href="#tab5" data-toggle="tab" aria-expanded="false"><span class="number">4.</span>Filter</a></li>
                 				<li class=""><a href="#tab6" data-toggle="tab" aria-expanded="false"><span class="number">5.</span>Cost</a></li>
+                                <li class=""><a href="#tab2" data-toggle="tab" aria-expanded="false" onclick="showAudience()"><span class="number">6.</span>Audience</a></li>
                 			</ul>
     			 		</div>
     			  	</div>
@@ -139,7 +140,7 @@
                             </div>
                         </div>
                     </div>
-                    @if(false)
+                    @if(true)
                     <div class="tab-pane" id="tab2">
         				<!-- RETARGETING -->
                         <div class="form-group form-group-sm">
@@ -157,33 +158,8 @@
                         </div>
                         
                         <!-- RETARGETING URL -->
-                        <div class="form-group form-group-sm retargeting">
-                            <label class="col-md-2">{{trans('text.retargeting_url')}}</label>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" id="retargeting_url" value="{{{ $item->retargeting_url or Input::get('retargeting_url') }}}" name="retargeting_url">
-                            </div>
-                        </div>
-                        
-                        <!-- RETARGETING SHOW -->
-                        <div class="form-group form-group-sm retargeting">
-                            <label class="col-md-2"> {{trans('text.retargeting_show')}} </label>
-                            <div class="col-md-4">
-                                <div class="radio radio-info radio-inline retargeting-show">
-                                    <input type="radio" id="retargeting_show1" @if(isset($item) && $item->retargeting_show == "1") checked="checked" @endif value="1" name="retargeting_show">
-                                    <label for="retargeting_show1"> Show ad </label>
-                                </div>
-                                <div class="radio radio-info radio-inline retargeting-show">
-                                    <input type="radio" id="retargeting_show2" @if(isset($item) && $item->retargeting_show == "2") checked="checked" @endif value="2" name="retargeting_show">
-                                    <label for="retargeting_show2"> Not show ad </label>
-                                </div>								
-                            </div>
-                        </div>
-                        <!-- RETARGETING NUMBER -->
-                        <div class="form-group form-group-sm retargeting retargeting-number">
-                            <label class="col-md-2"></label>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" id="retargeting_number" value="{{{ $item->retargeting_number or Input::get('retargeting_number') }}}" name="retargeting_number">
-                            </div>
+                        <div class="form-group form-group-sm retargeting" id="audience">
+                           
                         </div>
                     </div>
                     @endif
@@ -917,6 +893,18 @@
 			$('#list-keyword').append(html);
 			$('#keyword').val('');
 		}
+    }
+
+    function showAudience(){
+        var campaign_id = $("#campaign_id").val();
+        var flight_id = "{{isset($item->id)?$item->id:0}}";
+        $.ajax({
+            type:'get',
+            url:'http://admin.yoplatform.local/control-panel/advertiser-manager/flight/get-list-audiences/'+campaign_id+"/"+flight_id,
+            success: function(data){
+                $("#audience").html(data);
+            }
+        })
     }
     
 --></script>
