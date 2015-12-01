@@ -900,7 +900,7 @@
         var flight_id = "{{isset($item->id)?$item->id:0}}";
         $.ajax({
             type:'get',
-            url:'http://admin.yoplatform.local/control-panel/advertiser-manager/flight/get-list-audiences/'+campaign_id+"/"+flight_id,
+            url:'/control-panel/advertiser-manager/flight/get-list-audiences/'+campaign_id+"/"+flight_id,
             success: function(data){
                 $("#audience").html(data);
             }
