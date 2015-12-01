@@ -1,5 +1,5 @@
 CREATE TABLE `pt_audience` (
-  `audience_id` int(11) NOT NULL AUTO_INCREMENT,
+  `audience_id` int(11) NOT NULL,
   `campaign_id` int(11) NOT NULL,
   `ad_id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
@@ -9,8 +9,3 @@ CREATE TABLE `pt_audience` (
   PRIMARY KEY (`audience_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `pt_ad`
-ADD `audience_id` int(11);
-
- ALTER TABLE `pt_flight`
-ADD `audience` varchar(250);

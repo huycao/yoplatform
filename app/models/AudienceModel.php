@@ -74,6 +74,7 @@ class AudienceModel extends Eloquent {
     */
     public function createItem($inputs){
     	$audience = new AudienceModel;
+        $audience->audience_id = time();
     	$audience->name = $inputs['name'];
     	$audience->description = $inputs['description'];
     	$audience->campaign_id = $inputs['campaign_id'];

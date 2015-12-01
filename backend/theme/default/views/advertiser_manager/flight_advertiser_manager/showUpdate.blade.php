@@ -19,7 +19,7 @@
                 				<!-- <li class=""><a href="#tab5" data-toggle="tab" aria-expanded="false"><span class="number">5.</span>Audience</a></li> -->
                 				<li class=""><a href="#tab5" data-toggle="tab" aria-expanded="false"><span class="number">4.</span>Filter</a></li>
                 				<li class=""><a href="#tab6" data-toggle="tab" aria-expanded="false"><span class="number">5.</span>Cost</a></li>
-                                <li class=""><a href="#tab2" data-toggle="tab" aria-expanded="false" onclick="showAudience()"><span class="number">6.</span>Audience</a></li>
+                                <li id="audience_tab" class=""><a href="#tab2" data-toggle="tab" aria-expanded="false" onclick="showAudience()"><span class="number">6.</span>Audience</a></li>
                 			</ul>
     			 		</div>
     			  	</div>
@@ -906,6 +906,17 @@
             }
         })
     }
+
+    $(document).ready(function(){
+        retargeting = "{{ isset($item->use_retargeting) ? $item->use_retargeting:2}}";
+        if(retargeting==1){
+            showAudience();
+        }else{
+             $("#retargeting_1").click(function(){
+                showAudience();
+            })
+        }
+    })
     
 --></script>
 </div>
