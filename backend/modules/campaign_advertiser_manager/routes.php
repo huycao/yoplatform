@@ -35,5 +35,6 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
         Route::post('report/conversion-date',       array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'ReportConversionDate','uses' =>  $prefixName.'Controller@getReportConversionDate'));
         Route::post('list-report-conversion',     array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'  =>  $prefixName.'GetListRePortConversion','uses'    =>  $prefixName.'Controller@getListReportConversion'));   
         Route::get('reportExportConversion',       array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'   =>  $prefixName.'ReportExportConversion','uses' =>  $prefixName.'Controller@reportExportConversion'));
+        Route::get('export-audience/{bid}',       array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'   =>  $prefixName.'ReportExportAudience','uses' =>  $prefixName.'Controller@reportExportAudience'));
     });
 });

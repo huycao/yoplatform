@@ -1615,6 +1615,7 @@ return array(
     'PublisherSiteTableSeeder' => $baseDir . '/app/database/seeds/PublisherSiteTableSeeder.php',
     'PublisherTableSeeder' => $baseDir . '/app/database/seeds/PublisherTableSeeder.php',
     'RawTrackingConversion' => $baseDir . '/frontend/modules/conversion/models/RawTrackingConversion.php',
+    'RawTrackingAudience' => $baseDir . '/frontend/modules/delivery/models/RawTrackingAudience.php',
     'RawTrackingSummary' => $baseDir . '/frontend/modules/delivery/models/RawTrackingSummary.php',
     'Renderer' => $vendorDir . '/dompdf/dompdf/include/renderer.cls.php',
     'ReportEarningsPublisherModel' => $baseDir . '/backend/modules/report_publisher/models/ReportEarningsPublisherModel.php',
