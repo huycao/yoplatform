@@ -64,7 +64,7 @@ EOF;
                     SELECT f.id, f.name, f.ad_id, f.ad_format_id, f.campaign_id, f.start_hour, f.end_hour,
     				f.frequency_cap, f.frequency_cap_time, f.campaign_retargeting, f.age, f.sex, f.country,
     				f.province, f.total_inventory, f.value_added, f.cost_type, f.event, f.is_fix_inventory,
-    				f.day, f.status, f.retargeting_url, f.retargeting_show, f.retargeting_number, f.category_id
+    				f.day, f.status, f.retargeting_url, f.retargeting_show, f.retargeting_number, f.category_id, f.audience
                     FROM pt_campaign c, pt_flight f
                     WHERE  c.id = f.campaign_id
                     AND '$current_date' >= c.start_date
