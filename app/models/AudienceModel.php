@@ -139,4 +139,23 @@ class AudienceModel extends Eloquent {
     	 $kM ="au.".$this->audience_id;
 		return $oRedis->pfcount($kM);
     }
+
+    /*
+    * Delete Audiences
+    * 
+    * @param array $ids
+    * @return boolean
+    */
+    public function deleteAudiences($ids){
+        if ($this->whereIn('audience_id', $ids)->delete()){
+            DB::table('ad')->whereIn('audience_id', $ids)->update(array('audience_id'=>''));
+            if(!empty($ids)){
+                foreach($ids as $id){
+                    DB::table('flight')->where('audience', 'LIKE', $id)->update(array('use_retargeting'=>2, 'audience'=>''));
+                }
+            }
+           return true;
+        }
+        return false;
+    }
 }

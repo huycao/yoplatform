@@ -1,6 +1,6 @@
 
 <div class="box mb12">
-<table class="table table-striped table-hover table-condensed">
+<table class="table table-striped table-hover table-condensed" id="ListGrid">
     <colgroup>
         <col width="5%">
         <col width="25%">
@@ -24,9 +24,9 @@
     <tbody>
         <?php if( count($lists) ){ ?>
             <?php foreach( $lists as $item ){ ?>
-            <tr role="row" id="{{ $item->id }}" class="ui-widget-content jqgrow ui-row-ltr">
+            <tr role="row" id="{{ $item->audience_id }}" class="ui-widget-content jqgrow ui-row-ltr">
                 <td style="text-align:center;width: 25px;">
-                    <input role="checkbox" class='cbox' type='checkbox'>
+                    <input role="checkbox" class='cbox' type='checkbox' name="case[]" value="{{ $item->audience_id }}">
                 </td>
                 <td>{{ $item->name}}</td>
                 <td> {{ $item->pfcount }} </td>

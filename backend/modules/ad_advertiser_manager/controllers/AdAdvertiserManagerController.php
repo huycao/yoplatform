@@ -552,6 +552,7 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
         if($item){
             $this->data['item'] = $item;
             $ad_id = $item->ad_id;
+            $this->data['id'] = $ad_id;
             $this->data['username'] = $this->user->username;
             $validate = Validator::make(Input::all(), $this->audience->getUpdateRules(), $this->audience->getUpdateLangs());
             
@@ -569,6 +570,16 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
         }else{
             return Redirect::to($this->moduleURL . 'show-list');
         }
-       
+    }
+
+    /*
+    * Delete Audiences
+    *
+    * @param Request $request
+    * @return boolean
+    */
+    public function deleteAudiences(){
+        $ids = Input::get('ids');
+        $this->audience->deleteAudiences($ids);
     }
 }
