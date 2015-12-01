@@ -149,10 +149,8 @@ class AudienceModel extends Eloquent {
     public function deleteAudiences($ids){
         if ($this->whereIn('audience_id', $ids)->delete()){
             DB::table('ad')->whereIn('audience_id', $ids)->update(array('audience_id'=>''));
-            if(!empty($ids)){
-                foreach($ids as $id){
-                    DB::table('flight')->where('audience', 'LIKE', $id)->update(array('use_retargeting'=>2, 'audience'=>''));
-                }
+             foreach($ids as $id){
+                DB::table('flight')->where('audience', 'LIKE', '%'.$id.'%')->update(array('use_retargeting'=>2, 'audience'=>''));
             }
            return true;
         }

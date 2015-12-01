@@ -1,5 +1,9 @@
 <div class="row" style="padding-bottom:4px">
     <div class="col-xs-12">
+        <a href="{{ URL::Route($moduleRoutePrefix.'ShowList') }}" id="btnBack" class="btn btn-primary btn-xs">
+            <span class="fa fa-backward" aria-hidden="true"></span>
+            Back Ad
+        </a>
         <a href="{{ URL::Route($moduleRoutePrefix.'ShowCreateAudience',$id) }}" id="btnCreateNew" class="btn btn-primary btn-xs">
             <span class="fa fa-plus" aria-hidden="true"></span>
             Create New
