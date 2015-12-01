@@ -1,4 +1,4 @@
 <script type="text/javascript">var _avlVar = _avlVar || [];
-    _avlVar.push(["{{$wid}}", "{{$zid}}", "Wap_Inpage"]);
+    _avlVar.push(["{{$wid}}", "{{$zid}}",@if(empty($fwid)) "Wap_Inpage" @else "{{$fwid}}" @endif]);
     document.write('<sc'+'ript src="{{LINK_AVL}}" type="text/javascript"></scr'+'ipt>');
 </script>

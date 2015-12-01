@@ -32,6 +32,8 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
         Route::get('{pid}/view-site/{wid}/get-code/{zid}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'ShowGetCode','uses' =>  $prefixName.'Controller@showGetCode'));
         Route::get('{pid}/view-site/{wid}/save-code/{zid}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'SaveGetCode','uses' =>  $prefixName.'Controller@saveGetCode'));
 
+        Route::get('{pid}/view-site/{wid}/save-code-flight/{zid}/fw/{fwid}',   array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'SaveCodeSingleFlight','uses' =>  $prefixName.'Controller@saveCodeSingleFlight'));
+
         //--View
         Route::get('view/{id}',        array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'ShowView','uses' =>  $prefixName.'Controller@showView'));
         Route::get('review/{id}',        array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'    =>  $prefixName.'ReviewPublisher','uses' =>  $prefixName.'Controller@reviewPublisher'));
