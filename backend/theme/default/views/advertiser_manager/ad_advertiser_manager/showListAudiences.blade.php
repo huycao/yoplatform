@@ -36,8 +36,10 @@
 
            if(msg==""){
                 text = "No audiences selected";
+                $("#okbtn").hide();
            }else{
                 text = "Do you want to delete following audiences: <ul>"+ msg +"</ul>";
+                 $("#okbtn").show();
            }
            $("#list-audiences").html(text);
            $("#myModal").modal('show');
@@ -81,7 +83,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="deleteAudiences()">Ok</button>
+        <button type="button" class="btn btn-primary" onclick="deleteAudiences()" id="okbtn">Ok</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

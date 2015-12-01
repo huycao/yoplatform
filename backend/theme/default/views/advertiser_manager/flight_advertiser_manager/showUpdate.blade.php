@@ -19,7 +19,7 @@
                 				<!-- <li class=""><a href="#tab5" data-toggle="tab" aria-expanded="false"><span class="number">5.</span>Audience</a></li> -->
                 				<li class=""><a href="#tab5" data-toggle="tab" aria-expanded="false"><span class="number">4.</span>Filter</a></li>
                 				<li class=""><a href="#tab6" data-toggle="tab" aria-expanded="false"><span class="number">5.</span>Cost</a></li>
-                                <li id="audience_tab" class=""><a href="#tab2" data-toggle="tab" aria-expanded="false" onclick="showAudience()"><span class="number">6.</span>Audience</a></li>
+                                <li id="audience_tab" class=""><a href="#tab2" data-toggle="tab" aria-expanded="false" onclick="showAudience();"><span class="number">6.</span>Audience</a></li>
                 			</ul>
     			 		</div>
     			  	</div>
@@ -897,6 +897,9 @@
 
     function showAudience(){
         var campaign_id = $("#campaign_id").val();
+        if(campaign_id==''){
+            campaign_id = 0;
+        }
         var flight_id = "{{isset($item->id)?$item->id:0}}";
         $.ajax({
             type:'get',
