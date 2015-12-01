@@ -44,6 +44,7 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
      *     @param  integer $id 
      */
     function showUpdate($id = 0) {
+
         $this->loadLeftMenu('menu.Ad');
 
         $this->data['id'] = $id;
@@ -103,6 +104,7 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
      *     @param  integer $id 
      */
     function postUpdate($id = 0) {
+        
         // check validate
         $validate = Validator::make(Input::all(), $this->model->getUpdateRules(), $this->model->getUpdateLangs());
 
@@ -581,5 +583,20 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
     public function deleteAudiences(){
         $ids = Input::get('ids');
         $this->audience->deleteAudiences($ids);
+    }
+
+    /*
+    * Get List Audience By Campaign
+    * @param Request $request
+    * @return response
+    */
+    public function getListAudiencesByCampaign($id, $ad_id){
+        $selected_audience='';
+        if($ad_id!=0){
+            $ad = $this->model->select('audience_id')->find($ad_id);
+            $selected_audience = $ad->audience_id;
+        }
+        $audiences = $this->audience->getItems($id, 'campaign_id');
+        return View::make('ajaxAudiences', compact('audiences', 'selected_audience'));
     }
 }

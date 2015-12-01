@@ -41,5 +41,6 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
         Route::get('show-update-audience/{id}',       array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'   =>  $prefixName.'ShowUpdateAudience','uses' =>  $prefixName.'Controller@showUpdateAudience'));
         Route::post('show-update-audience/{id}',       array('before' =>   'hasPermissions:'.$prefixSlug.'-edit|csrf','as'   =>  $prefixName.'ShowUpdateAudience','uses' =>  $prefixName.'Controller@showUpdateAudience'));
         Route::post('delete-audience', array('as'   =>  $prefixName.'DeleteAudiences','uses' =>  $prefixName.'Controller@deleteAudiences'));
+        Route::get('get-list-audiences/{id}/{aid}',       array('before' =>   'hasPermissions:'.$prefixSlug.'-read','as'   =>  $prefixName.'GetListAudiencesByCampaign','uses' =>  $prefixName.'Controller@getListAudiencesByCampaign'));
     });
 });
