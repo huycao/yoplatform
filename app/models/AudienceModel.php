@@ -134,8 +134,8 @@ class AudienceModel extends Eloquent {
     * return 
     */
     public function getPfcountAttribute(){
-    	 $oRedis = new RedisBaseModel(Config::get('redis.redis_3.host'), Config::get('redis.redis_3.port'));
-    	 $kM ="au".$this->audience_id;
+    	 $oRedis = new RedisBaseModel(Config::get('redis.redis_6.host'), Config::get('redis.redis_6.port'));
+    	 $kM ="au.".$this->audience_id;
 		return $oRedis->pfcount($kM);
     }
 }

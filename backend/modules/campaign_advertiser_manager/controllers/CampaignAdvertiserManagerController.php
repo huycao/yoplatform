@@ -563,4 +563,50 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 
 		return $excel;
 	}
+
+	public function reportExportAudience($bid = 0) {
+		$listAudience = array();
+		$this->layout = null;
+		$banner_name = '';
+		if ($bid) {
+			$rawTrackingAudience = new RawTrackingAudience();
+			$listAudience = $rawTrackingAudience->getListAudienceTracking($bid);
+			$ad = (new Delivery())->getAd($bid);
+			if ($ad) {
+				$banner_name = $ad->name;
+			}
+		}
+		$format = "csv";
+		
+		if (!empty($listAudience)) {
+			foreach ($listAudience as $k => $row) {
+	            $data[$k]['uuid'] = $row->uuid;
+	            $data[$k]['impression'] = $row->impression;
+	            $data[$k]['click'] = $row->click;
+	        }
+	        $title = "List Audience Of Banner: {$banner_name}";
+	        $filename = "audience_" . date('Ymd');
+	        
+			Excel::create($filename, function($excel) use ($data, $format, $title) {
+            $excel->sheet('Audience', function($sheet) use ($data, $format, $title) {
+                $sheet->mergeCells('A1:K1');
+                $sheet->setHeight(1, 50);
+                $sheet->cells('A1:K1', function($cells) {
+                    $cells->setFont(array('family' => 'Calibri', 'size' => '18', 'bold' => true));
+                    $cells->setAlignment('center');
+                    $cells->setValignment('middle');
+                });
+                
+                $sheet->row(1, array($title));
+                $sheet->row(2, function($row) {
+                    $row->setFontWeight('bold');
+                    $row->setAlignment('center');
+                });
+                $sheet->setAutoSize(true);
+                $sheet->setAllBorders('none');
+                $sheet->fromArray($data, 'null', 'A2');
+            });
+        })->download('csv');
+		}
+	}
 }
