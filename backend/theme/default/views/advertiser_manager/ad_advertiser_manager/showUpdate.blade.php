@@ -447,6 +447,22 @@
            </div>
         </div>
      	</div>
+      <!-- AUDIENCE -->
+      <div class="form-group ad-info">
+          <label class="col-md-2">Audience</label>
+          <div class="col-md-10">
+            @if(sizeof($audiences)>0)
+            <select name="audience_id" id="ad_format_id" placeholder="Select Ad Format" tabindex="-1" class="form-control" style="width:38%">
+                <option value="">Select Audience</option>
+                @foreach($audiences as $audience)
+                <option value="{{ $audience->audience_id}}" {{ ($item->audience_id == $audience->audience_id) ? 'selected': ''}}>{{ $audience->name }}</option>
+                @endforeach
+            </select>
+            @else
+              No data
+            @endif
+          </div>
+       </div>
      	<!-- THIRD-PARTY TRACKING -->
      	<div class="form-group ad-info">
             <label class="col-md-2">{{trans('text.third_party_tracking_event')}}</label>

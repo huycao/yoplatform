@@ -27,7 +27,6 @@ class AudienceModel extends Eloquent {
 	public function getCreateRules() {
         return array(
             "name"         => "required",
-            "description"  => "required",            
         );
     }
 

@@ -1,7 +1,4 @@
-<div class="admin-pagination mb12">
-    {{$lists->links()}}
-    <div class="clearfix"></div>
-</div>
+
 <div class="box mb12">
 <table class="table table-striped table-hover table-condensed">
     <colgroup>
@@ -56,8 +53,4 @@
         <?php } ?>
     </tbody>
 </table>
-</div>
-<div class="admin-pagination">
-    {{ $lists->links() }}
-    <div class="clearfix"></div>
 </div>
