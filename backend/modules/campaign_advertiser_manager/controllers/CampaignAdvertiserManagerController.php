@@ -589,9 +589,9 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 	        
 			Excel::create($filename, function($excel) use ($data, $format, $title) {
             $excel->sheet('Audience', function($sheet) use ($data, $format, $title) {
-                $sheet->mergeCells('A1:K1');
+                $sheet->mergeCells('A1:C1');
                 $sheet->setHeight(1, 50);
-                $sheet->cells('A1:K1', function($cells) {
+                $sheet->cells('A1:C1', function($cells) {
                     $cells->setFont(array('family' => 'Calibri', 'size' => '18', 'bold' => true));
                     $cells->setAlignment('center');
                     $cells->setValignment('middle');
