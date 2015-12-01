@@ -162,7 +162,14 @@ class FlightAdvertiserManagerController extends AdvertiserManagerController {
             //use retargeting
             $retargeting = Input::get('use_retargeting', 2);
             if($retargeting == 1){
-                $audience = json_encode(array('operator'=>Input::get('operator'), 'audience_id'=>Input::get('audience_id')));
+                $operator = Input::get('operator');
+                $audience_id = Input::get('audience_id');
+                
+                if($operator!='' && $audience_id!=''){
+                    $audience = json_encode(array('operator'=>$operator, 'audience_id'=>$audience_id));    
+                }else{
+                    $audience = "";
+                }
             }else{
                 $audience = "";
             }
