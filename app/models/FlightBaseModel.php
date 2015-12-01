@@ -72,7 +72,8 @@ class FlightBaseModel extends Eloquent {
         'retargeting_show',
     	'retargeting_number',
         'status',
-        'filter'
+        'filter',
+        'audience'
     );
 
     /**
