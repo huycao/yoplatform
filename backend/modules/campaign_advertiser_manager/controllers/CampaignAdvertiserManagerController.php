@@ -577,36 +577,40 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 			}
 		}
 		$format = "csv";
+		$data = [];
 		
 		if (!empty($listAudience)) {
 			foreach ($listAudience as $k => $row) {
 	            $data[$k]['uuid'] = $row->uuid;
 	            $data[$k]['impression'] = $row->impression;
 	            $data[$k]['click'] = $row->click;
+	            $data[$k]['time'] = !empty($row->time) ? date('Y-m-d H:i:s', $row->time): '';
 	        }
-	        $title = "List Audience Of Banner: {$banner_name}";
+	        
+		}
+
+		$title = "List Audience Of Banner: {$banner_name}";
 	        $filename = "audience_" . date('Ymd');
 	        
 			Excel::create($filename, function($excel) use ($data, $format, $title) {
-            $excel->sheet('Audience', function($sheet) use ($data, $format, $title) {
-                $sheet->mergeCells('A1:C1');
-                $sheet->setHeight(1, 50);
-                $sheet->cells('A1:C1', function($cells) {
-                    $cells->setFont(array('family' => 'Calibri', 'size' => '18', 'bold' => true));
-                    $cells->setAlignment('center');
-                    $cells->setValignment('middle');
-                });
-                
-                $sheet->row(1, array($title));
-                $sheet->row(2, function($row) {
-                    $row->setFontWeight('bold');
-                    $row->setAlignment('center');
-                });
-                $sheet->setAutoSize(true);
-                $sheet->setAllBorders('none');
-                $sheet->fromArray($data, 'null', 'A2');
-            });
-        })->download('csv');
-		}
+	            $excel->sheet('Audience', function($sheet) use ($data, $format, $title) {
+	                $sheet->mergeCells('A1:D1');
+	                $sheet->setHeight(1, 50);
+	                $sheet->cells('A1:D1', function($cells) {
+	                    $cells->setFont(array('family' => 'Calibri', 'size' => '18', 'bold' => true));
+	                    $cells->setAlignment('center');
+	                    $cells->setValignment('middle');
+	                });
+	                
+	                $sheet->row(1, array($title));
+	                $sheet->row(2, function($row) {
+	                    $row->setFontWeight('bold');
+	                    $row->setAlignment('center');
+	                });
+	                $sheet->setAutoSize(true);
+	                $sheet->setAllBorders('none');
+	                $sheet->fromArray($data, 'null', 'A2');
+	            });
+	        })->download('csv');
 	}
 }
