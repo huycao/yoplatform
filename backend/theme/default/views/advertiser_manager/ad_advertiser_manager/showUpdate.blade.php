@@ -451,8 +451,17 @@
       <div class="form-group ad-info">
           <label class="col-md-2">Audience</label>
           <div class="col-md-10" id="audience">
-           
-          </div>
+            @if(sizeof($audiences)>0)
+              <select name="audience_id" class="form-control" style="width:37%">
+              <option value="">Select Audience</option>
+                @foreach($audiences as $audience)
+                  <option value="{{ $audience->audience_id }}" {{ ($item->audience_id == $audience->audience_id)?'selected':''}}>{{ $audience->name }}</option>
+                @endforeach
+              </select>
+            @else
+              No data
+            @endif
+            </div>
        </div>
      	<!-- THIRD-PARTY TRACKING -->
      	<div class="form-group ad-info">
@@ -688,16 +697,7 @@
    		$('.ad-view-type').click(function() {
    			setAdView();
    		});
-      //audience
-      showAudience();
-      oldcampaign = $("#campaign_id").val();
-      setInterval(function() { 
-        newcampaign = $("#campaign_id").val();
-        if(oldcampaign!=newcampaign){
-          oldcampaign = $("#campaign_id").val();
-          showAudience();
-        }
-      }, 100);
+     
    	});
    
    	function showVideoTag(value) {
@@ -762,21 +762,5 @@
   			$('#ad-view').addClass('hidden');
   		}
    	}
-
-    function showAudience(){
-      campaign_id = $("#campaign_id").val();
-      ad_id = '{{(isset($item->id)?$item->id:0)}}'
-      if(campaign_id==''){
-        campaign_id = 0;
-      }
-      $.ajax({
-        type:'get',
-        url:'/control-panel/advertiser-manager/ad/get-list-audiences/'+campaign_id+"/"+ad_id,
-        success: function(data){
-          $("#audience").html(data);
-        }
-      })
-    }
-
    
 </script>
