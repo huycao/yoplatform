@@ -1,0 +1,1 @@
+ ALTER TABLE `pt_tracking_audience` ADD `time` int(11);
