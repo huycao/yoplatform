@@ -582,8 +582,8 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 		if (!empty($listAudience)) {
 			foreach ($listAudience as $k => $row) {
 	            $data[$k]['uuid'] = $row->uuid;
-	            $data[$k]['impression'] = !empty($row->impression) ? $row->impression : 0;
-	            $data[$k]['click'] = !empty($row->click) ? $row->click : 0;
+	            $data[$k]['impression'] = !empty($row->impression) ? $row->impression : "0";
+	            $data[$k]['click'] = !empty($row->click) ? $row->click : "0";
 	            $data[$k]['time'] = !empty($row->time) ? date('Y-m-d H:i:s', $row->time): '';
 	        }
 	        
