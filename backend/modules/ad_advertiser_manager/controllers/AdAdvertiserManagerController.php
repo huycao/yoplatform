@@ -255,6 +255,9 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
 
                 if ($item) {
                     if ($this->model->where("id", $id)->update($updateData)) {
+                        //update audience id
+                        $this->audience->updateCampaign($id, Input::get('campaign_id'));
+
                         $flights = FlightBaseModel::where('ad_id', $item->id)->get();
                         if ($flights) {
                             foreach ($flights as $flight) {

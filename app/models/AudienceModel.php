@@ -156,4 +156,13 @@ class AudienceModel extends Eloquent {
         }
         return false;
     }
+
+    /*
+    * update campaign
+    * @param int $id
+    * @param int $campaign_id
+    */
+    public function updateCampaign($id, $campaign_id){
+        $this->where('ad_id', $id)->update(array('campaign_id'=> $campaign_id));
+    }
 }
