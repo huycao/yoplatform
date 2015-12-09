@@ -118,6 +118,34 @@
              		@endif
           		</div>
             </div>
+            <!-- POSITION -->
+            <div class="form-group form-group-sm ad-info">
+              <label class="col-md-2">{{trans('text.position')}}</label>
+              <div class="col-md-1">
+                  <div class="radio input-sm">
+                      <div class="radio radio-info radio-inline">
+                        {{ Form::radio('position','top', 'top' == Input::get('position','top') || (!empty($item->position) && 'top' == $item->position) ,array("id"=>"position-top"))}}
+                        <label for="position-top"> Top </label>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-1">
+                  <div class="radio input-sm">
+                      <div class="radio radio-info radio-inline">
+                        {{ Form::radio('position','down', 'down' == Input::get('position') || (!empty($item->position) && 'down' == $item->position) ,array("id"=>"position-down"))}}
+                        <label for="position-down"> Down </label>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-1">
+                  <div class="radio input-sm">
+                      <div class="radio radio-info radio-inline">
+                        {{ Form::radio('position','overlay', 'overlay' == Input::get('position') || (!empty($item->position) && 'overlay' == $item->position) ,array("id"=>"position-overlay"))}}
+                        <label for="position-overlay"> Overlay </label>
+                      </div>
+                  </div>
+              </div>
+            </div>
             <!-- TYPE -->
             <div class="form-group form-group-sm ad-info">
               	<label class="col-md-2 no-html-format">{{trans('text.source_type')}}</label>
@@ -162,35 +190,6 @@
                   		</div>
                		</div>
         		</div>
-            </div>
-
-            <!-- POSITION -->
-            <div class="form-group form-group-sm ad-info">
-              <label class="col-md-2">{{trans('text.position')}}</label>
-              <div class="col-md-1">
-                  <div class="radio input-sm">
-                      <div class="radio radio-info radio-inline">
-                        {{ Form::radio('position','top', 'top' == Input::get('position','top') || (!empty($item->position) && 'top' == $item->position) ,array("id"=>"position-top"))}}
-                        <label for="position-top"> Top </label>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-md-1">
-                  <div class="radio input-sm">
-                      <div class="radio radio-info radio-inline">
-                        {{ Form::radio('position','down', 'down' == Input::get('position') || (!empty($item->position) && 'down' == $item->position) ,array("id"=>"position-down"))}}
-                        <label for="position-down"> Down </label>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-md-1">
-                  <div class="radio input-sm">
-                      <div class="radio radio-info radio-inline">
-                        {{ Form::radio('position','overlay', 'overlay' == Input::get('position') || (!empty($item->position) && 'overlay' == $item->position) ,array("id"=>"position-overlay"))}}
-                        <label for="position-overlay"> Overlay </label>
-                      </div>
-                  </div>
-              </div>
             </div>
             
             <div id="source_image" class="show ad-info">
@@ -614,18 +613,19 @@
    			}
        	});
    		$('#select-all').click(function() {  //on click 
+            var mobile_app = getMobileAppFormat();
+            var no_mobile_app = getNoMobileAppFormat();
             if(this.checked) { // check select status
                 $('.check-platform').each(function() { //loop through each checkbox
                     this.checked = true;  //select all checkboxes with class "checkbox1"               
                 });
-                var mobile_app = getMobileAppFormat();
-                addOption($('#ad_format_id'), mobile_app);
+                
+                addOption($('#ad_format_id'), mobile_app);  
+                addOption($('#ad_format_id'), no_mobile_app); 
             }else{
                 $('.check-platform').each(function() { //loop through each checkbox
                     this.checked = false; //deselect all checkboxes with class "checkbox1"                       
                 }); 
-                var mobile_app = getMobileAppFormat();
-                var no_mobile_app = getNoMobileAppFormat();
                 removeOption($('#ad_format_id'), mobile_app);  
                 removeOption($('#ad_format_id'), no_mobile_app);       
             }
@@ -892,6 +892,11 @@
       $("#ad_type_html").parent().parent().parent().show();
       if ($('.ad_type:checked').val() == 'html') {
         $("#source_url").parent().parent().hide();
+        if ($("#ad_format_id").text() == "Mobile Pull") {
+          $("#vast_file").parent().parent().hide();
+        } else {
+          $("#vast_file").parent().parent().show();
+        }
       } else {
         $("#source_url").parent().parent().show();
       }      

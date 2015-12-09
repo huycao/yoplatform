@@ -236,6 +236,18 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
                     $updateData['source_url_backup'] = STATIC_URL.date("Y")."/".date("m")."/".$file_name;
                 }
             }
+            $mime = '';
+            if ($updateData['ad_type'] == 'html') {
+                $mime = 'text/html';
+            } else {
+                if (!empty($updateData['source_url'])) {
+                    $ch = curl_init($updateData['source_url']);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_exec($ch);
+                    $mime = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+                }
+            }
+            $updateData['mime'] = $mime;
             
             // if (!empty($campaignName) || !empty($adFormatName)) {
             //     $updateData['name'] = $campaignName . ' ' . $adFormatName;
