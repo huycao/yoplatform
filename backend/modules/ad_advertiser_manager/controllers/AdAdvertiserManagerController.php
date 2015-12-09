@@ -180,7 +180,8 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
                 'display_type'           => Input::get('display_type'),
                 'bar_height'             => Input::get('bar_height'),
                 'vast_include'           => Input::get('vast_include', 0),
-                'audience_id'            => Input::get('audience_id',0)
+                'audience_id'            => Input::get('audience_id',0),
+                'position'            => Input::get('position')
             );
             
             if (!$updateData['ad_view_type']) {

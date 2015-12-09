@@ -1,0 +1,1 @@
+ALTER TABLE `pt_ad` ADD `position` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL;

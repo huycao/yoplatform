@@ -163,6 +163,35 @@
                		</div>
         		</div>
             </div>
+
+            <!-- POSITION -->
+            <div class="form-group form-group-sm ad-info">
+              <label class="col-md-2">{{trans('text.position')}}</label>
+              <div class="col-md-1">
+                  <div class="radio input-sm">
+                      <div class="radio radio-info radio-inline">
+                        {{ Form::radio('position','top', 'top' == Input::get('position','top') || (!empty($item->position) && 'top' == $item->position) ,array("id"=>"position-top"))}}
+                        <label for="position-top"> Top </label>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-1">
+                  <div class="radio input-sm">
+                      <div class="radio radio-info radio-inline">
+                        {{ Form::radio('position','down', 'down' == Input::get('position') || (!empty($item->position) && 'down' == $item->position) ,array("id"=>"position-down"))}}
+                        <label for="position-down"> Down </label>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-1">
+                  <div class="radio input-sm">
+                      <div class="radio radio-info radio-inline">
+                        {{ Form::radio('position','overlay', 'overlay' == Input::get('position') || (!empty($item->position) && 'overlay' == $item->position) ,array("id"=>"position-overlay"))}}
+                        <label for="position-overlay"> Overlay </label>
+                      </div>
+                  </div>
+              </div>
+            </div>
             
             <div id="source_image" class="show ad-info">
               	<!-- SOURCE URL -->
@@ -301,7 +330,7 @@
               	<div class="form-group form-group-sm">
                  	<label class="col-md-2">{{trans('text.source_backup_url')}}</label>
                  	<div class="col-md-4">
-                    	<input type="text" class="form-control" id="source_backup_url" value="{{{ $item->source_url_backup or Input::get('source_url_backup') }}}" name="source_url_backup">
+                    	<input type="text" class="form-control" id="source_backup_url-text" value="{{{ $item->source_url_backup or Input::get('source_url_backup') }}}" name="source_url_backup">
              		</div>
           		</div>
             </div>
@@ -545,6 +574,7 @@
 <script type="text/javascript">
 	$(function () {
 		var ad_type = null;
+    
 		$("#ad_format_id").selectize({
 			options: {{$listAdFormat}},
            	optgroups: [{id: 'dynamic', name: 'Dynamic Banner'},
@@ -566,6 +596,7 @@
    					var label = this.getItem(value)[0].innerHTML;
    					ad_type = label;
    					$('.ad-info').show();
+            ad_format = value;
 					showVideoTag(label);
 					if ('HTML' == ad_type) {
 	           			$("#ad_type_html").parent().parent().parent().hide();
@@ -582,26 +613,29 @@
    				}
    			}
        	});
-   
    		$('#select-all').click(function() {  //on click 
             if(this.checked) { // check select status
                 $('.check-platform').each(function() { //loop through each checkbox
                     this.checked = true;  //select all checkboxes with class "checkbox1"               
                 });
+                var mobile_app = getMobileAppFormat();
+                addOption($('#ad_format_id'), mobile_app);
             }else{
                 $('.check-platform').each(function() { //loop through each checkbox
                     this.checked = false; //deselect all checkboxes with class "checkbox1"                       
-                });         
+                }); 
+                var mobile_app = getMobileAppFormat();
+                var no_mobile_app = getNoMobileAppFormat();
+                removeOption($('#ad_format_id'), mobile_app);  
+                removeOption($('#ad_format_id'), no_mobile_app);       
             }
     	});
-   
+  
    		setCheckAll('#select-all', '.check-platform');      
    
        	$('.check-platform').click(function() {
        		setCheckAll('#select-all', '.check-platform');
-       	}); 	    
-
-       	//$(".ad_type:checked").val()
+       	});
    
        	$(".ad_type").click(function () {
            	$adtype = $(this).val();
@@ -649,6 +683,9 @@
            	if ($adtype == 'source_image_upload') {
                	$("#source_image_upload").addClass("show");
                	$("#source_image").addClass("hidden");
+                if ($("#ad_format_id").text() == 'Mobile Pull'){
+                  $("#file_source_url_2").parent().parent().hide();
+                }
            	}
            	if ($adtype == 'source_image') {
                	$("#source_image").addClass("show");
@@ -707,6 +744,7 @@
    		$("#flash").removeClass("hidden");
    		$("#video").removeClass("show");
    		$("#video").removeClass("hidden");
+      $("#position-top").parent().parent().parent().parent().hide(); 
    		if('html' == $(".ad_type:checked").val()) {
    			$(".no-html-format").parent().hide();
        		$(".html-format").parent().show();
@@ -732,15 +770,20 @@
    			$(".html-format").parent().show();
    			$("#ad_type_video").parent().parent().parent().show();
    			$("#ad_type_image").parent().parent().parent().show();
-			$("#ad_type_flash").parent().parent().parent().show();
-   		} else {
+			 //$("#ad_type_flash").parent().parent().parent().show();
+        if ($('#ad_format_id').text() == 'Mobile Pull') {
+          $("#display-type-inpage").parent().parent().parent().parent().hide();
+        }
+   		} else if (value == 'Mobile Pull') {
+          showInputMobilePull();
+      } else {
    			$("#ad_type_video").parent().parent().parent().hide();
    			$("#ad_type_image").parent().parent().parent().show();
-			$("#ad_type_flash").parent().parent().parent().show();
-			$("#ad_type_html").parent().parent().parent().show();
+			  $("#ad_type_flash").parent().parent().parent().show();
+			  $("#ad_type_html").parent().parent().parent().show();
    			$("#image").addClass("show");
-           	$("#video").addClass("hidden");
-           	$("#flash").addClass("show");
+       	$("#video").addClass("hidden");
+       	$("#flash").addClass("show");
    		}
 	}
    
@@ -750,6 +793,25 @@
     	} else {
     		$(checkAll).prop("checked", false);
     	}
+      var ad_format= {{!empty($AdFormatValue) ? $AdFormatValue : 0}};
+      if ($('#ad_format_id')[0].selectize.getValue()) {
+        ad_format = $('#ad_format_id')[0].selectize.getValue();
+      }
+      var mobile_app = getMobileAppFormat();
+      var no_mobile_app = getNoMobileAppFormat();
+      $('#ad_format_id')[0].selectize.clearOptions();
+      if ($('#platform_pc').is(':checked') || $('#platform_mobile').is(':checked')) {
+        addOption($('#ad_format_id'), no_mobile_app);
+      } else {
+        removeOption($('#ad_format_id'), no_mobile_app);
+      }
+      if ($('#platform_mobile_app').is(':checked')) {
+        addOption($('#ad_format_id'), mobile_app);
+      } else {
+        removeOption($('#ad_format_id'), mobile_app);
+      }
+      
+      $('#ad_format_id')[0].selectize.setValue(ad_format);
    	}
 
    	function setAdView() {
@@ -762,5 +824,80 @@
   			$('#ad-view').addClass('hidden');
   		}
    	}
-   
+
+    function getMobileAppFormat() {
+      var mobile_app_formats= [];
+      <?php
+        $arrAdFormat = json_decode($listAdFormat);
+      ?>
+      @foreach($arrAdFormat as $adFormat)
+        @if ($adFormat->name == 'Mobile Pull')
+          mobile_app_formats.push(JSON.parse('{{ json_encode($adFormat) }}'));
+        @endif
+      @endforeach
+      return mobile_app_formats;
+    }
+
+    function getNoMobileAppFormat() {
+      var mobile_app_formats= [];
+      <?php
+        $arrAdFormat = json_decode($listAdFormat);
+      ?>
+      @foreach($arrAdFormat as $adFormat)
+        @if ($adFormat->name != 'Mobile Pull')
+          mobile_app_formats.push(JSON.parse('{{ json_encode($adFormat) }}'));
+        @endif
+      @endforeach
+      return mobile_app_formats;
+    }
+
+    function addOption(el, data) {
+       var selectize = el[0].selectize;
+       data.forEach(function(item){
+         selectize.addOption(item);
+       });
+    }
+
+    function removeOption(el, data) {
+       var selectize = el[0].selectize;
+       selectize.clear();
+       data.forEach(function(item){
+         selectize.removeOption(item.id);
+       });
+    }
+
+    function showInputMobilePull() {
+      $("#ad_type_flash").parent().parent().parent().hide();
+      $("#ad_type_video").parent().parent().parent().hide();
+      $("#source_url2").parent().parent().hide();
+      $("#width_2").parent().parent().hide();
+      $("#height_2").parent().parent().hide();
+      $("#bar_height").parent().parent().hide();
+      $("#main_source_source_url").parent().parent().parent().hide();
+      $("#source_backup_image").parent().parent().parent().parent().parent().parent().hide();
+      $("#source_backup_url").hide();
+      $("#none").parent().parent().parent().parent().parent().parent().parent().hide();
+      $("#video_duration").parent().parent().hide();
+      $("#video_linear_linear").parent().parent().parent().hide();
+      $("#skipads").parent().parent().hide();
+      $("#video_wrapper_tag").parent().parent().hide();
+      $("#vast_inclue").parent().parent().parent().hide();
+      $("#video_bitrate").parent().parent().hide();
+      $("#video_type_vast_inline").parent().parent().parent().hide();
+      $("#tracking").parent().parent().hide();
+      $("#default-ad-view-type").parent().parent().parent().parent().hide();
+      $("#display-type-inpage").parent().parent().parent().parent().hide();    
+
+      $("#ad_type_image").parent().parent().parent().show();
+      $("#ad_type_html").parent().parent().parent().show();
+      if ($('.ad_type:checked').val() == 'html') {
+        $("#source_url").parent().parent().hide();
+      } else {
+        $("#source_url").parent().parent().show();
+      }      
+      $("#width").parent().parent().show();
+      $("#height").parent().parent().show();
+      $("#destination_url").parent().parent().show();
+      $("#position-top").parent().parent().parent().parent().show(); 
+    }   
 </script>
