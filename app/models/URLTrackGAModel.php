@@ -29,9 +29,7 @@ class URLTrackGAModel extends Eloquent {
 
 		$redis = new RedisBaseModel(Config::get('redis.redis_6.host'), Config::get('redis.redis_6.port'),false);
         $cacheKey = "url_track_ga";
-      	if(is_array($value) && sizeof($value) > 0){
-      		$value =json_encode($value);	
-      	}else{
+      	if(empty($value)){
       		$value = "";
       	}
         $redis->set($cacheKey, $value);
@@ -47,9 +45,7 @@ class URLTrackGAModel extends Eloquent {
 		$results = $redis->get($cacheKey);	
 		if($results == ''){
 			$results = URLTrackGAModel::all()->lists('url');
-		}else{
-			$results = json_decode($results);
 		}
-		return $results;
+		$results;
 	}
 }
