@@ -219,7 +219,8 @@ class FlightAdvertiserManagerController extends AdvertiserManagerController {
                 'retargeting_show'               => $retargeting_show,
                 'retargeting_number'               => $retargeting_number,
                 'updated_by'                   => $this->user->id,
-                'filter'                       => !empty($listKeyword) ? implode(',', $listKeyword) : NULL,
+                //'filter'                       => !empty($listKeyword) ? implode(',', $listKeyword) : NULL,
+                'filter'                       => trim(Input::get('keyword')),
                 'audience'                     => $audience
             );
 

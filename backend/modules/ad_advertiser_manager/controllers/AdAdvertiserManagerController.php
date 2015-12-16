@@ -180,7 +180,8 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
                 'display_type'           => Input::get('display_type'),
                 'bar_height'             => Input::get('bar_height'),
                 'vast_include'           => Input::get('vast_include', 0),
-                'audience_id'            => Input::get('audience_id',0)
+                'audience_id'            => Input::get('audience_id',0),
+                'position'            => Input::get('position')
             );
             
             if (!$updateData['ad_view_type']) {
@@ -235,6 +236,18 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
                     $updateData['source_url_backup'] = STATIC_URL.date("Y")."/".date("m")."/".$file_name;
                 }
             }
+            $mime = '';
+            if ($updateData['ad_type'] == 'html') {
+                $mime = 'text/html';
+            } else {
+                if (!empty($updateData['source_url'])) {
+                    $ch = curl_init($updateData['source_url']);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_exec($ch);
+                    $mime = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+                }
+            }
+            $updateData['mime'] = $mime;
             
             // if (!empty($campaignName) || !empty($adFormatName)) {
             //     $updateData['name'] = $campaignName . ' ' . $adFormatName;

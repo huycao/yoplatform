@@ -1,0 +1,1 @@
+{{ AD_SERVER_FILE . "mapp?zid=$zid"}}

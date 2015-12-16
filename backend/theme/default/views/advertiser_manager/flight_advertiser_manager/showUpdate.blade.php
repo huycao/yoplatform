@@ -17,7 +17,7 @@
                 				<li class=""><a href="#tab3" data-toggle="tab" aria-expanded="false"><span class="number">2.</span>Inventory</a></li>
                 				<li class=""><a href="#tab4" data-toggle="tab" aria-expanded="false"><span class="number">3.</span>Region</a></li>
                 				<!-- <li class=""><a href="#tab5" data-toggle="tab" aria-expanded="false"><span class="number">5.</span>Audience</a></li> -->
-                				<li class=""><a href="#tab5" data-toggle="tab" aria-expanded="false"><span class="number">4.</span>Filter</a></li>
+                				<li class=""><a href="#tab5" data-toggle="tab" aria-expanded="false"><span class="number">4.</span>Tag</a></li>
                 				<li class=""><a href="#tab6" data-toggle="tab" aria-expanded="false"><span class="number">5.</span>Cost</a></li>
                                 <li id="audience_tab" class=""><a href="#tab2" data-toggle="tab" aria-expanded="false" onclick="showAudience();"><span class="number">6.</span>Audience</a></li>
                 			</ul>
@@ -412,19 +412,26 @@
     			    <div class="tab-pane" id="tab5">
     			    <!-- KEYWORD -->
     			    	<div class="form-group form-group-sm">
-                            <label class="col-md-2">{{trans('text.keyword')}}</label>
+                            <label class="col-md-2">Tag</label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" id="keyword" value="" name="keyword">
+
+                                <input type="text" class="form-control" id="keyword" value="{{ $item->filter or Input::get('keyword') }}" name="keyword">
+                                 <span style="font-size:11px;">
+                                 <i>Each tag is seperated by comma (,).<br/>
+                                 Tag must be vietnamese, unsigned and adjacent<br/>
+                                 Ex: tamly, phunu, gioitre
+                                 </i>
+                                 </span>
                             </div>
-                            <div class="col-md-6">
+                           <!--  <div class="col-md-6">
                             	<div class="col-md-3">
                                 	<a href="javascript:;" onclick="addKeyword();" class="btn btn-default btn-block btn-sm">{{trans('text.add')}}</a>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         
     					<!-- LIST KEYWORD -->
-                        <div class="form-group form-group-sm">             
+                       <!--  <div class="form-group form-group-sm">             
                             <label class="col-md-2">{{trans('text.list_keyword')}}</label>                       
                             <div id="list-keyword" class="col-sm-10">  
                             @if (!empty($listKeyword)) {                                                                          
@@ -437,7 +444,7 @@
                                 @endforeach  
                             @endif                                
                             </div>
-                        </div>
+                        </div> -->
     			    </div>
     				<div class="tab-pane" id="tab6">                                                             
                         <!-- BASE MEDIA COST -->
