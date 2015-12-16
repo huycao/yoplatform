@@ -7,7 +7,7 @@
                 <div class="col-sm-9">
                     <div class="form-group">
                         <label>URL <span class="text-danger">*</span></label>
-                        <textarea name="url" class="form-control" id="url" style="text-align:left;height:200px;">@if(sizeof($items) >0)@foreach($items as $k=>$v){{trim($v)}}@endforeach @endif</textarea>  
+                        <textarea name="url" class="form-control" id="url" style="text-align:left;height:200px;">@if(sizeof($items) >0)@foreach($items as $k=>$v){{trim($v) . PHP_EOL}}@endforeach @endif</textarea>  
                     </div>
                 </div>
             </div>
