@@ -493,11 +493,25 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController
     */
     public function getUrlTrackGA(){
         $urlTrackGA = new URLTrackGAModel;
+
         if(Request::isMethod('POST')){
-            $urlTrackGA->store(Input::get('url'));
+            $urlTrackGA->store(Request::all());
         }
-        $this->data['items'] = $urlTrackGA->getAll();
+        $this->data['active'] = 1;
+         $this->data['run'] = 'all';
+        $item = $urlTrackGA->getAll();
+        if(sizeof($item)>0){
+            foreach($item as $k){
+                if(isset($k->active)){
+                    $this->data['active'] = $k->active;
+                }
+                if(isset($k->run)){
+                    $this->data['run'] = $k->run;
+                }
+            }
+        }
         
+        $this->data['item'] = $urlTrackGA->getAll();
         $this->layout->content = View::make('urlTrackGA', $this->data);
     }
 

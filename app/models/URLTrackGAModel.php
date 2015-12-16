@@ -12,26 +12,21 @@ class URLTrackGAModel extends Eloquent {
 	public function store($inputs){
 		DB::table('url_track_ga')->truncate();
 		$value = array();
-		if(!empty($inputs)){
-			$url_array = explode("http", $inputs);
-
-	        if(is_array($url_array)){
-	            foreach($url_array as $item){
-	                if(trim($item)!=""){
-	                    $urlTrackGA = new URLTrackGAModel;
-	                    $urlTrackGA->url = ("http". trim($item));
-	                    $urlTrackGA->save();    
-	                    $value[] = "http" . trim($item);
-	                }
-	            }
-	        }
+		$urlTrackGA = new URLTrackGAModel;
+		$urlTrackGA->url = $inputs['url'];
+		$urlTrackGA->active = $inputs['active'];
+		$urlTrackGA->run = $inputs['run'];
+		$urlTrackGA->save();
+		if($inputs['url']!=""){
+			$value['active'] = $inputs['active'];
+      		$value['url'] = trim($inputs['url']);
+      		$value['run'] = $inputs['run'];	
+		}else{
+			$value = "";
 		}
 
 		$redis = new RedisBaseModel(Config::get('redis.redis_6.host'), Config::get('redis.redis_6.port'),false);
         $cacheKey = "url_track_ga";
-      	if(empty($value)){
-      		$value = "";
-      	}
         $redis->set($cacheKey, $value);
 	}
 
@@ -40,13 +35,8 @@ class URLTrackGAModel extends Eloquent {
 	* @return array
 	*/
 	public function getAll(){
-		$redis = new RedisBaseModel(Config::get('redis.redis_6.host'), Config::get('redis.redis_6.port'),false);
-		$cacheKey = "url_track_ga";
-		$results = $redis->get($cacheKey);	
-
-		if($results == ''){
-			$results = URLTrackGAModel::all()->lists('url');
-		}		
+		$results = URLTrackGAModel::all();
+		
 		return $results;
 	}
 }
