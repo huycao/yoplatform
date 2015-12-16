@@ -30,4 +30,7 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
     Route::post('/tool/dashboard/campaign',     array('as'  =>  $prefixName.'PreviewCampaign','uses'   =>  $prefixName.'Controller@getDashboardCampaign'));
     Route::post('/tool/dashboard/flightwebsite',     array('as'  =>  $prefixName.'PreviewFlightWebsite','uses'   =>  $prefixName.'Controller@getDashboardFilghtWebsite'));
 
+    Route::get('/tool/url-track-ga',   array('as' =>  $prefixName.'URLTrackGA', 'uses' =>  $prefixName.'Controller@getUrlTrackGA'));
+    Route::post('/tool/url-track-ga',   array('as' =>  $prefixName.'URLTrackGA', 'uses' =>  $prefixName.'Controller@getUrlTrackGA'));
+
 });

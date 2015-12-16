@@ -16,6 +16,9 @@
 			<li class="list-group-item">
 				<a href="{{URL::Route('ToolAdvertiserManagerProfile')}}">&raquo My Account</a>
 			</li>
+			<li class="list-group-item">
+				<a href="{{URL::Route('ToolAdvertiserManagerURLTrackGA')}}">&raquo URL Track GA</a>
+			</li>
 		</ul>
 	</div>
 </div>

@@ -487,4 +487,18 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController
         return "";
     }
 
+    /*
+    * Get URL Track GA 
+    *
+    */
+    public function getUrlTrackGA(){
+        $urlTrackGA = new URLTrackGAModel;
+        if(Request::isMethod('POST')){
+            $urlTrackGA->store(Input::get('url'));
+        }
+        $this->data['items'] = $urlTrackGA->getAll();
+        
+        $this->layout->content = View::make('urlTrackGA', $this->data);
+    }
+
 }
