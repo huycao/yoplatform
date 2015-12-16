@@ -18,12 +18,12 @@
                         <label class="col-md-2">Active</label>
                         <div class="col-md-10">
                             <div class="radio radio-info radio-inline">
-                                {{ Form::radio('active', '1', '1' == Input::get('active') || ( isset($active) && 1 == $active) )}}
-                                <label> Yes </label>
+                                {{ Form::radio('active', '1', '1' == Input::get('active') || ( isset($active) && 1 == $active), array('id'=>'active') )}}
+                                <label for="active"> Yes </label>
                             </div>
                             <div class="radio radio-info radio-inline">
-                                {{ Form::radio('active', '0', '0' == Input::get('active') || ( isset($active) && 0 == $active) )}}
-                                <label for="cpc"> No </label>
+                                {{ Form::radio('active', '0', '0' == Input::get('active') || ( isset($active) && 0 == $active), array('id'=>'inactive') )}}
+                                <label for="inactive"> No </label>
                             </div>
                         </div>
                     </div>
@@ -35,12 +35,12 @@
                         <label class="col-md-2">Run</label>
                         <div class="col-md-10">
                             <div class="radio radio-info radio-inline">
-                                {{ Form::radio('run', 'all', 'all' == Input::get('run') || ( !empty($run) && 'all' == $run) )}}
-                                <label for="cpc"> All </label>
+                                {{ Form::radio('run', 'all', 'all' == Input::get('run') || ( !empty($run) && 'all' == $run), array('id'=>'all') )}}
+                                <label for="all"> All </label>
                             </div>
                             <div class="radio radio-info radio-inline">
-                                {{ Form::radio('run', 'random', 'random' == Input::get('run') || ( !empty($run) && 'random' == $run))}}
-                                <label> Random </label>
+                                {{ Form::radio('run', 'random', 'random' == Input::get('run') || ( !empty($run) && 'random' == $run), array('id'=>'random'))}}
+                                <label for="random"> Random </label>
                             </div>
                         </div>
                     </div>
