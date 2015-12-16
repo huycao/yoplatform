@@ -200,4 +200,5 @@ return array(
     'list_keyword'    =>  'List Keyword',
     'add'    =>  'Add',
 	'vast_include' => 'Vast Include',
+    'position'          =>  'Position',
 );

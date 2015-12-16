@@ -100,12 +100,12 @@ $filters =  getFilter(Input::get('filter',array()));
                                 </td>
                             </tr>
                             @if(!empty($flight->audience) || !empty($flight->ad->audience_id))
-                            <tr>
+                            <!--<tr>
                                 <td width="25%">Audience</td>
                                 <td>
                                     <input type="button" class="btn btn-primary" onclick="getReportAudience({{ $flight->ad->id }})" value="Export CSV">
                                 </td>
-                            </tr>
+                            </tr>-->
                             @endif
                         </table>
                     </div>
