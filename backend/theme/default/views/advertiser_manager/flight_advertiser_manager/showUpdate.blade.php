@@ -416,7 +416,12 @@
                             <div class="col-md-4">
 
                                 <input type="text" class="form-control" id="keyword" value="{{ $item->filter or Input::get('keyword') }}" name="keyword">
-                                 <span style="font-size:11px;"><i>Each tag are seperated by comma (,)</i></span>
+                                 <span style="font-size:11px;">
+                                 <i>Each tag is seperated by comma (,).<br/>
+                                 Tag must be vietnamese, unsigned and adjacent<br/>
+                                 Ex: tamly, phunu, gioitre
+                                 </i>
+                                 </span>
                             </div>
                            <!--  <div class="col-md-6">
                             	<div class="col-md-3">

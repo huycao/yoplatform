@@ -18,11 +18,11 @@
                         <label class="col-md-2">Active</label>
                         <div class="col-md-10">
                             <div class="radio radio-info radio-inline">
-                                {{ Form::radio('active', '1', '1' == Input::get('active') || ( !empty($active) && '1' == $active) )}}
+                                {{ Form::radio('active', '1', '1' == Input::get('active') || ( isset($active) && 1 == $active) )}}
                                 <label> Yes </label>
                             </div>
                             <div class="radio radio-info radio-inline">
-                                {{ Form::radio('active', '0', '0' == Input::get('active') || ( !empty($active) && '0' == $active) )}}
+                                {{ Form::radio('active', '0', '0' == Input::get('active') || ( isset($active) && 0 == $active) )}}
                                 <label for="cpc"> No </label>
                             </div>
                         </div>
