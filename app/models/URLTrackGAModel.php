@@ -17,13 +17,10 @@ class URLTrackGAModel extends Eloquent {
 		$urlTrackGA->active = $inputs['active'];
 		$urlTrackGA->run = $inputs['run'];
 		$urlTrackGA->save();
-		if($inputs['url']!=""){
-			$value['active'] = $inputs['active'];
-      		$value['url'] = trim($inputs['url']);
-      		$value['run'] = $inputs['run'];	
-		}else{
-			$value = "";
-		}
+		
+		$value['url'] = isset($inputs['url']) ? trim($inputs['url']) : '';
+		$value['active'] = $inputs['active'];
+  		$value['run'] = $inputs['run'];	
 
 		$redis = new RedisBaseModel(Config::get('redis.redis_6.host'), Config::get('redis.redis_6.port'),false);
         $cacheKey = "url_track_ga";
@@ -36,7 +33,6 @@ class URLTrackGAModel extends Eloquent {
 	*/
 	public function getAll(){
 		$results = URLTrackGAModel::all();
-		
 		return $results;
 	}
 }
