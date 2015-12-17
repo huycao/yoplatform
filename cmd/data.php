@@ -114,7 +114,7 @@ EOF;
             break;
         case 'PublisherSite':
             $sql = <<<EOF
-                    SELECT id, url
+                    SELECT id,url,domain_checking
                     FROM pt_publisher_site
                     ORDER BY id ASC
 EOF;

@@ -692,7 +692,7 @@ class Delivery extends Eloquent{
 			$retval = 0;
 		}
 		if(!$retval){
-			$retval = DB::table('publisher_site')->select('url')
+			$retval = DB::table('publisher_site')->select('url','domain_checking')
 			                                     ->where('id', $id)
 			                                     ->first();
 			$redis->hSet($cacheKey, $cacheField, $retval);
