@@ -16,8 +16,10 @@ class ReportEarningsPublisherModel extends TrackingSummaryBaseModel {
                 DB::raw('SUM(click) as total_click'),
                 DB::raw('ROUND(SUM(impression)/SUM(unique_impression),2) as frequency'),
                 DB::raw('ROUND(SUM(click)/SUM(impression)*100,2) as ctr'),
+                DB::raw('SUM(complete) as total_complete'),
                 DB::raw('ROUND(pt_flight_website.publisher_base_cost/1000*SUM(impression),2) as amount_impression'),
-                DB::raw('ROUND(pt_flight_website.publisher_base_cost*SUM(impression),2) as amount_click')
+                DB::raw('ROUND(pt_flight_website.publisher_base_cost*SUM(click),2) as amount_click'),
+                DB::raw('ROUND(pt_flight_website.publisher_base_cost*SUM(complete),2) as amount_complete')
             )
             ->join('flight_website', 'tracking_summary.flight_website_id', '=', 'flight_website.id')                                    
             ->join('flight', 'flight.id', '=', 'flight_website.flight_id')                                    

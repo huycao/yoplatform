@@ -675,8 +675,12 @@ if(!function_exists('getFilter')){
             $filters = $filterAll;
         } else {
             foreach ($filterAll as $filter=> $namfilter) {
-                if (in_array($filter, $filters)) {
+                /*if (in_array($filter, $filters)) {
                     $filterTmp[$filter] = $namfilter;
+                }*/
+
+                if (!empty($filters[$filter])) {
+                     $filterTmp[$filter] = $namfilter;
                 }
             }
             $filters = $filterTmp;

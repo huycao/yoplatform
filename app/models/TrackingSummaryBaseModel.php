@@ -279,6 +279,7 @@ class TrackingSummaryBaseModel extends Eloquent {
                         DB::raw('SUM(click) as total_click'),
                         DB::raw('ROUND(pt_tracking_summary.publisher_base_cost/1000*SUM(impression),2) as amount_impression'),
                         DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click'),
+                        DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(complete),2) as amount_complete'),
                         DB::raw('SUM(unique_click) as total_unique_click'),
                         DB::raw('SUM(start) as total_start'),
                         DB::raw('SUM(firstquartile) as total_firstquartile'),
@@ -321,6 +322,10 @@ class TrackingSummaryBaseModel extends Eloquent {
                     if (!isset($retval[$key]['total_click_pay'])) {
                         $retval[$key]['total_click_pay'] = 0;
                     }
+
+                    if (!isset($retval[$key]['total_complete_pay'])) {
+                        $retval[$key]['total_complete_pay'] = 0;
+                    }
                     
                     if($v->ovr){                        
                         foreach ($arrEvent as $event) {
@@ -359,6 +364,10 @@ class TrackingSummaryBaseModel extends Eloquent {
                             
                             if ('total_click' == $total_event) {
                                 $retval[$key]['total_click_pay'] += $v->publisher_base_cost * $v->total_click;
+                            }
+
+                            if ('total_complete' == $total_event) {
+                                $retval[$key]['total_complete_pay'] += $v->publisher_base_cost * $v->total_complete;
                             }
                             
                             unset($v->$total_event);
@@ -403,8 +412,10 @@ class TrackingSummaryBaseModel extends Eloquent {
                 'tracking_summary.publisher_base_cost',
                 DB::raw('SUM(impression) as total_impression'),
                 DB::raw('SUM(click) as total_click'),
+                DB::raw('SUM(complete) as total_complete'),
                 DB::raw('ROUND(pt_tracking_summary.publisher_base_cost/1000*SUM(impression),2) as amount_impression'),
                 DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click'),
+                DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(complete),2) as amount_complete'),
                 DB::raw('MONTH(date) as month')
             );
         }else{
@@ -415,6 +426,7 @@ class TrackingSummaryBaseModel extends Eloquent {
                 DB::raw('SUM(impression) as total_impression'),
                 DB::raw('ROUND(pt_tracking_summary.publisher_base_cost/1000*SUM(impression),2) as amount_impression'),
                 DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click'),
+                DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(complete),2) as amount_complete'),
                 DB::raw('SUM(click) as total_click')
             );
         }
@@ -461,6 +473,10 @@ class TrackingSummaryBaseModel extends Eloquent {
                             $totalCost += $item->amount_click;
                             break;
 
+                        case 'cpv':
+                            $totalCost += $item->amount_complete;
+                            break;
+
                         default:
                             break;
                     }
@@ -505,6 +521,10 @@ class TrackingSummaryBaseModel extends Eloquent {
 
                         case 'cpc':
                             $cost += $item->amount_click;
+                            break;
+
+                        case 'cpv':
+                            $cost += $item->amount_complete;
                             break;
 
                         default:
@@ -559,6 +579,10 @@ class TrackingSummaryBaseModel extends Eloquent {
                         $cost = $item->amount_click;
                         break;
 
+                    case 'cpv':
+                        $cost = $item->amount_complete;
+                        break;
+
                     default:
                         break;
                 }
@@ -601,7 +625,8 @@ class TrackingSummaryBaseModel extends Eloquent {
                 DB::raw('ROUND(SUM(impression)/SUM(unique_impression),2) as frequency'),
                 DB::raw('ROUND(SUM(click)/SUM(impression)*100,2) as ctr'),
                 DB::raw('ROUND(pt_tracking_summary.publisher_base_cost/1000*SUM(impression),2) as amount_impression'),
-                DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click')
+                DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click'),
+                DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(complete),2) as amount_complete')
             )
             ->join('flight_website', 'tracking_summary.flight_website_id', '=', 'flight_website.id')
             ->join('flight', 'flight.id', '=', 'flight_website.flight_id')
@@ -628,7 +653,8 @@ class TrackingSummaryBaseModel extends Eloquent {
             DB::raw('ROUND(SUM(impression)/SUM(unique_impression),2) as frequency'),
             DB::raw('ROUND(SUM(click)/SUM(impression)*100,2) as ctr'),
             DB::raw('ROUND(pt_tracking_summary.publisher_base_cost/1000*SUM(impression),2) as amount_impression'),
-            DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click')
+            DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click'),
+            DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(complete),2) as amount_complete')
         )
             ->join('flight_website', 'tracking_summary.flight_website_id', '=', 'flight_website.id')
             ->join('flight', 'flight.id', '=', 'flight_website.flight_id')
@@ -894,7 +920,9 @@ class TrackingSummaryBaseModel extends Eloquent {
             DB::raw('ROUND(SUM(impression)/SUM(unique_impression),2) as frequency'),
             DB::raw('ROUND(SUM(click)/SUM(impression)*100,2) as ctr'),
             DB::raw('ROUND(pt_tracking_summary.publisher_base_cost/1000*SUM(impression),2) as amount_impression'),
-            DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click')
+            DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click'),
+            DB::raw('SUM(complete) as complete'),
+            DB::raw('ROUND(pt_tracking_summary.publisher_base_cost*SUM(complete),2) as amount_complete')
         )
         ->join('flight_website', 'tracking_summary.flight_website_id', '=', 'flight_website.id')
         ->join('flight', 'flight.id', '=', 'flight_website.flight_id')

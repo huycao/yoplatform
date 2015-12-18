@@ -11,8 +11,8 @@
 	    </thead>
 
 		<tbody>
-			<?php if( count($lists) ){ ?>
-				<?php foreach( $lists as $item ){ ?>
+			@if( count($lists) )
+				@foreach( $lists as $item )
 				<tr>
 					<td>{{$item->name}}</td>			
 					<td>
@@ -20,6 +20,8 @@
 							{{number_format($item->amount_impression)}}
 						@elseif( $item->cost_type == 'cpc' )
 							{{number_format($item->amount_click)}}
+						@elseif( $item->cost_type == 'cpv' )
+							{{number_format($item->amount_complete)}}
 						@endif
 					</td>			
 					<td>{{number_format($item->total_impression)}}</td>			
@@ -29,12 +31,12 @@
 					<td>{{$item->ctr}} %</td>			
 					<td>{{number_format($item->ecpm)}}</td>			
 				</tr>
-				<?php } ?>
-			<?php }else{ ?>
+				@endforeach
+			@else
 				<tr>
 					<td class="no-data" >{{trans("text.no_data")}}</td>
 				</tr>
-			<?php } ?>
+			@endif
 		</tbody>
 
 	</table>

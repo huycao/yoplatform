@@ -59,11 +59,24 @@
 								@if(count($flights)>0)
 									<?php $num=1;?>
 									@foreach($flights as $flight)
-
+										<?php
+											$amount = 0;
+											switch ($flight->flight->cost_type) {
+												case 'cpm':
+													$amount = $flight->amount_impression;
+													break;
+												case 'cpc':
+													$amount = $flight->amount_click;
+													break;
+												case 'cpv':
+													$amount = $flight->amount_complete;
+													break;
+											}
+										?>
 								<tr>
 									<td width="25">{{$num}}</td>
 									<td>{{$flight->flight->name}}</td>
-									<td width="150" align="right">{{number_format($flight->amount_impression,0,'',',')}}</td>
+									<td width="150" align="right">{{number_format($amount,0,'',',')}}</td>
 									<td width="150" align="right">{{number_format($flight->impression, 0,'',',')}}</td>
 									<td width="150" align="right">{{number_format($flight->click, 0, '', ',')}}</td>
 									<td width="150" align="right">{{number_format($flight->ctr, 2)}}%</td>

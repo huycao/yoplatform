@@ -136,6 +136,9 @@ function sumEarnPerCampaign($websites, $date){
                 case 'cpc':
                     $cost = $item->amount_click;
                     break;
+                case 'cpv':
+                    $cost = $item->amount_complete;
+                    break;
                 default:
                     break;
             }
@@ -173,7 +176,9 @@ function getEarnPerFlight($websites, $date){
        ROUND(SUM(impression)/SUM(unique_impression),2) as frequency,
        ROUND(SUM(click)/SUM(impression)*100,2) as ctr,
        ROUND(pt_tracking_summary.publisher_base_cost/1000*SUM(impression),2) as amount_impression,
-       ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click
+       ROUND(pt_tracking_summary.publisher_base_cost*SUM(click),2) as amount_click,
+       SUM(complete) as total_complete,
+       ROUND(pt_tracking_summary.publisher_base_cost*SUM(complete),2) as amount_complete
        FROM `pt_tracking_summary`
        inner join `pt_flight_website` on `pt_tracking_summary`.`flight_website_id` = `pt_flight_website`.`id`
        inner join `pt_flight` on `pt_flight`.`id` = `pt_flight_website`.`flight_id`

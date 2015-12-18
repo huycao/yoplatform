@@ -857,10 +857,13 @@
 		switch(event) {
 			case 'cpm':
 				select = 'impression';
-			break;
+			    break;
 			case 'cpc':
 				select = 'click';
-			break;
+                break;
+            case 'cpv':
+                select = 'complete';
+			    break;
 		}
 
 		$('#event').val(select);
