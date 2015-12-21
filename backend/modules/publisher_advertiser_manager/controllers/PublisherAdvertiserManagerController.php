@@ -848,6 +848,9 @@ class PublisherAdvertiserManagerController extends AdvertiserManagerController
                         case 'cpc':
                             $data[$item->flight->name][$item->website->name] += $item->amount_click;
                             break;
+                        case 'cpv':
+                            $data[$item->flight->name][$item->website->name] += $item->amount_complete;
+                            break;
                     }
                     }
                 }

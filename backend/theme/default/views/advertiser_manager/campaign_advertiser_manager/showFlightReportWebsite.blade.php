@@ -234,6 +234,8 @@ $filters = getFilter(Input::get('filter', array()));
                                     $amount = $tracking['total_impression_pay'];
                                 } elseif ($flight->cost_type == 'cpc') {
                                     $amount = $tracking['total_click_pay'];
+                                } elseif ($flight->cost_type == 'cpv') {
+                                    $amount = $tracking['total_complete_pay'];
                                 }
                                 $sumAmount += $amount;
 
@@ -258,7 +260,7 @@ $filters = getFilter(Input::get('filter', array()));
                                         <span class="blue">({{number_format($tracking['total_ads_request_over'])}})</span>
                                     @endif
                                 </td>
-								@foreach ($filters as $filter)
+								@foreach ($filters as $filter=>$label)
                                     @if('Impressions' == $filter)
                                         <td>{{ number_format($impressionRow)}}
                                         	@if($tracking['total_impression_over'])
@@ -363,7 +365,7 @@ $filters = getFilter(Input::get('filter', array()));
                         <th colspan="3">Summary</th>
                          <th>{{ number_format($sumAdsRequest + $sumAdsRequestOver)}} <span
                     			class="blue">({{number_format($sumAdsRequestOver)}})</span></th>
-                        @foreach ($filters as $filter)
+                        @foreach ($filters as $filter=>$label)
                         	@if('Impressions' == $filter)
                                 <th>{{ number_format($sumImpression + $sumImpressionOver)}} <span
                                             class="blue">({{number_format($sumImpressionOver)}})</span></th>

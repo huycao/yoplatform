@@ -139,7 +139,7 @@ $filters = getFilter(Input::get('filter', array()));
                         <span class="blue">({{number_format($tracking['total_ads_request_over'])}})</span>
                     @endif
                 </td>
-                @foreach($filters as $filter)
+                @foreach($filters as $filter=>$label)
                     @if('Impressions' == $filter)
                         <td>{{ number_format($impressionRow)}}
                             @if($tracking['total_impression_over'])
@@ -245,7 +245,7 @@ $filters = getFilter(Input::get('filter', array()));
         <th>{{ number_format($sumAdsRequest + $sumAdsRequestOver)}} <span
                     class="blue">({{number_format($sumAdsRequestOver)}})</span></th>
 
-        @foreach ($filters as $filter=>$filterName)
+        @foreach ($filters as $filter=>$label)
         	@if('Impressions' == $filter)
                 <th>{{ number_format($sumImpression + $sumImpressionOver)}} <span
                             class="blue">({{number_format($sumImpressionOver)}})</span></th>
