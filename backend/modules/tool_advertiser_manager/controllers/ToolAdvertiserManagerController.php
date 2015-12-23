@@ -515,4 +515,89 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController
         $this->layout->content = View::make('urlTrackGA', $this->data);
     }
 
+    /*
+    * Report Ad Request 
+    *
+    */
+    public function getReportAdRequest(){
+        $model = new PublisherSiteBaseModel;
+        $this->data['listPublisherSite'] = $model->orderBy('name')->lists('name', 'id');
+
+        $trackingAdRequestModel = new TrackingAdRequestBaseModel;
+
+        ($trackingAdRequestModel->getAdRequestDate());
+        $this->layout->content = View::make('listReportAdRequest', $this->data);
+    }
+
+    /*
+    * Report Ad Request 
+    *
+    */
+    public function showReportAdRequest(){
+        $inputs = $this->getParameter(Input::get('searchData'));
+        $trackingAdRequestModel = new TrackingAdRequestBaseModel;
+        if (!empty($inputs['by_date'])) {
+            $this->data['lists'] = $trackingAdRequestModel->getAdRequestDate($inputs['webiste'], $inputs['ad_zone'], $inputs['start_date_range'], $inputs['end_date_range'], Input::get('showNumber'));
+
+            return View::make('ajaxShowReportAdRequestDate', $this->data);
+        } else {
+            if (empty($inputs['webiste'])) {
+                $this->data['website'] = 'all';
+            }
+
+            if (empty($inputs['ad_zone'])) {
+                $this->data['ad_zone'] = 'all';
+            }
+            $this->data['lists'] = $trackingAdRequestModel->getAdRequest($inputs['webiste'], $inputs['ad_zone'], $inputs['start_date_range'], $inputs['end_date_range'], Input::get('showNumber'));
+
+            return View::make('ajaxShowReportAdRequest', $this->data);
+        } 
+    }
+
+    public function reportAdRequestHour(){
+        $wid = Input::get('wid');
+        $zid = Input::get('zid');
+        $date = Input::get('date');
+        $website_name = Input::get('wname');
+        $zone_name = Input::get('zname');
+        $trackingAdRequestModel = new TrackingAdRequestBaseModel;
+        $this->data['lists'] = $trackingAdRequestModel->getAdRequestHour($wid, $zid, $date);
+        $this->data['website_name'] = $website_name;
+        $this->data['zone_name'] = $zone_name;
+        return View::make('reportAdRequestHour', $this->data);
+    }
+
+    public function getParameter($arrParam = array()) {
+        $retval = array(
+                'start_date_range' => '',
+                'end_date_range' => '',
+                'by_date' => '',
+                'webiste' => array(),
+                'ad_zone' => array()
+            );
+        foreach ($arrParam as $param) {
+            switch ($param['name']) {
+                case 'start_date_range':
+                case 'end_date_range':
+                case 'by_date':
+                   $retval[$param['name']] = $param['value'];
+                    break;
+                case 'webiste':
+                case 'ad_zone':
+                   $retval[$param['name']][] = $param['value'];
+                    break;
+            }
+        }
+
+        return $retval;
+    }
+
+    public function getAdzone() {
+        $model = new PublisherAdZoneBaseModel;
+        $website_ids = Input::get('webiste', array());
+        $listAdZone = $model->whereIn('publisher_site_id', $website_ids)->orderBy('publisher_site_id')->orderBy('id')->lists('name', 'id');
+
+        return Response::json($listAdZone);
+    }
+
 }

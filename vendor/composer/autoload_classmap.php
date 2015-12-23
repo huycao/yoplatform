@@ -1617,6 +1617,7 @@ return array(
     'RawTrackingConversion' => $baseDir . '/frontend/modules/conversion/models/RawTrackingConversion.php',
     'RawTrackingAudience' => $baseDir . '/frontend/modules/delivery/models/RawTrackingAudience.php',
     'RawTrackingSummary' => $baseDir . '/frontend/modules/delivery/models/RawTrackingSummary.php',
+    'RawTrackingAdRequest' => $baseDir . '/frontend/modules/delivery/models/RawTrackingAdRequest.php',
     'Renderer' => $vendorDir . '/dompdf/dompdf/include/renderer.cls.php',
     'ReportEarningsPublisherModel' => $baseDir . '/backend/modules/report_publisher/models/ReportEarningsPublisherModel.php',
     'ReportPublisherController' => $baseDir . '/backend/modules/report_publisher/controllers/ReportPublisherController.php',
