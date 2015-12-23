@@ -23,8 +23,8 @@
 				@foreach( $lists as $item )
                     <?php $summary += $item->total_ad_request; ?>
     				<tr>
-    					<td>{{ empty($website) ? $item->website->name : 'All website' }}</td>
-    					<td>{{ empty($ad_zone) ? $item->adzone->name : 'All zone' }}</td>
+    					<td>{{ empty($website) ? !empty($item->website->name) ? $item->website->name : '' : 'All website' }}</td>
+    					<td>{{ empty($ad_zone) ? !empty($item->adzone->name) ? $item->adzone->name : '' : 'All zone' }}</td>
     					<td>{{ number_format($item->total_ad_request) }}</td>	
     				</tr>
 				@endforeach
