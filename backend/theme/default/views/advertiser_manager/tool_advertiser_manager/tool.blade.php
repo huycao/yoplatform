@@ -19,6 +19,9 @@
 			<li class="list-group-item">
 				<a href="{{URL::Route('ToolAdvertiserManagerURLTrackGA')}}">&raquo URL Track GA</a>
 			</li>
+			<li class="list-group-item">
+				<a href="{{URL::Route('ToolAdvertiserManagerReportAdRequest')}}">&raquo Report Ad Request</a>
+			</li>
 		</ul>
 	</div>
 </div>

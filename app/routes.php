@@ -245,3 +245,32 @@ Route::get('reportAudience', function(){
     $data = $tracking->reportAudience();
     pr($data);
 });
+
+Route::get('get-adrequest-hourly', function(){
+    $tracking = new RawTrackingAdRequest;
+    if($rows = $tracking->reportScheduleHourly()){
+        pr($rows);
+        echo "Report Success";
+    }
+    else{
+        echo "No Report Complete";
+    }
+    die();
+});
+
+Route::get('get-adrequest-daily', function(){
+    $tracking = new RawTrackingAdRequest;
+    if($rows = $tracking->reportScheduleDaily()){
+        pr($rows);
+        echo "Report Success";
+    }
+    else{
+        echo "No Report Complete";
+    }
+    die();
+});
+
+Route::get('get-adrequest-today', function(){
+    $a = new RawTrackingAdRequest();
+    pr($a->reportScheduleDaily(time()));
+});

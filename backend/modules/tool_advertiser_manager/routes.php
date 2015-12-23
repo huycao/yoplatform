@@ -32,5 +32,9 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
 
     Route::get('/tool/url-track-ga',   array('as' =>  $prefixName.'URLTrackGA', 'uses' =>  $prefixName.'Controller@getUrlTrackGA'));
     Route::post('/tool/url-track-ga',   array('as' =>  $prefixName.'URLTrackGA', 'uses' =>  $prefixName.'Controller@getUrlTrackGA'));
-
+    //Report ad request
+    Route::get('/tool/report-adrequest',   array('as' =>  $prefixName.'ReportAdRequest', 'uses' =>  $prefixName.'Controller@getReportAdRequest'));
+    Route::post('/tool/show-report-adrequest',   array('as' =>  $prefixName.'ShowReportAdRequest', 'uses' =>  $prefixName.'Controller@showReportAdRequest'));
+    Route::post('/tool/report-adrequest-hour',   array('as' =>  $prefixName.'ReportAdRequestHour', 'uses' =>  $prefixName.'Controller@reportAdRequestHour'));
+    Route::post('/tool/get-adzone',   array('as' =>  $prefixName.'GetAdZone', 'uses' =>  $prefixName.'Controller@getAdZone'));
 });
