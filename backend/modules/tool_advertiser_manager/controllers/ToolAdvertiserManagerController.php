@@ -489,31 +489,65 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController
 
     /*
     * Get URL Track GA 
-    *
     */
     public function getUrlTrackGA(){
         $urlTrackGA = new URLTrackGAModel;
+        $this->data['lists'] = $urlTrackGA->getAll();
+        $this->layout->content = View::make('urlTrackGA', $this->data);
+    }
+
+    /*
+     * create new track url
+    */
+    public function createNewTrackURL(){
+        $urlTrackGA = new URLTrackGAModel;
+        $validate = Validator::make(Input::all(), URLTrackGAModel::getRules(), URLTrackGAModel::getLangs());
+        
+        $this->data['active'] = 1;
+        $this->data['run'] = 'all';
 
         if(Request::isMethod('POST')){
-            $urlTrackGA->store(Request::all());
-        }
-        $this->data['active'] = 1;
-         $this->data['run'] = 'all';
-        $item = $urlTrackGA->getAll();
-        if(sizeof($item)>0){
-            foreach($item as $k){
-                if(isset($k->active)){
-                    $this->data['active'] = $k->active;
-                }
-                if(isset($k->run)){
-                    $this->data['run'] = $k->run;
-                }
+            if ($validate->passes()) {
+                $urlTrackGA->store(Request::all());
+                return Redirect::back()->withStatus('Form submitted!');
+            }else{
+                $this->data['validate'] = $validate->messages();
             }
         }
         
-        $this->data['item'] = $urlTrackGA->getAll();
-        $this->layout->content = View::make('urlTrackGA', $this->data);
+        $this->layout->content = View::make('formURLTrack', $this->data);
     }
+
+     /*
+     * edit track url
+    */
+    public function editTrackURL($id){
+        $this->data = URLTrackGAModel::find($id);
+        $validate = Validator::make(Input::all(), URLTrackGAModel::getRules(), URLTrackGAModel::getLangs());
+        if(Request::isMethod('POST')){
+            if ($validate->passes()) {
+                $urlTrackGA = new URLTrackGAModel;
+                $urlTrackGA->updateInfo(Request::all(), $id);
+                return Redirect::to('control-panel/advertiser-manager/tool/url-track-ga')->with('message', 'Update Successfull');;
+            }else{
+                $this->data['validate'] = $validate->messages();
+            }
+        }
+        $this->layout->content = View::make('formURLTrack', $this->data);
+    }
+
+    /*
+     * delete item
+    */
+    public function deleteTrackURL(){
+        if(Request::isMethod('POST') && Request::get('id')!=''){
+            $id = Request::get('id');
+            $urlTrackGA = new URLTrackGAModel;
+            return $urlTrackGA->deleteItem($id);    
+        }
+        
+    }
+
 
     /*
     * Report Ad Request 
