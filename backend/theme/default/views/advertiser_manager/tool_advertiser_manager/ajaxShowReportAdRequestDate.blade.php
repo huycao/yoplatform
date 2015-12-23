@@ -25,12 +25,16 @@
             <?php $summary = 0; ?>
 			@if( !empty($lists) && count($lists) )
 				@foreach( $lists as $item )
-                    <?php $summary += $item->total_ad_request; ?>
+                    <?php 
+                        $summary += $item->total_ad_request;
+                        $website_name = !empty($item->website->name) ? $item->website->name : '';
+                        $zone_name = !empty($item->adzone->name) ? $item->adzone->name : '';
+                    ?>
     				<tr>
-    					<td align="center" ><span onclick="reportHour({{$item->website_id}}, {{$item->publisher_ad_zone_id}}, '{{$item->date}}', '{{$item->website->name}}', '{{$item->adzone->name}}');" class="view-hour" style="cursor: pointer"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Hour</span></td>
+    					<td align="center" ><span onclick="reportHour({{$item->website_id}}, {{$item->publisher_ad_zone_id}}, '{{$item->date}}', '{{$website_name}}', '{{$zone_name}}');" class="view-hour" style="cursor: pointer"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View Hour</span></td>
     					<td>{{date('Y-m-d', strtotime($item->date))}}</td>
-    					<td>{{ !empty($item->website->name) ? $item->website->name : '' }}</td>
-    					<td>{{ !empty($item->adzone->name) ? $item->adzone->name : ''}}</td>
+    					<td>{{ $website_name }}</td>
+    					<td>{{ $zone_name }}</td>
     					<td>{{ number_format($item->total_ad_request) }}</td>	
     				</tr>
 				@endforeach
