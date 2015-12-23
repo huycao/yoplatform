@@ -1,5 +1,6 @@
 {{ HTML::script("{$assetURL}js/chosen/chosen.jquery.min.js") }}
 {{ HTML::style("{$assetURL}css/chosen/chosen.min.css") }}
+{{ HTML::style("{$assetURL}css/checkbox.css") }}
 <style>
 	.SlectBox {
 	    width: 250px;
@@ -44,21 +45,28 @@
 					<div class="col-xs-12">
 						<table class="table">
 							<tr>
-								<td width="30%">
+								<td width="35%">
 									<div class="col-md-12">
 										<span class="lbl">Date</span>
 									
-										<div class="input-daterange input-group col-md-12" id="datepicker" style="float:left">
+										<div class="input-daterange input-group col-md-9" id="datepicker" style="float:left">
 						                    <input type="text" class="form-control" name="start_date_range" value=""
 						                           id="start_date_range">
 						                    <span class="input-group-addon">to</span>
 						                    <input type="text" class="form-control" name="end_date_range" value=""
 						                           id="end_date_range">
 						                </div>
+
+						                <div class="col-md-3">
+							                <div class="checkbox checkbox-info checkbox-inline">
+	                                            <input id="by_date" class="check-platform" checked="checked" name="by_date" type="checkbox" value="1">
+					                        	<label for="by_date" style="width:50px;"> By Date </label>
+					                    	</div>
+				                    	</div>
 			                    	</div>
 									
 								</td>
-                                <td width="40%">
+                                <td width="35%">
                                     <span class="lbl">Website</span>
                                     <div>
 									    <select id="search-website" name="webiste" data-placeholder="Select some websites" class="chosen-select form-control" multiple>  

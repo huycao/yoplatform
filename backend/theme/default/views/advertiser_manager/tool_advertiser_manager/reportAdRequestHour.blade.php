@@ -30,8 +30,10 @@
     </thead>
 
 	<tbody>
+		<?php $summary = 0; ?>
 		@if( !empty($lists) && count($lists) )
 			@foreach( $lists as $item )
+				<?php $summary += $item->total_ad_request; ?>
 				<tr>
 					<td>{{ $item->hour}}</td>
 					<td>{{ number_format($item->total_ad_request) }}</td>	
@@ -43,5 +45,14 @@
 			</tr>
 		@endif
 	</tbody>
-
+	@if( !empty($lists) && count($lists) )
+        <tfoot>
+            <tr>
+                <th class="text-center">
+                    Summary
+                </th>
+                <th>{{ number_format($summary) }}</th>
+            </tr>
+        </tfoot>
+        @endif
 </table>

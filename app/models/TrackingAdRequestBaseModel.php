@@ -15,9 +15,38 @@ class TrackingAdRequestBaseModel extends Eloquent {
         return $this->belongsTo('PublisherAdZoneBaseModel','publisher_ad_zone_id');
     }
 
+    public function getAdRequest($website_ids = array(), $zone_ids = array(), $start_date_range = '', $end_date_range = '', $display = 10){
+        $query = $this;
+        $query = $query->with('website', 'adzone')
+                       ->select(
+                    'website_id',
+                    'publisher_ad_zone_id',
+                    'date',
+                    DB::raw('SUM(count) as total_ad_request')
+                );
 
+        if(!empty($website_ids)){
+            $query = $query->whereIn('website_id', $website_ids);
+            $query = $query->groupBy('website_id');
+        }
+        if(!empty($zone_ids)){
+            $query = $query->whereIn('publisher_ad_zone_id', $zone_ids);
+            $query = $query->groupBy('publisher_ad_zone_id');
+        }
+        if($start_date_range != ''){
+            $query = $query->where('date','>=',$start_date_range);
+        }
 
-    public function getAdRequestDate($website_ids = array(), $zone_ids = array(), $start_date_range = '', $end_date_range = '', $display = 1){
+        if($end_date_range != ''){
+            $query = $query->where('date','<=',$end_date_range);
+        }
+
+        $retval = $query->paginate($display); 
+         
+        return $retval;
+    }
+
+    public function getAdRequestDate($website_ids = array(), $zone_ids = array(), $start_date_range = '', $end_date_range = '', $display = 10){
         $query = $this;
         $query = $query->with('website', 'adzone')
                        ->select(
