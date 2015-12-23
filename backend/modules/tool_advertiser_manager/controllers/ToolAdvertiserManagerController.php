@@ -536,9 +536,22 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController
     public function showReportAdRequest(){
         $inputs = $this->getParameter(Input::get('searchData'));
         $trackingAdRequestModel = new TrackingAdRequestBaseModel;
-        $this->data['lists'] = $trackingAdRequestModel->getAdRequestDate($inputs['webiste'], $inputs['ad_zone'], $inputs['start_date_range'], $inputs['end_date_range'], Input::get('showNumber'));
+        if (!empty($inputs['by_date'])) {
+            $this->data['lists'] = $trackingAdRequestModel->getAdRequestDate($inputs['webiste'], $inputs['ad_zone'], $inputs['start_date_range'], $inputs['end_date_range'], Input::get('showNumber'));
 
-        return View::make('ajaxShowReportAdRequest', $this->data);
+            return View::make('ajaxShowReportAdRequestDate', $this->data);
+        } else {
+            if (empty($inputs['webiste'])) {
+                $this->data['website'] = 'all';
+            }
+
+            if (empty($inputs['ad_zone'])) {
+                $this->data['ad_zone'] = 'all';
+            }
+            $this->data['lists'] = $trackingAdRequestModel->getAdRequest($inputs['webiste'], $inputs['ad_zone'], $inputs['start_date_range'], $inputs['end_date_range'], Input::get('showNumber'));
+
+            return View::make('ajaxShowReportAdRequest', $this->data);
+        } 
     }
 
     public function reportAdRequestHour(){
