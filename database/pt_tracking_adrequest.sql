@@ -7,3 +7,4 @@ CREATE TABLE `pt_tracking_adrequest` (
   `count` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE UNIQUE INDEX web_zone_date_hour ON pt_tracking_adrequest (website_id, publisher_ad_zone_id, date, hour);
