@@ -53,7 +53,6 @@
             data:{'id':id},
             success: function(data){
                 alert('Delete Successfull');
-                window.location.reload();
             }
         })
    }
