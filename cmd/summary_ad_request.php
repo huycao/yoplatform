@@ -26,8 +26,8 @@
                 break;
         }
     } else {
-        //echo "Miss param.\n";
-        //exit();
+        echo "Miss param.\n";
+        exit();
     }
 
     function connectMysql() {
