@@ -13,7 +13,6 @@ class URLTrackGAModel extends Eloquent {
 		return [
 			"url"	=> "required",
 			"amount"=> "required|numeric",
-			"website"=> "required",
 		];
 	}
 
@@ -22,7 +21,6 @@ class URLTrackGAModel extends Eloquent {
 			"url.required"		=>	"Url field is required.",
 			"amount.required"	=>	"Amount field is required",
 			"amount.numeric"	=>  "Amount must be a number",
-			"website.required"  =>  "Website field is required"
 		);
 	}
 
@@ -35,20 +33,8 @@ class URLTrackGAModel extends Eloquent {
 		$urlTrackGA->amount = $inputs['amount'];
 		$urlTrackGA->website = $inputs['website'];
 		$urlTrackGA->save();
-		$track_id = $urlTrackGA->id;
 		
-		if ($urlTrackGA->active == 1) {
-			$redis = new RedisBaseModel(Config::get('redis.redis_6.host'), Config::get('redis.redis_6.port'), false);
-			$cacheKey = "URLTrack_{$track_id}";
-			$value = [
-				'id' => $urlTrackGA->id,
-				'url'=> $urlTrackGA->url,
-				'amount'=> $urlTrackGA->amount,
-				'webiste' => $urlTrackGA->website,
-				'run'=> $urlTrackGA->run,
-			];
-		    $retval = $redis->hMset($cacheKey, $value);
-		} 
+		$this->storeRedis();
 	}
 
 	/*
@@ -63,19 +49,7 @@ class URLTrackGAModel extends Eloquent {
 			'amount'	=> $inputs['amount']
 		];
 		$this->where('id', $id)->update($options);
-		if ($inputs['url'] == 1) {
-			$redis = new RedisBaseModel(Config::get('redis.redis_6.host'), Config::get('redis.redis_6.port'), false);
-			$cacheKey = "URLTrack_{$id}";
-			$value = [
-				'id' => $id,
-				'url'=> $inputs['url'],
-				'amount'=> $inputs['amount'],
-				'website'=> $inputs['website'],
-				'run'=> $inputs['run'],
-			];
-		    $retval = $redis->hMset($cacheKey, $value);
-		} 
-		
+		$this->storeRedis();
 	}
 
 	/*
@@ -83,6 +57,7 @@ class URLTrackGAModel extends Eloquent {
 	*/
 	public function deleteItem($id){
 		URLTrackGAModel::find($id)->delete();
+		$this->storeRedis();
 	}
 
 	/*
@@ -92,5 +67,16 @@ class URLTrackGAModel extends Eloquent {
 	public function getAll(){
 		$results = URLTrackGAModel::all();
 		return $results;
+	}
+
+	public function getListActive(){
+		return $this->select('id', 'url', 'website', 'amount','run')->where('active', 1)->where('amount', '>', 0)->get();
+	}
+
+	public function storeRedis(){
+		$redis = new RedisBaseModel(Config::get('redis.redis_6.host'), Config::get('redis.redis_6.port'), false);
+		$cacheKey = "URLTrack3rd";
+		$value = json_encode($this->getListActive());					
+	    $retval = $redis->set($cacheKey, $value);
 	}
 }
