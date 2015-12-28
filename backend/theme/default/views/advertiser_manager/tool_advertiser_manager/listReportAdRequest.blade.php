@@ -106,6 +106,9 @@
     	format: 'yyyy-mm-dd',
         todayBtn: "linked"
     });
+    var currentDate = new Date();
+    $('#start_date_range').datepicker('setDate', currentDate);
+    $('#end_date_range').datepicker('setDate', currentDate);
     
     $('#search-website').on('change', function() {
     	console.log($(this).val());
