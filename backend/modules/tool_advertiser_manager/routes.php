@@ -35,6 +35,7 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
     Route::get('/tool/url-track-ga',   array('as' =>  $prefixName.'URLTrackGA', 'uses' =>  $prefixName.'Controller@getUrlTrackGA'));
     Route::get('/tool/edit-url-track/{id}',   array('as' =>  $prefixName.'Edit', 'uses' =>  $prefixName.'Controller@editTrackURL'));
     Route::post('/tool/edit-url-track/{id}',   array('as' =>  $prefixName.'Edit', 'uses' =>  $prefixName.'Controller@editTrackURL'));
+    Route::get('/tool/detail-url-track/{id}',   array('as' =>  $prefixName.'DetailUrlTrack', 'uses' =>  $prefixName.'Controller@detailTrackURL'));
     Route::post('/tool/delete-url-track',       array('as'    =>  $prefixName.'Delete','uses' =>  $prefixName.'Controller@deleteTrackURL'));
     
     //Report ad request
