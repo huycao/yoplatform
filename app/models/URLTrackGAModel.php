@@ -85,7 +85,7 @@ class URLTrackGAModel extends Eloquent {
 	*/
 	public static function sum($id){
 		$result = 0;
-		$redis = new RedisBaseModel(Config::get('redis.redis_6.host'), Config::get('redis.redis_6.port'), false);
+		$redis = new RedisBaseModel(Config::get('redis.redis_3.host'), Config::get('redis.redis_3.port'), false);
 		$cacheKey = "URLTrack3rd.".$id;
 		$result = $redis->get($cacheKey);
 		return $result;
