@@ -548,6 +548,20 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController
         
     }
 
+    /*
+     * Track URL Detail
+    */
+    public function detailTrackURL($id){
+        $urlTrackGA = new URLTrackGAModel;
+        $this->data['id'] = $id;
+        if(Request::isMethod('GET')){
+            $this->data['lists'] = $urlTrackGA->getListTrackURL($id, Request::all());    
+        }else{
+            $this->data['lists'] = $urlTrackGA->getListTrackURL($id);
+        }
+        $this->layout->content = View::make('detailTrackGA', $this->data);
+    }
+    
 
     /*
     * Report Ad Request 
