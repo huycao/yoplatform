@@ -13,6 +13,7 @@
                <th>URL</th>
                <th>Amount</th>
                <th>Total</th>
+               <th>Day Total</th>
                <th>Active</th>
                <th>Run</th>
                 <th><a href="javascript:;">Action</a></th>
@@ -27,6 +28,7 @@
                     <td width="300px">{{ $item->url }}</td>
                     <td>{{ $item->amount }}</td>
                     <td>{{ URLTrackGAModel::sum($item->id)}}</td>
+                    <td>{{ URLTrackGAModel::sum($item->id . "." .date('Ymd'))}}</td>
                     <td>{{ ($item->active == 1) ? 'active' : 'inactive' }}</td>
                     <td>{{ $item->run }}</td>
                     <td>

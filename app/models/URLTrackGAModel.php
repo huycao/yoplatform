@@ -74,7 +74,7 @@ class URLTrackGAModel extends Eloquent {
 	}
 
 	public function storeRedis(){
-		$redis = new RedisBaseModel(Config::get('redis.redis_6.host'), Config::get('redis.redis_6.port'), false);
+		$redis = new RedisBaseModel(Config::get('redis.redis_3.host'), Config::get('redis.redis_3.port'), false);
 		$cacheKey = "URLTrack3rd";
 		$value = $this->getListActive();					
 	    $retval = $redis->set($cacheKey, $value);
@@ -95,7 +95,7 @@ class URLTrackGAModel extends Eloquent {
 	* getListTrackURL
 	*/
 	public function getListTrackURL($id, $inputs=''){
-		$redis = new RedisBaseModel(Config::get('redis.redis_6.host'), Config::get('redis.redis_6.port'), false);
+		$redis = new RedisBaseModel(Config::get('redis.redis_3.host'), Config::get('redis.redis_3.port'), false);
 		$cacheKey = "URLTrack3rd.".$id;
 		
 		$data = array();
@@ -109,13 +109,13 @@ class URLTrackGAModel extends Eloquent {
 
 		if(URLTrackGAModel::sum($id)>0){
 			while(strtotime($end) >= $start){
-				$total = $credis->get($cacheKey.".".date('Ymd', strtotime($end)));
+				$total = $redis->get($cacheKey.".".date('Ymd', strtotime($end)));
 				if($total > 0){
 					$item['date'] = $end;
 					$item['total'] = $total;	
 					$data[] = $item;
 				}
-				$end = date('Y-m-d', "-1 day", strtotime($end));
+				$end = date('Y-m-d', strtotime("-1 day" .$end));
 			}
 		}
 		return $data;
