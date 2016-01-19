@@ -27,7 +27,14 @@
                             $campaindata = $flight->campaign;
                             $status = $flight->getStatusInventory($flight->campaign);
                             $dailyInventory = $flight->getDailyInventory();
-                            $flightInventory = $flight->getTotalInventory();
+                            
+                            
+                            $flightInventory=null;
+                            try{
+                              $flightInventory = $totalInventories[$flight->id];
+                            }catch(Exception $ex){
+                              //echo ($ex);                              
+                            };
 
                             $inventory = $sumFrequency=$sumCTR=$totalInventory = $totalFrequency= $totalCTR=0;
                             $total_inventory = ($flight->cost_type == "cpm") ? $flight->total_inventory *1000 :  $flight->total_inventory;
