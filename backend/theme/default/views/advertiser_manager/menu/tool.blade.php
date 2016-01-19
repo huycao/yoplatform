@@ -19,9 +19,11 @@
                     <li>
                         <a href="{{URL::Route('ToolAdvertiserManagerProfile')}}">My Account</a>
                     </li>
+                    <li>
+                        <a href="{{URL::Route('ToolAdvertiserManagerURLTrackGA')}}">URL Track GA</a>
+                    </li>
                 </ul>
             </li>
-
         </ul>
     </div>
 </div>

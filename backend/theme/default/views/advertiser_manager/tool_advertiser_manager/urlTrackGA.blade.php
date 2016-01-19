@@ -12,6 +12,8 @@
             <tr>
                <th>URL</th>
                <th>Amount</th>
+               <th>Total</th>
+               <th>Day Total</th>
                <th>Active</th>
                <th>Run</th>
                 <th><a href="javascript:;">Action</a></th>
@@ -23,14 +25,19 @@
             @if(sizeof($lists) > 0)
                 @foreach($lists as $item)
                 <tr>
-                    <td>{{ $item->url }}</td>
+                    <td width="300px">{{ $item->url }}</td>
                     <td>{{ $item->amount }}</td>
+                    <td>{{ URLTrackGAModel::sum($item->id)}}</td>
+                    <td>{{ URLTrackGAModel::sum($item->id . "." .date('Ymd'))}}</td>
                     <td>{{ ($item->active == 1) ? 'active' : 'inactive' }}</td>
                     <td>{{ $item->run }}</td>
                     <td>
+                        <a href="/control-panel/advertiser-manager/tool/detail-url-track/{{ $item->id }}" class="btn btn-default btn-sm">
+                            <span class="fa fa-eye"></span> Detail
+                        </a>
                         <a href="/control-panel/advertiser-manager/tool/edit-url-track/{{ $item->id }}" class="btn btn-default btn-sm">
-                        <span class="glyphicon glyphicon-pencil"></span> Edit
-                    </a>
+                            <span class="glyphicon glyphicon-pencil"></span> Edit
+                        </a>
                     <a href="javascript:;" onclick="deleteTrackURL({{ $item->id }})" class="btn btn-default btn-sm">
                         <span class="fa fa-trash-o"></span> Del
                     </a>
@@ -39,7 +46,7 @@
                 @endforeach
                 @else
                 <tr>
-                    <td colspan="5">No data</td>
+                    <td colspan="6">No data</td>
                 </tr>
             @endif
         </tbody>

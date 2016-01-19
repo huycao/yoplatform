@@ -11,10 +11,7 @@
                 @if( isset($validate) && $validate->has('amount')  )
                 <span class="text-warning">{{ $validate->first('amount') }}</span> <br/>
                 @endif
-                
-                @if( isset($validate) && $validate->has('website')  )
-                <span class="text-warning">{{ $validate->first('website') }}</span>
-                @endif
+              
             </div>    
                   
             <div class="row">
@@ -42,7 +39,7 @@
              <div class="row">
                 <div class="col-sm-9">
                     <div class="form-group form-group-sm">
-                        <label class="col-md-2">Website <span class="text-danger">*</span></label>
+                        <label class="col-md-2">Website</label>
                         <div class="col-md-10">
                             <textarea name="website" class="form-control" style="height:100px;">{{ $website or Input::get('website', '') }}</textarea>
                         </div>
