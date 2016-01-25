@@ -683,7 +683,7 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
   }
 
   public function hqShowStats() {
-    $show_type = '';
+    $show_type = 'campaign';
     $inputs = $this->getParameter(Input::get('searchData'));
 
     $campaign_ids = $inputs['campaign'];
@@ -693,15 +693,17 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
     $end = $inputs['end_date_range'];
     $data = null;
     $datas = TrackingSummaryBaseModel::getCampaignSummary($campaign_ids, $flight_ids, $website_ids, $start, $end);
-    if (empty($flight_ids) && empty($website_ids)) {
-      $show_type = 'campaign';
-      $data = $this->calculateCampaignStats($datas);
-    } else if (empty($website_ids)) {
-      $show_type = 'flight';
-      $data = $this->calculateFlightStats($datas);
-    } else {
-      $data = $this->calculateWebsiteStats($datas);
-      $show_type = 'website';
+    if ($datas) {
+      if (empty($flight_ids) && empty($website_ids)) {
+        $show_type = 'campaign';
+        $data = $this->calculateCampaignStats($datas);
+      } else if (empty($website_ids)) {
+        $show_type = 'flight';
+        $data = $this->calculateFlightStats($datas);
+      } else {
+        $data = $this->calculateWebsiteStats($datas);
+        $show_type = 'website';
+      }
     }
     $this->data['data'] = $data;
     return View::make('hqShowStats_' . $show_type, $this->data);
@@ -747,7 +749,7 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
 
       $index++;
     }
-    if (!empty($datas)) {
+    if (!empty($datas) && count($datas)>0) {
       $retval[] = array(
           "campaign_name" => $old_campaign->name,
           "campaign_id" => $old_campaign->id,
@@ -757,6 +759,7 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
           "total_impression" => $total_impression
       );
     }
+    
     return $retval;
   }
 
@@ -797,7 +800,7 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
         $publisher_receive = $item->publisher_base_cost * $item->total_click;
         $advertiser_paid = $item->flight->cost_after_discount * $item->total_click;
       }
-      $website = PublisherSiteBaseModel::where('id',$item->website_id)->select('id','name')->first();
+      $website = PublisherSiteBaseModel::where('id', $item->website_id)->select('id', 'name')->first();
       $retval[] = array(
           "campaign_name" => $item->campaign->name,
           "campaign_id" => $item->campaign->id,

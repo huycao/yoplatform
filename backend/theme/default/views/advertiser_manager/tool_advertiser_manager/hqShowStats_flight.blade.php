@@ -25,17 +25,17 @@
         <tr>
           <td>{{$item['campaign_name']}}</td>
           <td>{{$item['flight_name']}}</td>
-          <td>{{ $item['total_impression'] }}</td>	
-          <td>{{ $item['total_click']}}</td>
-          <td>{{ number_format($item['publisher_receive']) }} VND</td>	
-          <td>{{ number_format($item['advertiser_paid']) }} VND</td>	
+          <td>{{ number_format($item['total_impression']) }}</td> 
+          <td>{{ number_format($item['total_click'])}}</td>
+          <td>{{ number_format($item['publisher_receive']) }} VND</td>  
+          <td>{{ number_format($item['advertiser_paid']) }} VND</td>  
         </tr>
         <?php
       }
     } else {
       ?>
       <tr>
-        <td class="no-data" >{{trans("text.no_data")}}</td>
+        <td class="no-data" colspan="6" >{{trans("text.no_data")}}</td>
       </tr>
     <?php } ?>
   </tbody>
