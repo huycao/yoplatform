@@ -43,4 +43,12 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
     Route::post('/tool/show-report-adrequest',   array('as' =>  $prefixName.'ShowReportAdRequest', 'uses' =>  $prefixName.'Controller@showReportAdRequest'));
     Route::post('/tool/report-adrequest-hour',   array('as' =>  $prefixName.'ReportAdRequestHour', 'uses' =>  $prefixName.'Controller@reportAdRequestHour'));
     Route::post('/tool/get-adzone',   array('as' =>  $prefixName.'GetAdZone', 'uses' =>  $prefixName.'Controller@getAdZone'));
+    
+    /*
+     * Added by Phan Minh Hoàng
+     */
+    Route::get('/tool/stats',   array('as' =>  $prefixName.'stats', 'uses' =>  $prefixName.'Controller@hqStats'));
+    Route::any('/tool/hq-get-flights',   array('as' =>  $prefixName.'HQGetFlights', 'uses' =>  $prefixName.'Controller@hqGetFlights'));
+    Route::any('/tool/hq-get-websites',   array('as' =>  $prefixName.'HQGetWebsites', 'uses' =>  $prefixName.'Controller@hqGetWebsites'));
+    Route::any('/tool/hq-show-stats',array('as'=>$prefixName.'HQShowStats','uses'=>$prefixName.'Controller@hqShowStats'));
 });
