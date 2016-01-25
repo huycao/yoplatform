@@ -697,9 +697,6 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
       if (empty($flight_ids) && empty($website_ids)) {
         $show_type = 'campaign';
         $data = $this->calculateCampaignStats($datas);
-        if((empty($campaign_ids) || count($campaign_ids)<=0) && $data!=null){
-          $data[0]['campaign_name']="All";
-        }
       } else if (empty($website_ids)) {
         $show_type = 'flight';
         $data = $this->calculateFlightStats($datas);
@@ -713,13 +710,7 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
   }
 
   public function calculateCampaignStats($datas) {
-    //var_dump($datas[0]->campaign_id==null);die();
     $retval = [];
-    try{
-      if($datas[0]->campaign_id==null){
-        return null;
-      }
-    }catch(Exception $ex){}
     if (!empty($datas) && count($datas) > 0) {
       $old_campaign = $datas[0]->campaign;
       $publisher_receive = 0;

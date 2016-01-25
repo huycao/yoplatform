@@ -870,12 +870,11 @@ class TrackingSummaryBaseModel extends Eloquent {
       if (!empty($start) && !empty($end)) {
         $query = $query->where('date', '>=', $start)->where('date', '<=', $end);
       }
-      if ($campaign_ids) {
-        $query = $query->groupBy('campaign_id', 'flight_id');
-        if (!empty($website_ids) && count($website_ids) > 0) {
-          $query = $query->groupBy('website_id');
-        }
+      $query = $query->groupBy('campaign_id', 'flight_id');
+      if (!empty($website_ids) && count($website_ids) > 0) {
+        $query = $query->groupBy('website_id');
       }
+
       $data = $query->orderby('campaign_id', 'flight_id', 'website_id')->with("campaign", 'flight')->get();
       return $data;
     }
