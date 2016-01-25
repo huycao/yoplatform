@@ -710,46 +710,49 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
   }
 
   public function calculateCampaignStats($datas) {
-    $old_campaign = null;
-    $publisher_receive = 0;
-    $advertiser_paid = 0;
-    $total_click = 0;
-    $total_impression = 0;
     $retval = [];
-    $index = 0;
-    foreach ($datas as $k => $item) {
-      if ($old_campaign == null || $old_campaign->id != $item->campaign->id) {
-        if ($old_campaign != NULL) {
-          $retval[] = array(
-              "campaign_name" => $old_campaign->name,
-              "campaign_id" => $old_campaign->id,
-              "publisher_receive" => $publisher_receive,
-              "advertiser_paid" => $advertiser_paid,
-              "total_click" => $total_click,
-              "total_impression" => $total_impression
-          );
+    if (!empty($datas) && count($datas) > 0) {
+      $old_campaign = $datas[0]->campaign;
+      $publisher_receive = 0;
+      $advertiser_paid = 0;
+      $total_click = 0;
+      $total_impression = 0;
+      $index = 0;
+      foreach ($datas as $k => $item) {
+        if (!$item->campaign) {
+          continue;
         }
-        $old_campaign = $item->campaign;
-        $publisher_receive = 0;
-        $advertiser_paid = 0;
-        $total_click = 0;
-        $total_impression = 0;
-      }
-      $cost_type = $item->flight->cost_type;
-      if ($cost_type === 'cpm') {
-        $publisher_receive += $item->publisher_base_cost * $item->total_impression;
-        $advertiser_paid += $item->flight->cost_after_discount * $item->total_impression;
-      } else {
-        $publisher_receive += $item->publisher_base_cost * $item->total_click;
-        $advertiser_paid += $item->flight->cost_after_discount * $item->total_click;
-      }
+        if ($old_campaign->id != $item->campaign->id) {
+          if ($old_campaign != NULL) {
+            $retval[] = array(
+                "campaign_name" => $old_campaign->name,
+                "campaign_id" => $old_campaign->id,
+                "publisher_receive" => $publisher_receive,
+                "advertiser_paid" => $advertiser_paid,
+                "total_click" => $total_click,
+                "total_impression" => $total_impression
+            );
+          }
+          $old_campaign = $item->campaign;
+          $publisher_receive = 0;
+          $advertiser_paid = 0;
+          $total_click = 0;
+          $total_impression = 0;
+        }
+        $cost_type = $item->flight->cost_type;
+        if ($cost_type === 'cpm') {
+          $publisher_receive += $item->publisher_base_cost * $item->total_impression;
+          $advertiser_paid += $item->flight->cost_after_discount * $item->total_impression;
+        } else {
+          $publisher_receive += $item->publisher_base_cost * $item->total_click;
+          $advertiser_paid += $item->flight->cost_after_discount * $item->total_click;
+        }
 
-      $total_click+= $item->total_click;
-      $total_impression+= $item->total_impression;
+        $total_click+= $item->total_click;
+        $total_impression+= $item->total_impression;
 
-      $index++;
-    }
-    if (!empty($datas) && count($datas)>0) {
+        $index++;
+      }
       $retval[] = array(
           "campaign_name" => $old_campaign->name,
           "campaign_id" => $old_campaign->id,
@@ -759,7 +762,6 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
           "total_impression" => $total_impression
       );
     }
-    
     return $retval;
   }
 
