@@ -662,13 +662,13 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
    */
 
   public function hqStats() {
-    $this->data['campaigns'] = CampaignAdvertiserManagerModel::lists('name', 'id');
+    $this->data['campaigns'] = CampaignAdvertiserManagerModel::orderBy('name')->lists('name', 'id');
     $this->layout->content = View::make('hqStats', $this->data);
   }
 
   public function hqGetFlights() {
     $campaign_ids = Input::get('campaigns', array());
-    $flights = FlightBaseModel::whereIn('campaign_id', $campaign_ids)->lists('name', 'id');
+    $flights = FlightBaseModel::whereIn('campaign_id', $campaign_ids)->orderBy('name')->lists('name', 'id');
     return Response::json($flights);
   }
 
@@ -680,6 +680,15 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
                     ->groupBy('publisher_site.id')
                     ->select('publisher_site.name as name', 'publisher_site.id as id')->lists('name', 'id');
     return Response::json($websites);
+  }
+
+  function array_sort_by_column(&$arr, $col, $dir = SORT_ASC) {
+    $sort_col = array();
+    foreach ($arr as $key => $row) {
+      $sort_col[$key] = $row[$col];
+    }
+
+    array_multisort($sort_col, $dir, $arr);
   }
 
   public function hqShowStats() {
@@ -705,7 +714,13 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
         $show_type = 'website';
       }
     }
-    $this->data['data'] = $data;
+    $this->array_sort_by_column($data, 'campaign_name', SORT_ASC);
+    $page = Input::get('page', 1);
+    $limit = Input::get('showNumber');
+    $totalItem = count($data);
+    $retval = array_slice($data, ($page - 1) * $limit, $limit);
+    $pager = Paginator::make($retval, $totalItem, $limit);
+    $this->data['data'] = $pager;
     return View::make('hqShowStats_' . $show_type, $this->data);
   }
 
