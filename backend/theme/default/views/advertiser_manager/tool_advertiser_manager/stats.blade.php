@@ -115,7 +115,7 @@
   $('#search-campaign').on('change', function () {
     $.ajax({
       type: "POST",
-      url: "{{URL::Route('ToolAdvertiserManagerHQGetFlights')}}",
+      url: "{{URL::Route('ToolAdvertiserManagerGetFlights')}}",
       data: {campaigns: $(this).val()},
       success: function (data) {
         var options = '';
@@ -131,7 +131,7 @@
   $('#search-flight').on('change', function () {
     $.ajax({
       type: "POST",
-      url: "{{URL::Route('ToolAdvertiserManagerHQGetWebsites')}}",
+      url: "{{URL::Route('ToolAdvertiserManagerGetWebsites')}}",
       data: {flights: $(this).val()},
       success: function (data) {
         var options = '';
@@ -171,7 +171,7 @@
   $().ready(function () {
     pagination.property.searchData = $('.filter-form').serializeArray();
     pagination.init({
-      url: "{{URL::Route('ToolAdvertiserManagerHQShowStats')}}",
+      url: "{{URL::Route('ToolAdvertiserManagerShowStats')}}",
       defaultField: "",
       defaultOrder: "",
     });
