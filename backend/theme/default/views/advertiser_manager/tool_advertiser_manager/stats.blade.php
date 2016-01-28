@@ -45,11 +45,11 @@
           <div class="col-xs-12">
             <table class="table">
               <tr>
-                <td width="35%">
+                <td width="31%">
                   <div class="col-md-12">
                     <span class="lbl">Date</span>
 
-                    <div class="input-daterange input-group col-md-9" id="datepicker" style="float:left">
+                    <div class="input-daterange input-group col-md-12" id="datepicker" style="float:left">
                       <input type="text" class="form-control" name="start_date_range" value=""
                              id="start_date_range">
                       <span class="input-group-addon">to</span>
@@ -59,7 +59,7 @@
                   </div>
 
                 </td>
-                <td width="20%">
+                <td width="23%">
                   <span class="lbl">Campaign</span>
                   <div>
                     <select id="search-campaign" name="campaign" data-placeholder="Select some campaign" class="chosen-select form-control" multiple>  
@@ -70,7 +70,7 @@
                     </select>
                   </div>
                 </td>
-                <td width="20%">
+                <td width="23%">
                   <span class="lbl">Flight</span>
                   <div>
                     <select id="search-flight" name="flight" data-placeholder="Select some flight" class="chosen-select form-control" multiple>  
@@ -78,7 +78,7 @@
                     </select>
                   </div>
                 </td>
-                <td width="15%">
+                <td width="23%">
                   <span class="lbl">Website</span>
                   <div>
                     <select id="search-website" name="webiste" data-placeholder="Select some websites" class="chosen-select form-control" multiple>  
