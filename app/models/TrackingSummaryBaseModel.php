@@ -871,16 +871,12 @@ class TrackingSummaryBaseModel extends Eloquent {
         $query = $query->leftJoin('campaign', 'tracking_summary.campaign_id', '=', 'campaign.id');
         $query = $query->leftJoin('flight', 'tracking_summary.flight_id', '=', 'flight.id');
         $query = $query->leftJoin('publisher_site', 'tracking_summary.website_id', '=', 'publisher_site.id');
-        if (!empty($campaign_ids)) {
-            $query = $query->whereIn('tracking_summary.campaign_id', $campaign_ids);
-        }
-        
+        $query = $query->whereIn('tracking_summary.campaign_id', $campaign_ids);
         if (!empty($flight_ids)) {
             $query = $query->whereIn('tracking_summary.flight_id', $flight_ids);
         }
-        if (!empty($website_ids)) {
-            $query = $query->whereIn('tracking_summary.website_id', $website_ids);
-        }
+        
+        $query = $query->whereIn('tracking_summary.website_id', $website_ids);
         if (!empty($start)) {
             $query = $query->where('tracking_summary.date', '>=', $start);
         }
