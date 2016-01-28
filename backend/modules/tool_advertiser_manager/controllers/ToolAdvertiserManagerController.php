@@ -661,20 +661,19 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
    * @author: Phan Minh Hoàng
    */
 
-  public function hqStats() {
+  public function stats() {
     $this->data['campaigns'] = CampaignAdvertiserManagerModel::orderBy('name')->lists('name', 'id');
-    $this->layout->content = View::make('hqStats', $this->data);
+    $this->layout->content = View::make('stats', $this->data);
   }
 
-  public function hqGetFlights() {
+  public function getFlights() {
     $campaign_ids = Input::get('campaigns', array());
     $flights = FlightBaseModel::whereIn('campaign_id', $campaign_ids)->orderBy('name')->lists('name', 'id');
     return Response::json($flights);
   }
 
-  public function hqGetWebsites() {
+  public function getWebsites() {
     $flight_ids = Input::get('flights', array());
-    //$flights = FlightBaseModel::whereIn('campaign_id',$campaign_ids)->lists('name', 'id');
     $websites = PublisherSiteBaseModel::join('flight_website', 'publisher_site.id', '=', 'flight_website.website_id')
                     ->whereIn('flight_website.flight_id', $flight_ids)
                     ->groupBy('publisher_site.id')
@@ -682,16 +681,7 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
     return Response::json($websites);
   }
 
-  function array_sort_by_column(&$arr, $col, $dir = SORT_ASC) {
-    $sort_col = array();
-    foreach ($arr as $key => $row) {
-      $sort_col[$key] = $row[$col];
-    }
-
-    array_multisort($sort_col, $dir, $arr);
-  }
-
-  public function hqShowStats() {
+  public function showStats() {
     $show_type = 'website';
     $inputs = $this->getParameter(Input::get('searchData'));
 
@@ -715,7 +705,7 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
     if (!empty($paging)) {
       $this->data['paging'] = $paging;
     }
-    return View::make('hqShowStats', $this->data);
+    return View::make('showStats', $this->data);
   }
 
   public function getDataInPaging($data) {
@@ -749,21 +739,24 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
         $retval["{$item->campaign_id}_{$item->website_id}"]['website_id'] = $item->website_id;
         $retval["{$item->campaign_id}_{$item->website_id}"]['campaign_name'] = $item->campaign_name;
         $retval["{$item->campaign_id}_{$item->website_id}"]['website_name'] = $item->website_name;
+        if (!empty($item->ovr)) {
+          $retval["{$item->campaign_id}_{$item->website_id}"]['total_impression_ovr']+= $item->total_impression;
+          $retval["{$item->campaign_id}_{$item->website_id}"]['total_click_ovr'] += $item->total_click;
+        } else {
+          $retval["{$item->campaign_id}_{$item->website_id}"]['total_impression'] += $item->total_impression;
+          $retval["{$item->campaign_id}_{$item->website_id}"]['total_click'] += $item->total_click;
+        }
         if ($item->cost_type === 'cpm') {
           if (!empty($item->ovr)) {
-            $retval["{$item->campaign_id}_{$item->website_id}"]['total_impression_ovr']+= $item->total_impression;
             $retval["{$item->campaign_id}_{$item->website_id}"]['advertiser_paid'] += (round(($item->cost_after_discount * ($item->total_impression/1000))));
           } else {
-            $retval["{$item->campaign_id}_{$item->website_id}"]['total_impression'] += $item->total_impression;
             $retval["{$item->campaign_id}_{$item->website_id}"]['publisher_receive'] += (round(($item->publisher_base_cost * ($item->total_impression/1000))));
             $retval["{$item->campaign_id}_{$item->website_id}"]['advertiser_paid'] += (round(($item->cost_after_discount * ($item->total_impression/1000))));
           }
         } else {
           if (!empty($item->ovr)) {
-            $retval["{$item->campaign_id}_{$item->website_id}"]['total_click_ovr'] += $item->total_click;
             $retval["{$item->campaign_id}_{$item->website_id}"]['advertiser_paid'] += (round(($item->cost_after_discount * $item->total_click)));
           } else {
-            $retval["{$item->campaign_id}_{$item->website_id}"]['total_click'] += $item->total_click;
             $retval["{$item->campaign_id}_{$item->website_id}"]['publisher_receive'] += (round(($item->publisher_base_cost * $item->total_click)));
             $retval["{$item->campaign_id}_{$item->website_id}"]['advertiser_paid'] += (round(($item->cost_after_discount * $item->total_click)));
           }
