@@ -23,6 +23,9 @@
             <a href="{{URL::Route('ToolAdvertiserManagerURLTrackGA')}}">URL Track GA</a>
           </li>
           <li >
+            <a href="{{URL::Route('ToolAdvertiserManagerReportAdRequest')}}">Report Ad Request</a>
+          </li>
+          <li >
             <a href="{{URL::Route('ToolAdvertiserManagerstats')}}">Stats</a>
           </li>
         </ul>

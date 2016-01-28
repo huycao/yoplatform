@@ -112,6 +112,50 @@
   $('#start_date_range').datepicker('setDate', currentDate);
   $('#end_date_range').datepicker('setDate', currentDate);
 
+  var old_start_date = $('#start_date_range').val();
+  $('#start_date_range').change(function(){
+    var new_start_date = $('#start_date_range').val();
+    if (old_start_date != new_start_date) {
+      $.ajax({
+        type: "POST",
+        url: "{{URL::Route('ToolAdvertiserManagerGetCampaigns')}}",
+        data: {start_date: new_start_date, end_date: $('#end_date_range').val()},
+        success: function (data) {
+          var options = '';
+          for (var ad_zone in data) {
+            options += '<option value="' + ad_zone + '">' + data[ad_zone] + '</option>';
+          }
+          updateSelect('#search-campaign', options);
+          updateSelect('#search-flight', '');
+          updateSelect('#search-website', '');
+        }
+      });
+      old_start_date = new_start_date;
+    }
+  });
+
+  var old_end_date = $('#end_date_range').val();
+  $('#end_date_range').change(function(){
+    var new_end_date = $('#end_date_range').val();
+    if (old_end_date != new_end_date) {
+      $.ajax({
+        type: "POST",
+        url: "{{URL::Route('ToolAdvertiserManagerGetCampaigns')}}",
+        data: {start_date: $('#start_date_range').val(), end_date: new_end_date},
+        success: function (data) {
+          var options = '';
+          for (var ad_zone in data) {
+            options += '<option value="' + ad_zone + '">' + data[ad_zone] + '</option>';
+          }
+          updateSelect('#search-campaign', options);
+          updateSelect('#search-flight', '');
+          updateSelect('#search-website', '');
+        }
+      });
+      old_end_date = new_end_date;
+    }
+  });
+  
   $('#search-campaign').on('change', function () {
     $.ajax({
       type: "POST",

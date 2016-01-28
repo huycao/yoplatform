@@ -662,8 +662,18 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
    */
 
   public function stats() {
-    $this->data['campaigns'] = CampaignAdvertiserManagerModel::orderBy('name')->lists('name', 'id');
+    $date = date('Y-m-d');
+    $this->data['campaigns'] = CampaignAdvertiserManagerModel::orderBy('name')->where('end_date', '>=', $date)
+                 ->where('start_date', '<=', $date)->lists('name', 'id');
     $this->layout->content = View::make('stats', $this->data);
+  }
+
+  public function getCampaigns() {
+    $start_date = Input::get('start_date', date('Y-m-d'));
+    $end_date = Input::get('end_date', date('Y-m-d'));
+    $campaigns = CampaignAdvertiserManagerModel::orderBy('name')->where('end_date', '>=', $start_date)
+                 ->where('start_date', '<=', $end_date)->lists('name', 'id');  
+    return Response::json($campaigns);
   }
 
   public function getFlights() {

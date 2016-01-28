@@ -48,7 +48,8 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
      * Added by Phan Minh Hoàng
      */
     Route::get('/tool/stats',   array('as' =>  $prefixName.'stats', 'uses' =>  $prefixName.'Controller@stats'));
-    Route::any('/tool/hq-get-flights',   array('as' =>  $prefixName.'GetFlights', 'uses' =>  $prefixName.'Controller@getFlights'));
-    Route::any('/tool/hq-get-websites',   array('as' =>  $prefixName.'GetWebsites', 'uses' =>  $prefixName.'Controller@getWebsites'));
-    Route::any('/tool/hq-show-stats',array('as'=>$prefixName.'ShowStats','uses'=>$prefixName.'Controller@showStats'));
+    Route::any('/tool/get-campaigns',   array('as' =>  $prefixName.'GetCampaigns', 'uses' =>  $prefixName.'Controller@getCampaigns'));
+    Route::any('/tool/get-flights',   array('as' =>  $prefixName.'GetFlights', 'uses' =>  $prefixName.'Controller@getFlights'));
+    Route::any('/tool/get-websites',   array('as' =>  $prefixName.'GetWebsites', 'uses' =>  $prefixName.'Controller@getWebsites'));
+    Route::any('/tool/show-stats',array('as'=>$prefixName.'ShowStats','uses'=>$prefixName.'Controller@showStats'));
 });
