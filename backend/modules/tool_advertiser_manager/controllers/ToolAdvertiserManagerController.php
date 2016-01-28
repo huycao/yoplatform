@@ -692,7 +692,7 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
   }
 
   public function hqShowStats() {
-    $show_type = 'campaign';
+    $show_type = 'website';
     $inputs = $this->getParameter(Input::get('searchData'));
 
     $campaign_ids = $inputs['campaign'];
@@ -700,137 +700,77 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
     $website_ids = $inputs['webiste'];
     $start = $inputs['start_date_range'];
     $end = $inputs['end_date_range'];
+    $display = Input::get('showNumber', 10);
     $data = null;
-    $datas = TrackingSummaryBaseModel::getCampaignSummary($campaign_ids, $flight_ids, $website_ids, $start, $end);
-    if ($datas) {
-      if (empty($flight_ids) && empty($website_ids)) {
-        $show_type = 'campaign';
-        $data = $this->calculateCampaignStats($datas);
-      } else if (empty($website_ids)) {
-        $show_type = 'flight';
-        $data = $this->calculateFlightStats($datas);
-      } else {
-        $data = $this->calculateWebsiteStats($datas);
-        $show_type = 'website';
-      }
+    $paging = null;
+    $trackingSummaryModel = new TrackingSummaryBaseModel;
+    $paging = $trackingSummaryModel->getPagingData($campaign_ids, $flight_ids, $website_ids, $start, $end, $display);
+    $dataPaging = $this->getDataInPaging($paging);
+    $campaign_ids = $dataPaging['campaign_id'];
+    $website_ids = $dataPaging['website_id'];
+    $data = $trackingSummaryModel->getCampaignSummary($campaign_ids, $flight_ids, $website_ids, $start, $end);
+    $retval = $this->calculateStats($data);  
+
+    $this->data['data'] = $retval;
+    if (!empty($paging)) {
+      $this->data['paging'] = $paging;
     }
-    $this->array_sort_by_column($data, 'campaign_name', SORT_ASC);
-    $page = Input::get('page', 1);
-    $limit = Input::get('showNumber');
-    $totalItem = count($data);
-    $retval = array_slice($data, ($page - 1) * $limit, $limit);
-    $pager = Paginator::make($retval, $totalItem, $limit);
-    $this->data['data'] = $pager;
-    return View::make('hqShowStats_' . $show_type, $this->data);
+    return View::make('hqShowStats', $this->data);
   }
 
-  public function calculateCampaignStats($datas) {
+  public function getDataInPaging($data) {
+    $retval['campaign_id'] = [];
+    $retval['flight_id'] = [];
+    $retval['website_id'] = [];
+    if (!empty($data)) {
+      foreach ($data as $item) {
+        $retval['campaign_id'][] = $item->campaign_id;
+        $retval['flight_id'][] = $item->flight_id;
+        $retval['website_id'][] = $item->website_id;
+      }
+    }
+
+    return $retval;
+  }
+
+  public function calculateStats($data) {
     $retval = [];
-    if (!empty($datas) && count($datas) > 0) {
-      $old_campaign = $datas[0]->campaign;
-      $publisher_receive = 0;
-      $advertiser_paid = 0;
-      $total_click = 0;
-      $total_impression = 0;
-      $index = 0;
-      foreach ($datas as $k => $item) {
-        if (!$item->campaign) {
-          continue;
+    if (!empty($data)) {
+      foreach ($data as $item) {
+        if (empty($retval["{$item->campaign_id}_{$item->website_id}"])) {
+          $retval["{$item->campaign_id}_{$item->website_id}"]['total_impression'] = 0;
+          $retval["{$item->campaign_id}_{$item->website_id}"]['total_impression_ovr'] = 0;
+          $retval["{$item->campaign_id}_{$item->website_id}"]['total_click'] = 0;
+          $retval["{$item->campaign_id}_{$item->website_id}"]['total_click_ovr'] = 0;
+          $retval["{$item->campaign_id}_{$item->website_id}"]['publisher_receive'] = 0;
+          $retval["{$item->campaign_id}_{$item->website_id}"]['advertiser_paid'] = 0;
         }
-        if ($old_campaign->id != $item->campaign->id) {
-          if ($old_campaign != NULL) {
-            $retval[] = array(
-                "campaign_name" => $old_campaign->name,
-                "campaign_id" => $old_campaign->id,
-                "publisher_receive" => $publisher_receive,
-                "advertiser_paid" => $advertiser_paid,
-                "total_click" => $total_click,
-                "total_impression" => $total_impression
-            );
+        $retval["{$item->campaign_id}_{$item->website_id}"]['campaign_id'] = $item->campaign_id;
+        $retval["{$item->campaign_id}_{$item->website_id}"]['website_id'] = $item->website_id;
+        $retval["{$item->campaign_id}_{$item->website_id}"]['campaign_name'] = $item->campaign_name;
+        $retval["{$item->campaign_id}_{$item->website_id}"]['website_name'] = $item->website_name;
+        if ($item->cost_type === 'cpm') {
+          if (!empty($item->ovr)) {
+            $retval["{$item->campaign_id}_{$item->website_id}"]['total_impression_ovr']+= $item->total_impression;
+            $retval["{$item->campaign_id}_{$item->website_id}"]['advertiser_paid'] += (round(($item->cost_after_discount * ($item->total_impression/1000))));
+          } else {
+            $retval["{$item->campaign_id}_{$item->website_id}"]['total_impression'] += $item->total_impression;
+            $retval["{$item->campaign_id}_{$item->website_id}"]['publisher_receive'] += (round(($item->publisher_base_cost * ($item->total_impression/1000))));
+            $retval["{$item->campaign_id}_{$item->website_id}"]['advertiser_paid'] += (round(($item->cost_after_discount * ($item->total_impression/1000))));
           }
-          $old_campaign = $item->campaign;
-          $publisher_receive = 0;
-          $advertiser_paid = 0;
-          $total_click = 0;
-          $total_impression = 0;
-        }
-        $cost_type = $item->flight->cost_type;
-        if ($cost_type === 'cpm') {
-          $publisher_receive += $item->publisher_base_cost * $item->total_impression;
-          $advertiser_paid += $item->flight->cost_after_discount * $item->total_impression;
         } else {
-          $publisher_receive += $item->publisher_base_cost * $item->total_click;
-          $advertiser_paid += $item->flight->cost_after_discount * $item->total_click;
+          if (!empty($item->ovr)) {
+            $retval["{$item->campaign_id}_{$item->website_id}"]['total_click_ovr'] += $item->total_click;
+            $retval["{$item->campaign_id}_{$item->website_id}"]['advertiser_paid'] += (round(($item->cost_after_discount * $item->total_click)));
+          } else {
+            $retval["{$item->campaign_id}_{$item->website_id}"]['total_click'] += $item->total_click;
+            $retval["{$item->campaign_id}_{$item->website_id}"]['publisher_receive'] += (round(($item->publisher_base_cost * $item->total_click)));
+            $retval["{$item->campaign_id}_{$item->website_id}"]['advertiser_paid'] += (round(($item->cost_after_discount * $item->total_click)));
+          }
         }
-
-        $total_click+= $item->total_click;
-        $total_impression+= $item->total_impression;
-
-        $index++;
       }
-      $retval[] = array(
-          "campaign_name" => $old_campaign->name,
-          "campaign_id" => $old_campaign->id,
-          "publisher_receive" => $publisher_receive,
-          "advertiser_paid" => $advertiser_paid,
-          "total_click" => $total_click,
-          "total_impression" => $total_impression
-      );
     }
-    return $retval;
-  }
-
-  public function calculateFlightStats($datas) {
-    $retval = [];
-    foreach ($datas as $k => $item) {
-      $cost_type = $item->flight->cost_type;
-      if ($cost_type === 'cpm') {
-        $publisher_receive = $item->publisher_base_cost * $item->total_impression;
-        $advertiser_paid = $item->flight->cost_after_discount * $item->total_impression;
-      } else {
-        $publisher_receive = $item->publisher_base_cost * $item->total_click;
-        $advertiser_paid = $item->flight->cost_after_discount * $item->total_click;
-      }
-
-      $retval[] = array(
-          "campaign_name" => $item->campaign->name,
-          "campaign_id" => $item->campaign->id,
-          "flight_name" => $item->flight->name,
-          "flight_id" => $item->flight->id,
-          "publisher_receive" => $publisher_receive,
-          "advertiser_paid" => $advertiser_paid,
-          "total_click" => $item->total_click,
-          "total_impression" => $item->total_impression
-      );
-    }
-    return $retval;
-  }
-
-  public function calculateWebsiteStats($datas) {
-    $retval = [];
-    foreach ($datas as $k => $item) {
-      $cost_type = $item->flight->cost_type;
-      if ($cost_type === 'cpm') {
-        $publisher_receive = $item->publisher_base_cost * $item->total_impression;
-        $advertiser_paid = $item->flight->cost_after_discount * $item->total_impression;
-      } else {
-        $publisher_receive = $item->publisher_base_cost * $item->total_click;
-        $advertiser_paid = $item->flight->cost_after_discount * $item->total_click;
-      }
-      $website = PublisherSiteBaseModel::where('id', $item->website_id)->select('id', 'name')->first();
-      $retval[] = array(
-          "campaign_name" => $item->campaign->name,
-          "campaign_id" => $item->campaign->id,
-          "flight_name" => $item->flight->name,
-          "flight_id" => $item->flight->id,
-          "website_name" => $website->name,
-          "website_id" => $website->id,
-          "publisher_receive" => $publisher_receive,
-          "advertiser_paid" => $advertiser_paid,
-          "total_click" => $item->total_click,
-          "total_impression" => $item->total_impression
-      );
-    }
+    
     return $retval;
   }
 

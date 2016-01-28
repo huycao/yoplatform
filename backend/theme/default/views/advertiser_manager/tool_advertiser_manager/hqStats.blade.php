@@ -113,7 +113,6 @@
   $('#end_date_range').datepicker('setDate', currentDate);
 
   $('#search-campaign').on('change', function () {
-    console.log($(this).val());
     $.ajax({
       type: "POST",
       url: "{{URL::Route('ToolAdvertiserManagerHQGetFlights')}}",
@@ -122,16 +121,14 @@
         var options = '';
         for (var ad_zone in data) {
           options += '<option value="' + ad_zone + '">' + data[ad_zone] + '</option>';
-          $('#search-flight').html(options);
-          $('#search-flight').trigger("chosen:updated");
         }
-
+        updateSelect('#search-flight', options);
+        updateSelect('#search-website', '');
       }
     });
   });
 
   $('#search-flight').on('change', function () {
-    console.log($(this).val());
     $.ajax({
       type: "POST",
       url: "{{URL::Route('ToolAdvertiserManagerHQGetWebsites')}}",
@@ -140,10 +137,8 @@
         var options = '';
         for (var ad_zone in data) {
           options += '<option value="' + ad_zone + '">' + data[ad_zone] + '</option>';
-          $('#search-website').html(options);
-          $('#search-website').trigger("chosen:updated");
         }
-
+        updateSelect('#search-website', options);
       }
     });
   });
@@ -158,9 +153,12 @@
   for (var selector in config) {
     $(selector).chosen(config[selector]);
   }
+
+  function updateSelect(object, option) {
+    $(object).html(option);
+    $(object).trigger("chosen:updated");
+  }
 </script>
-<div id="loadSelectModal">
-</div>
 
 <div class="row">
   <div class="col-xs-12">

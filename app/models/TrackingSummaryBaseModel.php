@@ -852,30 +852,78 @@ class TrackingSummaryBaseModel extends Eloquent {
     return $query;
   }
 
-  static function getCampaignSummary($campaign_ids, $flight_ids, $website_ids, $start, $end) {
-    $query = TrackingSummaryBaseModel::select(
-                    'tracking_summary.campaign_id', 'tracking_summary.flight_id', 'tracking_summary.website_id', 'tracking_summary.publisher_base_cost', DB::raw('SUM(impression) as total_impression'), DB::raw('SUM(click) as total_click')
-    );
+    public function getCampaignSummary($campaign_ids, $flight_ids, $website_ids, $start, $end, $display=10) {
+        $query = $this;
+        $arrSelect = [
+            'tracking_summary.campaign_id',
+            'campaign.name as campaign_name',
+            'tracking_summary.flight_id',
+            'tracking_summary.publisher_base_cost',
+            'tracking_summary.website_id',
+            'tracking_summary.ovr',
+            'flight.cost_type',
+            'flight.cost_after_discount',
+            'flight.name as flight_name',
+            'publisher_site.name as website_name',
+            DB::raw('SUM(impression) as total_impression'),
+            DB::raw('SUM(click) as total_click')
+        ];
+        $query = $query->leftJoin('campaign', 'tracking_summary.campaign_id', '=', 'campaign.id');
+        $query = $query->leftJoin('flight', 'tracking_summary.flight_id', '=', 'flight.id');
+        $query = $query->leftJoin('publisher_site', 'tracking_summary.website_id', '=', 'publisher_site.id');
+        if (!empty($campaign_ids)) {
+            $query = $query->whereIn('tracking_summary.campaign_id', $campaign_ids);
+        }
+        
+        if (!empty($flight_ids)) {
+            $query = $query->whereIn('tracking_summary.flight_id', $flight_ids);
+        }
+        if (!empty($website_ids)) {
+            $query = $query->whereIn('tracking_summary.website_id', $website_ids);
+        }
+        if (!empty($start)) {
+            $query = $query->where('tracking_summary.date', '>=', $start);
+        }
+        if (!empty($end)) {
+            $query = $query->where('tracking_summary.date', '<=', $end);
+        }
+        $query = $query->where('tracking_summary.campaign_id', '>', 0);
+        $query = $query->where('tracking_summary.flight_id', '>', 0);
+        $query = $query->where('tracking_summary.website_id', '>', 0);
+        $query = $query->select($arrSelect);
+        $query = $query->orderBy('tracking_summary.campaign_id', 'asc');
+        $query = $query->orderBy('tracking_summary.website_id', 'asc');
+        $query = $query->groupBy('tracking_summary.campaign_id', 'tracking_summary.flight_id', 'tracking_summary.website_id', 'tracking_summary.publisher_base_cost', 'tracking_summary.ovr');
+        $retval = $query->get();
 
-    if (!empty($campaign_ids) && count($campaign_ids) > 0) {
-      $query = $query->whereIn('campaign_id', $campaign_ids);
-    }
-    if (!empty($flight_ids) && count($flight_ids) > 0) {
-      $query = $query->whereIn('flight_id', $flight_ids);
-    }
-    if (!empty($website_ids) && count($website_ids) > 0) {
-      $query = $query->whereIn('website_id', $website_ids);
-    }
-    if (!empty($start) && !empty($end)) {
-      $query = $query->where('date', '>=', $start)->where('date', '<=', $end);
-    }
-    $query = $query->groupBy('campaign_id', 'flight_id');
-    if (!empty($website_ids) && count($website_ids) > 0) {
-      $query = $query->groupBy('website_id');
+        return $retval;
     }
 
-    $data = $query->orderby('campaign_id', 'flight_id', 'website_id')->with("campaign", 'flight')->get();
-    return $data;
-  }
+    public function getPagingData($campaign_ids = array(), $flight_ids = array(), $website_ids = array(), $start, $end, $display = 10) {
+        $query = $this;
+        if (!empty($campaign_ids)) {
+            $query = $query->whereIn('campaign_id', $campaign_ids);
+        }
+        if (!empty($flight_ids)) {
+            $query = $query->whereIn('flight_id', $flight_ids);
+        }
+        if (!empty($website_ids)) {
+            $query = $query->whereIn('website_id', $website_ids);
+        }
+        if (!empty($start)) {
+            $query = $query->where('date', '>=', $start);
+        }
+        if (!empty($end)) {
+            $query = $query->where('date', '<=', $end);
+        }
+        $query = $query->where('campaign_id', '>', 0);
+        $query = $query->where('flight_id', '>', 0);
+        $query = $query->where('website_id', '>', 0);
+        $query = $query->select('campaign_id', 'flight_id', 'website_id');
+        $query = $query->orderBy('campaign_id', 'asc');
+        $query = $query->orderBy('website_id', 'asc');
+        $retval = $query->groupBy('campaign_id', 'website_id')->paginate($display);
 
+        return $retval;
+    }
 }
