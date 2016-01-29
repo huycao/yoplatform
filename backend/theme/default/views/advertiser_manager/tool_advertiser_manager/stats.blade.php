@@ -83,7 +83,6 @@
                   <div>
                     <select id="search-website" name="webiste" data-placeholder="Select some websites" class="chosen-select form-control" multiple>  
                       <option value=""></option>
-
                     </select>
                   </div>
                 </td>
@@ -96,6 +95,7 @@
         <div class="col-md-12">
           <div class="">
             <button type="submit" class="btn btn-sm btn-default filter-button">Report</button>
+            <button type="button" class="btn btn-sm btn-default filter-button" id="btnGetReportExport" onclick="getExport()">Export</button>
           </div>
         </div>
       </div>
@@ -201,6 +201,12 @@
   function updateSelect(object, option) {
     $(object).html(option);
     $(object).trigger("chosen:updated");
+  }
+
+  function getExport() {
+      var searchData = $('.filter-form').serialize();
+      var url = '{{URL::Route('ToolAdvertiserManagerExportStats')}}?' + searchData;
+      window.location = url;
   }
 </script>
 

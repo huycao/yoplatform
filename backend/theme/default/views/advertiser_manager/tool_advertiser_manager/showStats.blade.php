@@ -38,13 +38,13 @@
                   <span style="color: blue;">({{number_format($item['total_click_ovr'])}})</span>
               @endif
             </td>
-            <td>{{ number_format($item['publisher_receive']) }} VND</td>  
-            <td>{{ number_format($item['advertiser_paid']) }} VND</td>  
+            <td>{{ number_format($item['publisher_receive']) }}</td>  
+            <td>{{ number_format($item['advertiser_paid']) }}</td>  
           </tr>
         @endforeach
       @else
         <tr>
-          <td class="no-data" colspan="7" >{{trans("text.no_data")}}</td>
+          <td class="no-data" colspan="6" >{{trans("text.no_data")}}</td>
         </tr>
       @endif
     </tbody>

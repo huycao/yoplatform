@@ -52,4 +52,5 @@ Route::group(array('before' => 'basicAuth', 'prefix'    => Config::get('backend.
     Route::any('/tool/get-flights',   array('as' =>  $prefixName.'GetFlights', 'uses' =>  $prefixName.'Controller@getFlights'));
     Route::any('/tool/get-websites',   array('as' =>  $prefixName.'GetWebsites', 'uses' =>  $prefixName.'Controller@getWebsites'));
     Route::any('/tool/show-stats',array('as'=>$prefixName.'ShowStats','uses'=>$prefixName.'Controller@showStats'));
+    Route::any('/tool/export-stats',   array('as' =>  $prefixName.'ExportStats', 'uses' =>  $prefixName.'Controller@exportStats'));
 });

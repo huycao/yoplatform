@@ -692,7 +692,6 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
   }
 
   public function showStats() {
-    $show_type = 'website';
     $inputs = $this->getParameter(Input::get('searchData'));
 
     $campaign_ids = $inputs['campaign'];
@@ -708,7 +707,7 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
     $dataPaging = $this->getDataInPaging($paging);
     $campaign_ids = $dataPaging['campaign_id'];
     $website_ids = $dataPaging['website_id'];
-    $data = $trackingSummaryModel->getCampaignSummary($campaign_ids, $flight_ids, $website_ids, $start, $end);
+    $data = $trackingSummaryModel->getCampaignSummary($campaign_ids, $flight_ids, $website_ids, $start, $end, 'report');
     $retval = $this->calculateStats($data);  
 
     $this->data['data'] = $retval;
@@ -716,6 +715,30 @@ class ToolAdvertiserManagerController extends AdvertiserManagerController {
       $this->data['paging'] = $paging;
     }
     return View::make('showStats', $this->data);
+  }
+
+  public function exportStats() {
+    $campaign_ids = Input::get('campaign_id', array());
+    $flight_ids = Input::get('flight_id', array());
+    $website_ids = Input::get('website_id', array());
+    $start = Input::get('start_date_range');
+    $end = Input::get('end_date_range');
+    $data = null;
+    $trackingSummaryModel = new TrackingSummaryBaseModel;
+    $data = $trackingSummaryModel->getCampaignSummary($campaign_ids, $flight_ids, $website_ids, $start, $end, 'export');
+    $retval['data'] = $this->calculateStats($data);
+    $retval['start_date'] = date('d/m/Y', strtotime($start));
+    $retval['end_date'] = date('d/m/Y', strtotime($end));
+    $excel = Excel::create('stats_' . date('YmdHis'));
+    $excel->sheet('Report Summary', function($sheet) use($retval) {
+      $sheet->loadView('exportStats', $retval);
+      $sheet->setColumnFormat(array(
+          'E' => '#,##0',
+          'F' => '#,##0',
+      ));
+      $sheet->setBorder('A2:F' . (count($retval['data'])+2), 'thin');
+      $sheet->setAutoSize(true);
+    })->export('xls');
   }
 
   public function getDataInPaging($data) {

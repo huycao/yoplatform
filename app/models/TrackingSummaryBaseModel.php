@@ -852,7 +852,7 @@ class TrackingSummaryBaseModel extends Eloquent {
     return $query;
   }
 
-    public function getCampaignSummary($campaign_ids, $flight_ids, $website_ids, $start, $end, $display=10) {
+    public function getCampaignSummary($campaign_ids, $flight_ids, $website_ids, $start, $end, $type = 'report') {
         $query = $this;
         $arrSelect = [
             'tracking_summary.campaign_id',
@@ -871,12 +871,21 @@ class TrackingSummaryBaseModel extends Eloquent {
         $query = $query->leftJoin('campaign', 'tracking_summary.campaign_id', '=', 'campaign.id');
         $query = $query->leftJoin('flight', 'tracking_summary.flight_id', '=', 'flight.id');
         $query = $query->leftJoin('publisher_site', 'tracking_summary.website_id', '=', 'publisher_site.id');
-        $query = $query->whereIn('tracking_summary.campaign_id', $campaign_ids);
+        if ($type == 'report') {
+          $query = $query->whereIn('tracking_summary.campaign_id', $campaign_ids);
+          $query = $query->whereIn('tracking_summary.website_id', $website_ids);
+        } else {
+          if (!empty($campaign_ids)) {
+            $query = $query->whereIn('tracking_summary.campaign_id', $campaign_ids);
+          }
+          if (!empty($website_ids)) {
+            $query = $query->whereIn('tracking_summary.website_id', $website_ids);
+          }
+        }
+        
         if (!empty($flight_ids)) {
             $query = $query->whereIn('tracking_summary.flight_id', $flight_ids);
         }
-        
-        $query = $query->whereIn('tracking_summary.website_id', $website_ids);
         if (!empty($start)) {
             $query = $query->where('tracking_summary.date', '>=', $start);
         }
