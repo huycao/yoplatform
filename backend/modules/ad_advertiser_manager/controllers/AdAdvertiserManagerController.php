@@ -180,6 +180,7 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
                 'display_type'           => Input::get('display_type'),
                 'bar_height'             => Input::get('bar_height'),
                 'vast_include'           => Input::get('vast_include', 0),
+                'vpaid'           => Input::get('vpaid', 0),
                 'audience_id'            => Input::get('audience_id',0),
                 'position'            => Input::get('position')
             );
@@ -240,11 +241,13 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
             if ($updateData['ad_type'] == 'html') {
                 $mime = 'text/html';
             } else {
-                if (!empty($updateData['source_url'])) {
-                    $ch = curl_init($updateData['source_url']);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_exec($ch);
-                    $mime = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+                if ($updateData['ad_type'] != 'video' || empty($updateData['vpaid'])) {
+                    if (!empty($updateData['source_url'])) {
+                        $ch = curl_init($updateData['source_url']);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        curl_exec($ch);
+                        $mime = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+                    }
                 }
             }
             $updateData['mime'] = $mime;
@@ -410,6 +413,7 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
         $newItem->html_source = $item->html_source;
         $newItem->display_type = $item->display_type;
         $newItem->vast_include= $item->vast_include;
+        $newItem->vpaid= $item->vpaid;
         $newItem->save();
         (new Delivery())->renewCache('ad', $newItem->id);
         return Redirect::to($this->moduleURL . 'show-list');

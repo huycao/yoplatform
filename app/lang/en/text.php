@@ -201,4 +201,5 @@ return array(
     'add'    =>  'Add',
 	'vast_include' => 'Vast Include',
     'position'          =>  'Position',
+    'vpaid' => 'Vpaid',
 );

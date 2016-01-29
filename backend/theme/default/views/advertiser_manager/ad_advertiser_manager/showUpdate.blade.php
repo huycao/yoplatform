@@ -463,7 +463,25 @@
                 	{{ Form::checkbox('vast_include', 1, $checked, array('id'=>'vast_inclue'))}}
                 	<label class="mgr20" for="vast_inclue"> Yes </label>
              	</div>
-    		</div>
+    		  </div>
+        </div>
+        <!-- VPAID -->
+        <div class="form-group form-group-sm">
+          <label class="col-md-2">{{trans('text.vpaid')}}</label>
+          <div class="col-md-6">
+              <div class="checkbox checkbox-info checkbox-inline">
+                <?php 
+                    if (isset($item->vpaid)) {
+                        $checked = $item->vpaid;
+                    } else {
+                        $checked = Input::get('vpaid', 0);
+                    }
+                    
+                ?>
+                  {{ Form::checkbox('vpaid', 1, $checked, array('id'=>'vpaid'))}}
+                  <label class="mgr20" for="vpaid"> Yes </label>
+              </div>
+          </div>
         </div>
         <!-- VIDEO BITRATE -->
         <div class="form-group form-group-sm ad-info">

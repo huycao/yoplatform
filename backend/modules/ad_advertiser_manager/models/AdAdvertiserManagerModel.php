@@ -46,6 +46,7 @@ class AdAdvertiserManagerModel extends AdBaseModel {
         'display_type',
 		'bar_height',
         'vast_include',
+        'vpaid',
         'audience_id',
         'position',
         'mime'
