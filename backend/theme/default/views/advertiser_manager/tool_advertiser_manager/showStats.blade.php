@@ -3,12 +3,6 @@
 </div>
 <div class="box mb12">
   <table class="table table-striped table-hover table-condensed">
-    <colgroup>
-      <col >
-      <col >
-      <col >
-      <col >
-    </colgroup>
     <thead>
       <tr>
         <th>Campaign</th>
