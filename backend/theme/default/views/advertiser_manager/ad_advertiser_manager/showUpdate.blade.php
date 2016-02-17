@@ -818,7 +818,7 @@
       var mobile_app = getMobileAppFormat();
       var no_mobile_app = getNoMobileAppFormat();
       $('#ad_format_id')[0].selectize.clearOptions();
-      if ($('#platform_pc').is(':checked') || $('#platform_mobile').is(':checked')) {
+      if ($('#platform_pc').is(':checked') || $('#platform_mobile').is(':checked') || $('#platform_mobile_android').is(':checked') || $('#platform_mobile_ios').is(':checked')) {
         addOption($('#ad_format_id'), no_mobile_app);
       } else {
         removeOption($('#ad_format_id'), no_mobile_app);
