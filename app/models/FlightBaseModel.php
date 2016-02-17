@@ -397,11 +397,19 @@ class FlightBaseModel extends Eloquent {
   }
 
   function getProcess() {
-    $TrackingInventory = new TrackingInventory;
-    $event = Tracking::getTrackingEventType($this->cost_type);
-    $flightInventoryAllTime = $TrackingInventory->getTotalInventory($this->id, $event);
+    $flightInventoryAllTime = 0;
     $rate = $this->cost_type == 'cpm' ? 1000 : 1;
-    $flightInventory = $this->total_inventory * $rate;
+    $flightInventory = $this->total_inventory * $rate + $this->value_added * $rate;
+    $TrackingSummaryBaseModel = new TrackingSummaryBaseModel();
+    $rs = $TrackingSummaryBaseModel->getFlightSummaryByID($this->id);
+    if (!empty($rs)) {
+      if ($this->cost_type == 'cpm') {
+        $flightInventoryAllTime = $rs['total_impression'] + $rs['total_impression_over'];
+      } else {
+        $flightInventoryAllTime = $rs['total_click'] + $rs['total_click_over'];
+      }
+    }
+
     if ($flightInventory == 0) {
       return 0;
     } else {
@@ -410,9 +418,9 @@ class FlightBaseModel extends Eloquent {
   }
 
   function getProcessDate() {
-    $TrackingInventory = new TrackingInventory;
+    $RawTrackingSummarry = new RawTrackingSummary;
     $event = Tracking::getTrackingEventType($this->cost_type);
-    $flightInventoryAllTime = $TrackingInventory->getTotalInventory($this->id, $event);
+    $flightInventoryAllTime = $RawTrackingSummarry->getTotalInventory($this->id, $event);
     $rate = $this->cost_type == 'cpm' ? 1000 : 1;
     $flightInventory = $this->total_inventory * $rate;
     if ($flightInventory == 0) {
