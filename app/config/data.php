@@ -60,9 +60,11 @@ return array(
         'impression'   =>  'Impression'
     ),
     'platform'  => array(
-        'pc'           =>  'PC',
-        'mobile'       =>  'Mobile',
-        'mobile_app'   =>  'Mobile App'
+        'pc'            =>  'PC',
+        'mobile'        =>  'Mobile',
+        'mobile_android'=>  'Mobile Android',
+        'mobile_ios'    =>  'Mobile IOS',
+        'mobile_app'    =>  'Mobile App'
     ),
     'ad_format_type'  => array(
         'static'           =>  'Static',

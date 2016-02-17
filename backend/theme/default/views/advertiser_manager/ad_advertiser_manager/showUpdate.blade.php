@@ -29,7 +29,7 @@
             <!-- Platform -->
             <div class="form-group form-group-sm">
             	<label class="col-md-2">{{trans('text.platform')}}</label>
-            	<div class="col-md-6">
+            	<div class="col-md-8">
                 	<div class="checkbox checkbox-info checkbox-inline">
                     	{{ Form::checkbox('selectAll', '', false, array('id'=>"select-all"))}}
                     	<label class="mgr20" for="select-all"> All </label>
