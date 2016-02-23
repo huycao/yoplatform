@@ -25,8 +25,16 @@ class PaymentRequestDetailBaseModel extends Eloquent {
             // Call them separately
             $excel->setDescription('Publisher payment request');
         });
-        $excel->sheet('PaymentRequest', function($sheet) use($data) {
+        $excel->sheet('Công Ty', function($sheet) use($data) {
             $sheet->loadView('advertiser_manager.publisher_advertiser_manager.reportPaymentRequest', $data);
+            $sheet->setColumnFormat(array(
+                'C' => '#,##0',
+                'D' => '#,##0',
+                'E' => '#,##0'
+            ));                     
+        });
+        $excel->sheet('Cá Nhân', function($sheet) use($data) {
+            $sheet->loadView('advertiser_manager.publisher_advertiser_manager.reportPaymentRequestPersonal', $data);
             $sheet->setColumnFormat(array(
                 'C' => '#,##0',
                 'D' => '#,##0',

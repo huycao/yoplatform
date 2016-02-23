@@ -146,6 +146,28 @@
                   </div>
               </div>
             </div>
+
+            <!-- DISPLAY TYPE -->
+            <div class="form-group form-group-sm ad-info">
+              <label class="col-md-2 html-format">{{trans('text.display_type')}}</label>
+              <div class="col-md-1">
+                  <div class="radio input-sm">
+                      <div class="radio radio-info radio-inline">
+                        {{ Form::radio('display_type','inpage', 'inpage' == Input::get('inpage','inpage') || (!empty($item->display_type) && 'inpage' == $item->display_type) ,array("id"=>"display-type-inpage"))}}
+                        <label for="display-type-inpage"> Inpage </label>
+                      </div>
+                  </div>
+            </div>
+              <div class="col-md-1">
+                  <div class="radio input-sm">
+                      <div class="radio radio-info radio-inline">
+                        {{ Form::radio('display_type','popup', 'popup' == Input::get('display_type') || (!empty($item->display_type) && 'popup' == $item->display_type) ,array("id"=>"display-type-popup"))}}
+                        <label for="display-type-popup"> Popup </label>
+                      </div>
+                  </div>
+            </div>
+            </div>
+
             <!-- TYPE -->
             <div class="form-group form-group-sm ad-info">
               	<label class="col-md-2 no-html-format">{{trans('text.source_type')}}</label>
@@ -170,44 +192,41 @@
                  	</div>
               	</div>
             </div>
-            
-            <!-- DISPLAY TYPE -->
-            <div class="form-group form-group-sm ad-info">
-            	<label class="col-md-2 html-format">{{trans('text.display_type')}}</label>
-            	<div class="col-md-1">
-               		<div class="radio input-sm">
-                  		<div class="radio radio-info radio-inline">
-                     		{{ Form::radio('display_type','inpage', 'inpage' == Input::get('inpage','inpage') || (!empty($item->display_type) && 'inpage' == $item->display_type) ,array("id"=>"display-type-inpage"))}}
-                     		<label for="display-type-inpage"> Inpage </label>
-                  		</div>
-               		</div>
-        		</div>
-            	<div class="col-md-1">
-               		<div class="radio input-sm">
-                  		<div class="radio radio-info radio-inline">
-                     		{{ Form::radio('display_type','popup', 'popup' == Input::get('display_type') || (!empty($item->display_type) && 'popup' == $item->display_type) ,array("id"=>"display-type-popup"))}}
-                     		<label for="display-type-popup"> Popup </label>
-                  		</div>
-               		</div>
-        		</div>
-            </div>
-            
+
             <div id="source_image" class="show ad-info">
-              	<!-- SOURCE URL -->
-              	<div class="form-group form-group-sm ad-info no-html-format">
-                 	<label class="col-md-2 no-html-format">{{trans('text.source_url')}}</label>
-                 	<div class="col-md-4">
-                    	<input type="text" class="form-control" id="source_url" value="{{{ $item->source_url or Input::get('source_url') }}}" name="source_url">
-                 	</div>
-              	</div>
-              	<!-- SOURCE URL -->
-              	<div class="form-group form-group-sm ad-info">
-                 	<label class="col-md-2 no-html-format">{{trans('text.source_url2')}}</label>
-                 	<div class="col-md-4">
-                    	<input type="text" class="form-control" id="source_url2" value="{{{ $item->source_url2 or Input::get('source_url2') }}}" name="source_url2">
-                 	</div>
-             	 </div>
+                <!-- SOURCE URL -->
+                <div class="form-group form-group-sm ad-info no-html-format">
+                  <label class="col-md-2 no-html-format">{{trans('text.source_url')}}</label>
+                  <div class="col-md-4">
+                      <input type="text" class="form-control" id="source_url" value="{{{ $item->source_url or Input::get('source_url') }}}" name="source_url">
+                  </div>
+                </div>
+                <!-- SOURCE URL -->
+                <div class="form-group form-group-sm ad-info">
+                  <label class="col-md-2 no-html-format">{{trans('text.source_url2')}}</label>
+                  <div class="col-md-4">
+                      <input type="text" class="form-control" id="source_url2" value="{{{ $item->source_url2 or Input::get('source_url2') }}}" name="source_url2">
+                  </div>
+               </div>
             </div>
+
+            <div id="source_image_upload" class="hidden ad-info">
+                <!-- FILE SOURCE URL -->
+                <div class="form-group form-group-sm ad-info no-html-format">
+                  <label class="col-md-2">{{trans('text.upload_source')}}</label>
+                  <div class="col-md-4">
+                      <input type="file" class="form-control" id="file_source_url" name="file_source_url">
+                  </div>
+                </div>
+                <!-- FILE SOURCE URL -->
+                <div class="form-group form-group-sm ad-info">
+                  <label class="col-md-2">{{trans('text.upload_source_2')}}</label>
+                  <div class="col-md-4">
+                      <input type="file" class="form-control" id="file_source_url_2" name="file_source_url_2">
+                  </div>
+                </div>
+            </div>
+
             <!-- HTML SOURCE -->
              <div class="form-group ad-info">
                 <label class="col-md-2 html-format">{{trans('text.html_source')}}</label>
@@ -222,22 +241,7 @@
                 	<input type="file" class="form-control" id="vast_file" name="vast_file">
              	</div>
           	</div>
-            <div id="source_image_upload" class="hidden ad-info">
-              	<!-- FILE SOURCE URL -->
-              	<div class="form-group form-group-sm ad-info no-html-format">
-                 	<label class="col-md-2">{{trans('text.upload_source')}}</label>
-                 	<div class="col-md-4">
-                    	<input type="file" class="form-control" id="file_source_url" name="file_source_url">
-                 	</div>
-              	</div>
-              	<!-- FILE SOURCE URL -->
-              	<div class="form-group form-group-sm ad-info">
-                 	<label class="col-md-2">{{trans('text.upload_source_2')}}</label>
-                 	<div class="col-md-4">
-                    	<input type="file" class="form-control" id="file_source_url_2" name="file_source_url_2">
-                 	</div>
-              	</div>
-            </div>
+            
             <!-- WIDTH -->
             <div class="form-group form-group-sm ad-info">
               	<label class="col-md-2">{{trans('text.width')}}</label>
@@ -794,6 +798,14 @@
         }
    		} else if (value == 'Mobile Pull') {
           showInputMobilePull();
+      } else if (value == 'WAP Inpage Banner') {
+        $("#ad_type_video").parent().parent().parent().hide();
+        $("#ad_type_image").parent().parent().parent().hide();
+        $("#ad_type_flash").parent().parent().parent().hide();
+        $("#ad_type_html").parent().parent().parent().show();
+
+        $(".no-html-format").parent().show();
+        $(".html-format").parent().show();
       } else {
    			$("#ad_type_video").parent().parent().parent().hide();
    			$("#ad_type_image").parent().parent().parent().show();

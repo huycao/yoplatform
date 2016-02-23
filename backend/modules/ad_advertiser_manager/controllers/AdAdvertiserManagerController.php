@@ -242,12 +242,12 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
                 $mime = 'text/html';
             } else {
                 if ($updateData['ad_type'] != 'video' || empty($updateData['vpaid'])) {
-                    if (!empty($updateData['source_url'])) {
+                    /*if (!empty($updateData['source_url'])) {
                         $ch = curl_init($updateData['source_url']);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         curl_exec($ch);
                         $mime = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-                    }
+                    }*/
                 }
             }
             $updateData['mime'] = $mime;
