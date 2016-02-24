@@ -75,7 +75,7 @@
 	if($totalAmount == 0){
 		$vat = 0;
 	}else{
-		$vat = $totalAmount * 10 / 110;
+		$vat = $totalAmount * 10 / 100;
 	}
 	?>
 	<tr>
