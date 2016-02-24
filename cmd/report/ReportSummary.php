@@ -33,33 +33,6 @@ class ReportSummary{
         return $data;
     }
 
-    /*public function updateReportDay($timestamp = ''){
-        set_time_limit(0);
-        $recordUpdated = 0;
-        
-        if(!empty($timestamp)){
-            $arrQuery = array('created_d' => date('Y-m-d', $timestamp));
-            $data = $this->getData($arrQuery);
-        }
-        $recordUpdated = $this->generateSummaryData($data);
-
-        return $recordUpdated;
-    }
-    
-    public function updateReportHour($timestamp){
-        set_time_limit(0);
-        $recordUpdated = 0;
-        
-        if(!empty($timestamp)){
-            $arrQuery = array('created_h' => date('Y-m-d H', $timestamp));
-            $data = $this->getData($arrQuery);
-        }
-
-        $recordUpdated = $this->generateSummaryData($data);
-        return $recordUpdated;
-        
-    }*/
-
     public function getSummaryHourData($timestamp = ''){
         $recordUpdated = 0;
         $dateH = !empty($timestamp) ? date('Y-m-d H', $timestamp) : date('Y-m-d H');
