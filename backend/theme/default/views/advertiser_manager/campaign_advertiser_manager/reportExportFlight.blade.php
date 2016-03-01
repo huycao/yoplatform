@@ -8,6 +8,7 @@ if(!(in_array("Impressions",$filters) === false)){
 if(!(in_array("Clicks",$filters) === false)){
     $colum_number++;
 }
+$colum_number++;
 ?>
 <!DOCTYPE html>
 <html xmlns='http://www.w3.org/1999/xhtml'>
@@ -38,6 +39,7 @@ if(!(in_array("Clicks",$filters) === false)){
                 <th align="center">Unique {{ $filter }}</th>
             @endif
         @endforeach
+        <th align="center">Publisher Receive</th>
 	</tr>
 	<?php
 		$totalInpression = 0;
@@ -68,11 +70,13 @@ if(!(in_array("Clicks",$filters) === false)){
         $sumMuteOver = 0;
         $sumUnmuteOver = 0;
         $sumFullscreenOver = 0;
+
+        $sumPublisherReceive = 0;
 	?>
 	@if( !empty($listFlightTracking[$flight->id]) )
 		<?php $flightTracking = $listFlightTracking[$flight->id] ?>
 		@if( !empty($flightTracking) )
-			@foreach( $flightTracking as $tracking )
+			@foreach( $flightTracking as $date=>$tracking )
 
 			<?php
 				$totalInpression += $tracking['total_impression'];
@@ -89,81 +93,84 @@ if(!(in_array("Clicks",$filters) === false)){
                 $sumUnmute            += $tracking['total_unmute'];
                 $sumFullscreen            += $tracking['total_fullscreen'];
                 
-                $totalInpressionOver += $tracking['total_impression_over'];
-				$totalUniqueImpressionOver += $tracking['total_unique_impression_over'];
-				$totalClickOver += $tracking['total_click_over'];
-                $totalUniqueClickOver += $tracking['total_unique_click_over'];
-                $sumStartOver += $tracking['total_start_over'];
-                $sumFirstquartileOver += $tracking['total_firstquartile_over'];
-                $sumMidpointOver += $tracking['total_midpoint_over'];
-                $sumThirdquartileOver += $tracking['total_thirdquartile_over'];
-                $sumCompleteOver += $tracking['total_complete_over'];
-                $sumPauseOver += $tracking['total_pause_over'];
-                $sumMuteOver += $tracking['total_mute_over'];
-                $sumUnmuteOver += $tracking['total_unmute_over'];
-                $sumFullscreenOver += $tracking['total_fullscreen_over'];
+                $totalInpressionOver += $tracking['total_impression_ovr'];
+				$totalUniqueImpressionOver += $tracking['total_unique_impression_ovr'];
+				$totalClickOver += $tracking['total_click_ovr'];
+                $totalUniqueClickOver += $tracking['total_unique_click_ovr'];
+                $sumStartOver += $tracking['total_start_ovr'];
+                $sumFirstquartileOver += $tracking['total_firstquartile_ovr'];
+                $sumMidpointOver += $tracking['total_midpoint_ovr'];
+                $sumThirdquartileOver += $tracking['total_thirdquartile_ovr'];
+                $sumCompleteOver += $tracking['total_complete_ovr'];
+                $sumPauseOver += $tracking['total_pause_ovr'];
+                $sumMuteOver += $tracking['total_mute_ovr'];
+                $sumUnmuteOver += $tracking['total_unmute_ovr'];
+                $sumFullscreenOver += $tracking['total_fullscreen_ovr'];
+
+                $sumPublisherReceive += $tracking['publisher_receive'];
                 
 				$frequency = 0;
-				$impressionRow = $tracking['total_impression'] + $tracking['total_impression_over'];
-				if( ($tracking['total_unique_impression'] + $tracking['total_unique_impression_over']) != 0 ){
-					$frequency = number_format($impressionRow/($tracking['total_unique_impression'] + $tracking['total_unique_impression_over']), 2);
+				$impressionRow = $tracking['total_impression'] + $tracking['total_impression_ovr'];
+				if( ($tracking['total_unique_impression'] + $tracking['total_unique_impression_ovr']) != 0 ){
+					$frequency = number_format($impressionRow/($tracking['total_unique_impression'] + $tracking['total_unique_impression_ovr']), 2);
 				}
 
 				$ctr = 0;
 				if( $impressionRow != 0 ){
-					$ctr = number_format(($tracking['total_click'] + $tracking['total_click_over'])/$impressionRow*100, 2);
+					$ctr = number_format(($tracking['total_click'] + $tracking['total_click_ovr'])/$impressionRow*100, 2);
 				}
 				
 			?>
 
 			<tr>
-				<td align="center">{{date('d/m/Y', strtotime($tracking['date']))}}</td>
+				<td align="center">{{date('d/m/Y', strtotime($date))}}</td>
 				@foreach($filters as $filter=>$filterName)
                     @if('Impressions' == $filter)
                         <td align="center">{{ $impressionRow }}</td>
-                        <td align="center">{{ $tracking['total_unique_impression'] + $tracking['total_unique_impression_over'] }}</td>
+                        <td align="center">{{ $tracking['total_unique_impression'] + $tracking['total_unique_impression_ovr'] }}</td>
                     @endif
                     @if('Frequency' == $filter)
                         <td align="center">{{ (float) $frequency }}</td>
                     @endif
                     @if('Clicks' == $filter)
-                        <td align="center">{{ $tracking['total_click'] + $tracking['total_click_over'] }}</td>
-                        <td align="center">{{ $tracking['total_unique_click'] + $tracking['total_unique_click_over'] }}</td>
+                        <td align="center">{{ $tracking['total_click'] + $tracking['total_click_ovr'] }}</td>
+                        <td align="center">{{ $tracking['total_unique_click'] + $tracking['total_unique_click_ovr'] }}</td>
                     @endif
                     @if('CTR' == $filter)
                         <td align="center">{{ (float) $ctr }} %</td>
                     @endif
                     @if('Start' == $filter)
-                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_start'] + $tracking['total_start_over']) / $impressionRow * 100, 2) : 0 }}%</td>
+                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_start'] + $tracking['total_start_ovr']) / $impressionRow * 100, 2) : 0 }}%</td>
                     @endif
                     @if('Firstquartile' == $filter)
-                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_firstquartile'] + $tracking['total_firstquartile_over']) / $impressionRow * 100, 2) : 0 }}%</td>
+                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_firstquartile'] + $tracking['total_firstquartile_ovr']) / $impressionRow * 100, 2) : 0 }}%</td>
                     @endif
                     @if('Midpoint' == $filter)
-                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_midpoint'] + $tracking['total_midpoint_over']) / $impressionRow * 100, 2) : 0 }}%</td>
+                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_midpoint'] + $tracking['total_midpoint_ovr']) / $impressionRow * 100, 2) : 0 }}%</td>
                     @endif
                     @if('Thirdquartile' == $filter)
-                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_thirdquartile'] + $tracking['total_thirdquartile_over']) / $impressionRow * 100, 2) : 0 }}%</td>
+                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_thirdquartile'] + $tracking['total_thirdquartile_ovr']) / $impressionRow * 100, 2) : 0 }}%</td>
                     @endif
                     @if('Complete' == $filter)
-                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_complete'] + $tracking['total_complete_over']) / $impressionRow * 100, 2) : 0 }}%</td>
+                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_complete'] + $tracking['total_complete_ovr']) / $impressionRow * 100, 2) : 0 }}%</td>
                     @endif
                     @if('Pause' == $filter)
-                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_pause'] + $tracking['total_pause_over']) / $impressionRow * 100, 2) : 0 }}%</td>
+                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_pause'] + $tracking['total_pause_ovr']) / $impressionRow * 100, 2) : 0 }}%</td>
                     @endif
                     @if('Mute' == $filter)
-                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_mute'] + $tracking['total_mute_over']) / $impressionRow * 100, 2) : 0 }}%</td>
+                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_mute'] + $tracking['total_mute_ovr']) / $impressionRow * 100, 2) : 0 }}%</td>
                     @endif
                     @if('Unmute' == $filter)
-                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_unmute'] + $tracking['total_unmute_over']) / $impressionRow * 100, 2) : 0 }}%</td>
+                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_unmute'] + $tracking['total_unmute_ovr']) / $impressionRow * 100, 2) : 0 }}%</td>
                     @endif
                     @if('Fullscreen' == $filter)
-                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_fullscreen'] + $tracking['total_fullscreen_over']) / $impressionRow * 100, 2) : 0 }}%</td>
+                        <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_fullscreen'] + $tracking['total_fullscreen_ovr']) / $impressionRow * 100, 2) : 0 }}%</td>
                     @endif
                     @if('Conversion' == $filter)
                         <td>0</td>
                     @endif
 				@endforeach
+                    <td>{{ $tracking['publisher_receive'] }}</td>
 			</tr>
 			@endforeach
 		@endif
@@ -229,6 +236,7 @@ if(!(in_array("Clicks",$filters) === false)){
                 <th>0</th>
             @endif
         @endforeach
+        <th>{{ $sumPublisherReceive }}</th>
 	</tr>	
 
 	</table>

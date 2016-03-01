@@ -931,4 +931,284 @@ class TrackingSummaryBaseModel extends Eloquent {
 
         return $retval;
     }
+
+  public function getCampaignSummaryDetail($flight_ids, $group_date = true) {
+        $query = $this;
+        $arrSelect = [
+            'tracking_summary.date',
+            'tracking_summary.campaign_id',
+            'campaign.name as campaign_name',
+            'tracking_summary.flight_id',
+            'tracking_summary.publisher_base_cost',
+            'tracking_summary.website_id',
+            'tracking_summary.ovr',
+            'flight.cost_type',
+            'flight.cost_after_discount',
+            'flight.name as flight_name',
+            'publisher_site.url',
+            DB::raw('SUM(ads_request) as total_ads_request'),
+            DB::raw('SUM(impression) as total_impression'),
+            DB::raw('SUM(unique_impression) as total_unique_impression'),
+            DB::raw('SUM(click) as total_click'),
+            DB::raw('SUM(unique_click) as total_unique_click'),
+            DB::raw('SUM(start) as total_start'),
+            DB::raw('SUM(firstquartile) as total_firstquartile'),
+            DB::raw('SUM(midpoint) as total_midpoint'),
+            DB::raw('SUM(thirdquartile) as total_thirdquartile'),
+            DB::raw('SUM(complete) as total_complete'),
+            DB::raw('SUM(pause) as total_pause'),
+            DB::raw('SUM(mute) as total_mute'),
+            DB::raw('SUM(fullscreen) as total_fullscreen'),
+            DB::raw('SUM(unmute) as total_unmute')
+        ];
+        $query = $query->leftJoin('campaign', 'tracking_summary.campaign_id', '=', 'campaign.id');
+        $query = $query->leftJoin('flight', 'tracking_summary.flight_id', '=', 'flight.id');
+        $query = $query->leftJoin('publisher_site', 'tracking_summary.website_id', '=', 'publisher_site.id');
+        $query = $query->whereIn('tracking_summary.flight_id', $flight_ids);
+        $query = $query->where('tracking_summary.campaign_id', '>', 0);
+        $query = $query->where('tracking_summary.flight_id', '>', 0);
+        $query = $query->where('tracking_summary.website_id', '>', 0);
+        $query = $query->select($arrSelect);
+        if ($group_date) {
+            $query = $query->orderBy('tracking_summary.date', 'asc');
+        }
+        $query = $query->orderBy('tracking_summary.flight_id', 'asc');        
+        $query = $query->orderBy('tracking_summary.website_id', 'asc');
+        $query = $query->groupBy('tracking_summary.campaign_id', 'tracking_summary.flight_id', 'tracking_summary.website_id', 'tracking_summary.publisher_base_cost', 'tracking_summary.ovr');
+        if ($group_date) {
+            $query = $query->groupBy('tracking_summary.date');
+        }
+        $retval = $query->get();
+
+        return $retval;
+    }
+
+    public function getSummarryByCampaign($data) {
+        $retval = array();
+        foreach ($data as $item) {
+            if (empty($retval[$item->date])) {
+                $retval[$item->date]['total_impression'] = 0;
+                $retval[$item->date]['total_unique_impression'] = 0;
+                $retval[$item->date]['total_click'] = 0;
+                $retval[$item->date]['total_unique_click'] = 0;
+                $retval[$item->date]['total_start'] = 0;
+                $retval[$item->date]['total_firstquartile'] = 0;
+                $retval[$item->date]['total_midpoint'] = 0;
+                $retval[$item->date]['total_thirdquartile'] = 0;
+                $retval[$item->date]['total_complete'] = 0;
+                $retval[$item->date]['total_pause'] = 0;
+                $retval[$item->date]['total_mute'] = 0;
+                $retval[$item->date]['total_fullscreen'] = 0;
+                $retval[$item->date]['total_unmute'] = 0;
+
+                $retval[$item->date]['total_impression_ovr'] = 0;
+                $retval[$item->date]['total_unique_impression_ovr'] = 0;
+                $retval[$item->date]['total_click_ovr'] = 0;
+                $retval[$item->date]['total_unique_click_ovr'] = 0;
+                $retval[$item->date]['total_start_ovr'] = 0;
+                $retval[$item->date]['total_firstquartile_ovr'] = 0;
+                $retval[$item->date]['total_midpoint_ovr'] = 0;
+                $retval[$item->date]['total_thirdquartile_ovr'] = 0;
+                $retval[$item->date]['total_complete_ovr'] = 0;
+                $retval[$item->date]['total_pause_ovr'] = 0;
+                $retval[$item->date]['total_mute_ovr'] = 0;
+                $retval[$item->date]['total_fullscreen_ovr'] = 0;
+                $retval[$item->date]['total_unmute_ovr'] = 0;
+
+                $retval[$item->date]['publisher_receive'] = 0;
+            }
+
+            if (!empty($item->ovr)) {
+                $retval[$item->date]['total_impression_ovr'] += $item->total_impression;
+                $retval[$item->date]['total_unique_impression_ovr'] += $item->total_unique_impression;
+                $retval[$item->date]['total_click_ovr'] += $item->total_click;
+                $retval[$item->date]['total_unique_click_ovr'] += $item->total_unique_click;
+                $retval[$item->date]['total_start_ovr'] += $item->total_start;
+                $retval[$item->date]['total_firstquartile_ovr'] += $item->total_firstquartile;
+                $retval[$item->date]['total_midpoint_ovr'] += $item->total_midpoint;
+                $retval[$item->date]['total_thirdquartile_ovr'] += $item->total_thirdquartile;
+                $retval[$item->date]['total_complete_ovr'] += $item->total_complete;
+                $retval[$item->date]['total_pause_ovr'] += $item->total_pause;
+                $retval[$item->date]['total_mute_ovr'] += $item->total_mute;
+                $retval[$item->date]['total_fullscreen_ovr'] += $item->total_fullscreen;
+                $retval[$item->date]['total_unmute_ovr'] += $item->total_unmute;
+            } else {
+                $retval[$item->date]['total_impression'] += $item->total_impression;
+                $retval[$item->date]['total_unique_impression'] += $item->total_unique_impression;
+                $retval[$item->date]['total_click'] += $item->total_click;
+                $retval[$item->date]['total_unique_click'] += $item->total_unique_click;
+                $retval[$item->date]['total_start'] += $item->total_start;
+                $retval[$item->date]['total_firstquartile'] += $item->total_firstquartile;
+                $retval[$item->date]['total_midpoint'] += $item->total_midpoint;
+                $retval[$item->date]['total_thirdquartile'] += $item->total_thirdquartile;
+                $retval[$item->date]['total_complete'] += $item->total_complete;
+                $retval[$item->date]['total_pause'] += $item->total_pause;
+                $retval[$item->date]['total_mute'] += $item->total_mute;
+                $retval[$item->date]['total_fullscreen'] += $item->total_fullscreen;
+                $retval[$item->date]['total_unmute'] += $item->total_unmute;
+
+                if ($item->cost_type === 'cpm') {
+                    $retval[$item->date]['publisher_receive'] += (round(($item->publisher_base_cost * ($item->total_impression/1000))));
+                } else {
+                    $retval[$item->date]['publisher_receive'] += (round(($item->publisher_base_cost * $item->total_click)));
+                }
+            }
+        }
+        return $retval;
+    }
+
+
+    public function getSummarryByFlight($data) {
+        $retval = array();
+        foreach ($data as $item) {
+            $flight_id = $item->flight_id;
+            $date = $item->date;
+            if (empty($retval[$flight_id][$date])) {
+                $retval[$flight_id][$date]['total_impression'] = 0;
+                $retval[$flight_id][$date]['total_unique_impression'] = 0;
+                $retval[$flight_id][$date]['total_click'] = 0;
+                $retval[$flight_id][$date]['total_unique_click'] = 0;
+                $retval[$flight_id][$date]['total_start'] = 0;
+                $retval[$flight_id][$date]['total_firstquartile'] = 0;
+                $retval[$flight_id][$date]['total_midpoint'] = 0;
+                $retval[$flight_id][$date]['total_thirdquartile'] = 0;
+                $retval[$flight_id][$date]['total_complete'] = 0;
+                $retval[$flight_id][$date]['total_pause'] = 0;
+                $retval[$flight_id][$date]['total_mute'] = 0;
+                $retval[$flight_id][$date]['total_fullscreen'] = 0;
+                $retval[$flight_id][$date]['total_unmute'] = 0;
+
+                $retval[$flight_id][$date]['total_impression_ovr'] = 0;
+                $retval[$flight_id][$date]['total_unique_impression_ovr'] = 0;
+                $retval[$flight_id][$date]['total_click_ovr'] = 0;
+                $retval[$flight_id][$date]['total_unique_click_ovr'] = 0;
+                $retval[$flight_id][$date]['total_start_ovr'] = 0;
+                $retval[$flight_id][$date]['total_firstquartile_ovr'] = 0;
+                $retval[$flight_id][$date]['total_midpoint_ovr'] = 0;
+                $retval[$flight_id][$date]['total_thirdquartile_ovr'] = 0;
+                $retval[$flight_id][$date]['total_complete_ovr'] = 0;
+                $retval[$flight_id][$date]['total_pause_ovr'] = 0;
+                $retval[$flight_id][$date]['total_mute_ovr'] = 0;
+                $retval[$flight_id][$date]['total_fullscreen_ovr'] = 0;
+                $retval[$flight_id][$date]['total_unmute_ovr'] = 0;
+
+                $retval[$flight_id][$date]['publisher_receive'] = 0;
+            }
+
+            if (!empty($item->ovr)) {
+                $retval[$flight_id][$date]['total_impression_ovr'] += $item->total_impression;
+                $retval[$flight_id][$date]['total_unique_impression_ovr'] += $item->total_unique_impression;
+                $retval[$flight_id][$date]['total_click_ovr'] += $item->total_click;
+                $retval[$flight_id][$date]['total_unique_click_ovr'] += $item->total_unique_click;
+                $retval[$flight_id][$date]['total_start_ovr'] += $item->total_start;
+                $retval[$flight_id][$date]['total_firstquartile_ovr'] += $item->total_firstquartile;
+                $retval[$flight_id][$date]['total_midpoint_ovr'] += $item->total_midpoint;
+                $retval[$flight_id][$date]['total_thirdquartile_ovr'] += $item->total_thirdquartile;
+                $retval[$flight_id][$date]['total_complete_ovr'] += $item->total_complete;
+                $retval[$flight_id][$date]['total_pause_ovr'] += $item->total_pause;
+                $retval[$flight_id][$date]['total_mute_ovr'] += $item->total_mute;
+                $retval[$flight_id][$date]['total_fullscreen_ovr'] += $item->total_fullscreen;
+                $retval[$flight_id][$date]['total_unmute_ovr'] += $item->total_unmute;
+            } else {
+                $retval[$flight_id][$date]['total_impression'] += $item->total_impression;
+                $retval[$flight_id][$date]['total_unique_impression'] += $item->total_unique_impression;
+                $retval[$flight_id][$date]['total_click'] += $item->total_click;
+                $retval[$flight_id][$date]['total_unique_click'] += $item->total_unique_click;
+                $retval[$flight_id][$date]['total_start'] += $item->total_start;
+                $retval[$flight_id][$date]['total_firstquartile'] += $item->total_firstquartile;
+                $retval[$flight_id][$date]['total_midpoint'] += $item->total_midpoint;
+                $retval[$flight_id][$date]['total_thirdquartile'] += $item->total_thirdquartile;
+                $retval[$flight_id][$date]['total_complete'] += $item->total_complete;
+                $retval[$flight_id][$date]['total_pause'] += $item->total_pause;
+                $retval[$flight_id][$date]['total_mute'] += $item->total_mute;
+                $retval[$flight_id][$date]['total_fullscreen'] += $item->total_fullscreen;
+                $retval[$flight_id][$date]['total_unmute'] += $item->total_unmute;
+
+                if ($item->cost_type === 'cpm') {
+                    $retval[$flight_id][$date]['publisher_receive'] += (round(($item->publisher_base_cost * ($item->total_impression/1000))));
+                } else {
+                    $retval[$flight_id][$date]['publisher_receive'] += (round(($item->publisher_base_cost * $item->total_click)));
+                }
+            }
+        }
+        return $retval;
+    }
+
+    public function getSummarryByWebsite($data) {
+        $retval = array();
+        foreach ($data as $item) {
+            $flight_id = $item->flight_id;
+            $website_id = $item->website_id;
+            if (empty($retval[$flight_id][$website_id])) {
+                $retval[$flight_id][$website_id]['total_impression'] = 0;
+                $retval[$flight_id][$website_id]['total_unique_impression'] = 0;
+                $retval[$flight_id][$website_id]['total_click'] = 0;
+                $retval[$flight_id][$website_id]['total_unique_click'] = 0;
+                $retval[$flight_id][$website_id]['total_start'] = 0;
+                $retval[$flight_id][$website_id]['total_firstquartile'] = 0;
+                $retval[$flight_id][$website_id]['total_midpoint'] = 0;
+                $retval[$flight_id][$website_id]['total_thirdquartile'] = 0;
+                $retval[$flight_id][$website_id]['total_complete'] = 0;
+                $retval[$flight_id][$website_id]['total_pause'] = 0;
+                $retval[$flight_id][$website_id]['total_mute'] = 0;
+                $retval[$flight_id][$website_id]['total_fullscreen'] = 0;
+                $retval[$flight_id][$website_id]['total_unmute'] = 0;
+
+                $retval[$flight_id][$website_id]['total_impression_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_unique_impression_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_click_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_unique_click_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_start_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_firstquartile_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_midpoint_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_thirdquartile_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_complete_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_pause_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_mute_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_fullscreen_ovr'] = 0;
+                $retval[$flight_id][$website_id]['total_unmute_ovr'] = 0;
+
+                $retval[$flight_id][$website_id]['publisher_receive'] = 0;
+                $retval[$flight_id][$website_id]['url'] = $item->url;
+            }
+
+            if (!empty($item->ovr)) {
+                $retval[$flight_id][$website_id]['total_impression_ovr'] += $item->total_impression;
+                $retval[$flight_id][$website_id]['total_unique_impression_ovr'] += $item->total_unique_impression;
+                $retval[$flight_id][$website_id]['total_click_ovr'] += $item->total_click;
+                $retval[$flight_id][$website_id]['total_unique_click_ovr'] += $item->total_unique_click;
+                $retval[$flight_id][$website_id]['total_start_ovr'] += $item->total_start;
+                $retval[$flight_id][$website_id]['total_firstquartile_ovr'] += $item->total_firstquartile;
+                $retval[$flight_id][$website_id]['total_midpoint_ovr'] += $item->total_midpoint;
+                $retval[$flight_id][$website_id]['total_thirdquartile_ovr'] += $item->total_thirdquartile;
+                $retval[$flight_id][$website_id]['total_complete_ovr'] += $item->total_complete;
+                $retval[$flight_id][$website_id]['total_pause_ovr'] += $item->total_pause;
+                $retval[$flight_id][$website_id]['total_mute_ovr'] += $item->total_mute;
+                $retval[$flight_id][$website_id]['total_fullscreen_ovr'] += $item->total_fullscreen;
+                $retval[$flight_id][$website_id]['total_unmute_ovr'] += $item->total_unmute;
+            } else {
+                $retval[$flight_id][$website_id]['total_impression'] += $item->total_impression;
+                $retval[$flight_id][$website_id]['total_unique_impression'] += $item->total_unique_impression;
+                $retval[$flight_id][$website_id]['total_click'] += $item->total_click;
+                $retval[$flight_id][$website_id]['total_unique_click'] += $item->total_unique_click;
+                $retval[$flight_id][$website_id]['total_start'] += $item->total_start;
+                $retval[$flight_id][$website_id]['total_firstquartile'] += $item->total_firstquartile;
+                $retval[$flight_id][$website_id]['total_midpoint'] += $item->total_midpoint;
+                $retval[$flight_id][$website_id]['total_thirdquartile'] += $item->total_thirdquartile;
+                $retval[$flight_id][$website_id]['total_complete'] += $item->total_complete;
+                $retval[$flight_id][$website_id]['total_pause'] += $item->total_pause;
+                $retval[$flight_id][$website_id]['total_mute'] += $item->total_mute;
+                $retval[$flight_id][$website_id]['total_fullscreen'] += $item->total_fullscreen;
+                $retval[$flight_id][$website_id]['total_unmute'] += $item->total_unmute;
+
+                if ($item->cost_type === 'cpm') {
+                    $retval[$flight_id][$website_id]['publisher_receive'] += (round(($item->publisher_base_cost * ($item->total_impression/1000))));
+                } else {
+                    $retval[$flight_id][$website_id]['publisher_receive'] += (round(($item->publisher_base_cost * $item->total_click)));
+                }
+            }
+        }
+
+        return $retval;
+    }
 }

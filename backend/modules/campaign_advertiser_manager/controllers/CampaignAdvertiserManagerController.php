@@ -282,14 +282,16 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 			$campaign = $campaignModel->getCampaignById($campaignId);
 
 			if( !empty($campaign) ){
-
 				$range = $campaign->getListFlightId();
+				$data = array();
+				
 				$listFlight = $flightModel->getByRangeId($range);
 
 				$excel = Excel::create($campaign->name);
 
 				if( in_array("campaign", $options) ){
-					$campaignTracking = $trackingSummaryModel->getCampaignTracking($range);
+					$data = $trackingSummaryModel->getCampaignSummaryDetail($range);
+					$campaignTracking = $trackingSummaryModel->getSummarryByCampaign($data);
 					$excel = $this->reportExportCampaign(
 						$excel,
 						array(
@@ -301,8 +303,10 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 				}
 
 				if( in_array("flight", $options) ){
-
-					$listFlightTracking = $trackingSummaryModel->getListFlightTracking($range);
+					if (empty($data)) {
+						$data = $trackingSummaryModel->getCampaignSummaryDetail($range);
+					}
+					$listFlightTracking = $trackingSummaryModel->getSummarryByFlight($data);
 					$excel = $this->reportExportFlight(
 						$excel,
 						array(
@@ -315,13 +319,17 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 				}
 
 				if( in_array("website", $options) ){
-					$listWebsiteTracking = $trackingSummaryModel->getListWebsiteTracking($range);
+					if (empty($data)) {
+						$data = $trackingSummaryModel->getCampaignSummaryDetail($range, false);
+					}
+					$listWebsiteTracking = $trackingSummaryModel->getSummarryByWebsite($data);
 					$excel = $this->reportExportWebsite(
 						$excel,
 						array(
 							'campaign'				=>	$campaign,
 							'listFlight'			=>	$listFlight,
-							'listWebsiteTracking'	=>	$listWebsiteTracking
+							'listWebsiteTracking'	=>	$listWebsiteTracking,
+							'filter'	=>	$input
 						)
 					);
 				}
@@ -346,6 +354,7 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 			    'B' => '#,##0',
 			    'C' => '#,##0',
 			    'E' => '#,##0',
+			    chr(count($data['filter']['filter']) + 68) => '#,##0',
 			));				
 		});		    
 
@@ -362,6 +371,7 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 			    'B' => '#,##0',
 			    'C' => '#,##0',
 			    'E' => '#,##0',
+			    chr(count($data['filter']['filter']) + 68) => '#,##0',
 			));				
 		});		    
 
@@ -379,6 +389,7 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 			    'B' => '#,##0',
 			    'C' => '#,##0',
 			    'E' => '#,##0',
+			    chr(count($data['filter']['filter']) + 68) => '#,##0',
 			));
 		});		   
 

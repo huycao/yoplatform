@@ -35,6 +35,7 @@ if(!(in_array("Clicks",$filters) === false)){
             <th align="center">Unique {{ $filter }}</th>
         @endif
     @endforeach
+    <th align="center">Publisher Receive</th>
 </tr>
 
 <?php
@@ -51,85 +52,90 @@ if(!(in_array("Clicks",$filters) === false)){
     $sumMute= 0;
     $sumUnmute= 0;
     $sumFullscreen= 0;
+    $sumPublisherReceive = 0;
 ?>
 
 @if(  !empty($campaignTracking) )
-	@foreach( $campaignTracking as $tracking )
+	@foreach( $campaignTracking as $date=>$tracking )
 		<?php
-			$totalImpression += $tracking['total_impression'];
-			$totalUniqueImpression += $tracking['total_unique_impression'];
-			$totalClick += $tracking['total_click'];
-            $totalUniqueClick += $tracking['total_unique_click'];
-            $sumStart += $tracking['total_start'];
-            $sumFirstquartile             += $tracking['total_firstquartile'];
-            $sumMidpoint            += $tracking['total_midpoint'];
-            $sumThirdquartile           += $tracking['total_thirdquartile'];
-            $sumComplete            += $tracking['total_complete'];
-            $sumPause            += $tracking['total_pause'];
-            $sumMute            += $tracking['total_mute'];
-            $sumUnmute            += $tracking['total_unmute'];
-            $sumFullscreen            += $tracking['total_fullscreen'];
+			$totalImpression += $tracking['total_impression'] + $tracking['total_impression_ovr'];
+			$totalUniqueImpression += $tracking['total_unique_impression'] + $tracking['total_unique_impression_ovr'];
+			$totalClick += $tracking['total_click'] + $tracking['total_click_ovr'];
+            $totalUniqueClick += $tracking['total_unique_click'] + $tracking['total_unique_click_ovr'];
+            $sumStart += $tracking['total_start'] + $tracking['total_start_ovr'];
+            $sumFirstquartile             += $tracking['total_firstquartile'] + $tracking['total_firstquartile_ovr'];
+            $sumMidpoint            += $tracking['total_midpoint'] + $tracking['total_midpoint_ovr'];
+            $sumThirdquartile           += $tracking['total_thirdquartile'] + $tracking['total_thirdquartile_ovr'];
+            $sumComplete            += $tracking['total_complete'] + $tracking['total_complete_ovr'];
+            $sumPause            += $tracking['total_pause'] + $tracking['total_pause_ovr'];
+            $sumMute            += $tracking['total_mute'] + $tracking['total_mute_ovr'];
+            $sumUnmute            += $tracking['total_unmute'] + $tracking['total_unmute_ovr'];
+            $sumFullscreen            += $tracking['total_fullscreen'] + $tracking['total_fullscreen_ovr'];
+
+            $sumPublisherReceive += $tracking['publisher_receive'];
             
 			$frequency = 0;
-			if($tracking['total_unique_impression'] != 0 ){
-				$frequency = number_format($tracking['total_impression'] / $tracking['total_unique_impression'], 2);
+            $row_impression = ($tracking['total_impression'] + $tracking['total_impression_ovr']);
+			if(($tracking['total_unique_impression'] + $tracking['total_unique_impression_ovr']) != 0 ){
+				$frequency = number_format($row_impression / ($tracking['total_unique_impression'] + $tracking['total_unique_impression_ovr']), 2);
 			}
 
 			$ctr = 0;
-			if( $tracking['total_impression'] != 0 ){
-				$ctr = number_format($tracking['total_click'] /$tracking['total_impression']*100, 2);
+			if($row_impression != 0 ){
+				$ctr = number_format(($tracking['total_click'] + $tracking['total_click_ovr']) /$row_impression*100, 2);
 			}
 
 		?>
 
 		<tr>
-			<td align="center">{{date('d/m/Y', strtotime($tracking['date']))}}</td>
+			<td align="center">{{date('d/m/Y', strtotime($date))}}</td>
             @foreach($filters as $filter=>$filterName)
                 @if('Impressions' == $filter)
-                    <td align="center">{{ $tracking['total_impression'] }}</td>
-                    <td align="center">{{ $tracking['total_unique_impression'] }}</td>
+                    <td align="center">{{ $row_impression }}</td>
+                    <td align="center">{{ $tracking['total_unique_impression'] + $tracking['total_unique_impression_ovr'] }}</td>
                 @endif
                 @if('Frequency' == $filter)
                     <td align="center">{{ (float) $frequency }}</td>
                 @endif
                 @if('Clicks' == $filter)
-                    <td align="center">{{ $tracking['total_click'] }}</td>
-                    <td align="center">{{ $tracking['total_unique_click'] }}</td>
+                    <td align="center">{{ $tracking['total_click'] + $tracking['total_click_ovr'] }}</td>
+                    <td align="center">{{ $tracking['total_unique_click'] + $tracking['total_unique_click_ovr'] }}</td>
                 @endif
                 @if('CTR' == $filter)
                     <td align="center">{{ (float) $ctr }} %</td>
                 @endif
                 @if('Start' == $filter)
-                    <td>{{ ($tracking['total_impression'] > 0) ? number_format($tracking['total_start'] / $tracking['total_impression'] * 100, 2) : 0 }}%</td>
+                    <td>{{ ($row_impression > 0) ? number_format(($tracking['total_start'] + $tracking['total_start_ovr']) / $row_impression * 100, 2) : 0 }}%</td>
                 @endif
                 @if('Firstquartile' == $filter)
-                    <td>{{ ($tracking['total_impression'] > 0) ? number_format($tracking['total_firstquartile'] / $tracking['total_impression'] * 100, 2) : 0 }}%</td>
+                    <td>{{ ($row_impression > 0) ? number_format(($tracking['total_firstquartile'] + $tracking['total_firstquartile_ovr']) / $row_impression * 100, 2) : 0 }}%</td>
                 @endif
                 @if('Midpoint' == $filter)
-                    <td>{{ ($tracking['total_impression'] > 0) ? number_format($tracking['total_midpoint'] / $tracking['total_impression'] * 100, 2) : 0 }}%</td>
+                    <td>{{ ($row_impression > 0) ? number_format(($tracking['total_midpoint'] + $tracking['total_midpoint_ovr']) / $row_impression * 100, 2) : 0 }}%</td>
                 @endif
                 @if('Thirdquartile' == $filter)
-                    <td>{{ ($tracking['total_impression'] > 0) ? number_format($tracking['total_thirdquartile'] / $tracking['total_impression'] * 100, 2) : 0 }}%</td>
+                    <td>{{ ($row_impression > 0) ? number_format(($tracking['total_thirdquartile'] + $tracking['total_thirdquartile_ovr']) / $row_impression * 100, 2) : 0 }}%</td>
                 @endif
                 @if('Complete' == $filter)
-                    <td>{{ ($tracking['total_impression'] > 0) ? number_format($tracking['total_complete'] / $tracking['total_impression'] * 100, 2) : 0 }}%</td>
+                    <td>{{ ($row_impression > 0) ? number_format(($tracking['total_complete'] + $tracking['total_complete_ovr']) / $row_impression * 100, 2) : 0 }}%</td>
                 @endif
                 @if('Pause' == $filter)
-                    <td>{{ ($tracking['total_impression'] > 0) ? number_format($tracking['total_pause'] / $tracking['total_impression'] * 100, 2) : 0 }}%</td>
+                    <td>{{ ($row_impression > 0) ? number_format(($tracking['total_pause'] + $tracking['total_pause_ovr']) / $row_impression * 100, 2) : 0 }}%</td>
                 @endif
                 @if('Mute' == $filter)
-                    <td>{{ ($tracking['total_impression'] > 0) ? number_format($tracking['total_mute'] / $tracking['total_impression'] * 100, 2) : 0 }}%</td>
+                    <td>{{ ($row_impression > 0) ? number_format(($tracking['total_mute'] + $tracking['total_mute_ovr']) / $row_impression * 100, 2) : 0 }}%</td>
                 @endif
                 @if('Unmute' == $filter)
-                    <td>{{ ($tracking['total_impression'] > 0) ? number_format($tracking['total_unmute'] / $tracking['total_impression'] * 100, 2) : 0 }}%</td>
+                    <td>{{ ($row_impression > 0) ? number_format(($tracking['total_unmute'] + $tracking['total_unmute_ovr']) / $row_impression * 100, 2) : 0 }}%</td>
                 @endif
                 @if('Fullscreen' == $filter)
-                    <td>{{ ($tracking['total_impression'] > 0) ? number_format($tracking['total_fullscreen'] / $tracking['total_impression'] * 100, 2) : 0 }}%</td>
+                    <td>{{ ($row_impression > 0) ? number_format(($tracking['total_fullscreen'] + $tracking['total_fullscreen_ovr']) / $row_impression * 100, 2) : 0 }}%</td>
                 @endif
                 @if('Conversion' == $filter)
                     <td>0</td>
                 @endif
             @endforeach
+            <td>{{ $tracking['publisher_receive'] }}</td>
 		</tr>
 	@endforeach
 @endif
@@ -195,6 +201,7 @@ if(!(in_array("Clicks",$filters) === false)){
             <th>0</th>
         @endif
     @endforeach
+    <th>{{ $sumPublisherReceive }}</th>
 </tr>
 
 </table>
