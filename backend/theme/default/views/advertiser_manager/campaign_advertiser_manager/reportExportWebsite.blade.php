@@ -114,7 +114,7 @@ $colum_number++;
 
 				$ctr = 0;
 				if( $impressionRow != 0 ){
-					$ctr = number_format(($tracking['total_click'] + $tracking['total_click_ovr'])/$impressionRow*100, 2);
+					$ctr = ($tracking['total_click'] + $tracking['total_click_ovr'])/$impressionRow*100;
 				}
 				
 			?>
@@ -133,7 +133,7 @@ $colum_number++;
                         <td align="center">{{ $tracking['total_unique_click'] }}</td>
                     @endif
                     @if('CTR' == $filter)
-                        <td align="center">{{ (float) $ctr }} %</td>
+                        <td align="center">{{ number_format($ctr, 2) }} %</td>
                     @endif
                     @if('Start' == $filter)
                         <td>{{ ($impressionRow > 0) ? number_format(($tracking['total_start'] + $tracking['total_start_ovr']) / $impressionRow * 100, 2) : 0 }}%</td>
@@ -178,7 +178,7 @@ $colum_number++;
     
     		$ctr = 0;
     		if( ($totalImpression + $totalImpressionOver) != 0 ){
-    			$ctr = number_format(($totalClick + $totalClickOver) / ($totalImpression + $totalImpressionOver) * 100, 2);
+    			$ctr = ($totalClick + $totalClickOver) / ($totalImpression + $totalImpressionOver) * 100;
     		}
     
     	?>
@@ -198,7 +198,7 @@ $colum_number++;
                 @endif
         
                 @if('CTR' == $filter)
-                    <th align="center">{{ (float) $ctr }}%</th>
+                    <th align="center">{{ number_format($ctr, 2) }}%</th>
                 @endif
                 @if('Start' == $filter)
                     <th> {{ (($totalImpression + $totalImpressionOver) > 0) ? number_format(($sumStart + $sumStartOver) / ($totalImpression + $totalImpressionOver) * 100, 2) : 0 }}% </th>
