@@ -835,7 +835,7 @@
       } else {
         removeOption($('#ad_format_id'), no_mobile_app);
       }
-      if ($('#platform_mobile_app').is(':checked')) {
+      if ($('#platform_mobile_app').is(':checked') || $('#platform_mobile_android').is(':checked') || $('#platform_mobile_ios').is(':checked')) {
         addOption($('#ad_format_id'), mobile_app);
       } else {
         removeOption($('#ad_format_id'), mobile_app);
