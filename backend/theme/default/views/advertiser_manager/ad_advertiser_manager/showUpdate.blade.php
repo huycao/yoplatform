@@ -965,7 +965,7 @@
 
       $("#ad_type_image").parent().parent().parent().hide();
       $("#ad_type_html").parent().parent().parent().show();
-      $("#source_type_image").parent().parent().parent().parent().parent().parent().hide();
+      $("#source_type_image").parent().parent().parent().parent().parent().parent().show();
       $("#source_url").parent().parent().show();
       if ($('.ad_type:checked').val() == 'html') {        
         if ($("#ad_format_id").text().toLowerCase() == "Mobile Pull" || $("#ad_format_id").text().toLowerCase() == 'interstitial banner') {
