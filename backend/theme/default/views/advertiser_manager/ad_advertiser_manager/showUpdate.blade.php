@@ -687,24 +687,27 @@
                 showVideoTag(ad_type);
             }
             if ($adtype == 'html') {
-              showVideoTag('HTML');
               if ('HTML' == $("#ad_format_id").text() || 'Video' == $("#ad_format_id").text()) {
-                $("#ad_type_video").parent().parent().parent().show();
+                showVideoTag('HTML');
+           			$("#ad_type_video").parent().parent().parent().show();
+           		} else if('interstitial banner' == $("#ad_format_id").text().toLowerCase()) {
+                showVideoTag('interstitial banner');
               } else {
-                $("#ad_type_video").parent().parent().parent().hide();
-              }
-            }
-            
-      });
-        $(".source").click(function () {
-            $adtype = $(this).val();
-            $("#source_image_upload").removeClass("show");
-            $("#source_image").removeClass("hidden");
-            $("#source_image").removeClass("show");
-            $("#source_image_upload").removeClass("hidden");
-            if ($adtype == 'source_image_upload') {
-                $("#source_image_upload").addClass("show");
-                $("#source_image").addClass("hidden");
+                showVideoTag('HTML');
+           			$("#ad_type_video").parent().parent().parent().hide();
+           		}
+           	}
+           	
+   		});
+       	$(".source").click(function () {
+           	$adtype = $(this).val();
+           	$("#source_image_upload").removeClass("show");
+           	$("#source_image").removeClass("hidden");
+           	$("#source_image").removeClass("show");
+           	$("#source_image_upload").removeClass("hidden");
+           	if ($adtype == 'source_image_upload') {
+               	$("#source_image_upload").addClass("show");
+               	$("#source_image").addClass("hidden");
                 if ($("#ad_format_id").text() == 'Mobile Pull'){
                   $("#file_source_url_2").parent().parent().hide();
                 }
@@ -806,6 +809,8 @@
 
         $(".no-html-format").parent().show();
         $(".html-format").parent().show();
+      } else if(value.toLowerCase() == 'interstitial banner'){
+        showInputInpage();
       } else {
         $("#ad_type_video").parent().parent().parent().hide();
         $("#ad_type_image").parent().parent().parent().show();
@@ -934,5 +939,44 @@
       $("#height").parent().parent().show();
       $("#destination_url").parent().parent().show();
       $("#position-top").parent().parent().parent().parent().show(); 
-    }   
+    } 
+
+    function showInputInpage() {
+      $("#ad_type_flash").parent().parent().parent().hide();
+      $("#ad_type_video").parent().parent().parent().hide();
+      $("#source_url2").parent().parent().show();
+      $("#width_2").parent().parent().hide();
+      $("#height_2").parent().parent().hide();
+      $("#bar_height").parent().parent().hide();
+      $("#main_source_source_url").parent().parent().parent().hide();
+      $("#source_backup_image").parent().parent().parent().parent().parent().parent().hide();
+      $("#source_backup_url").show();
+      $("#none").parent().parent().parent().parent().parent().parent().parent().hide();
+      $("#video_duration").parent().parent().show();
+      $("#video_linear_linear").parent().parent().parent().show();
+      $("#skipads").parent().parent().hide();
+      $("#video_wrapper_tag").parent().parent().show();
+      $("#vast_inclue").parent().parent().parent().show();
+      $("#video_bitrate").parent().parent().show();
+      $("#video_type_vast_inline").parent().parent().parent().show();
+      $("#tracking").parent().parent().show();
+      $("#default-ad-view-type").parent().parent().parent().parent().show();
+      $("#display-type-inpage").parent().parent().parent().parent().hide();    
+
+      $("#ad_type_image").parent().parent().parent().hide();
+      $("#ad_type_html").parent().parent().parent().show();
+      $("#source_type_image").parent().parent().parent().parent().parent().parent().hide();
+      $("#source_url").parent().parent().show();
+      if ($('.ad_type:checked').val() == 'html') {        
+        if ($("#ad_format_id").text().toLowerCase() == "Mobile Pull" || $("#ad_format_id").text().toLowerCase() == 'interstitial banner') {
+          $("#vast_file").parent().parent().hide();
+        } else {
+          $("#vast_file").parent().parent().show();
+        }
+      }     
+      $("#width").parent().parent().show();
+      $("#height").parent().parent().show();
+      $("#destination_url").parent().parent().show();
+      $("#position-top").parent().parent().parent().parent().hide();
+    }  
 </script>
