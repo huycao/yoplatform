@@ -159,9 +159,12 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
                 'width_after'            => Input::get('width_after'),
                 'height_after'           => Input::get('height_after'),
                 'source_url'             => Input::get('source_url'),
-                'source_url2'             => Input::get('source_url2'),
+                'source_url2'            => Input::get('source_url2'),
                 'destination_url'        => Input::get('destination_url'),
                 'flash_wmode'            => Input::get('flash_wmode','none'),
+                'fb_like'                => Input::get('fb_like'),
+                'fb_margin_right'        => Input::get('fb_margin_right', 0),
+                'fb_margin_bottom'       => Input::get('fb_margin_bottom', 0),
                 'video_duration'         => Input::get('video_duration'),
                 'video_linear'           => Input::get('video_linear'),
                 'video_type_vast'        => Input::get('video_type_vast'),
@@ -268,7 +271,6 @@ class AdAdvertiserManagerController extends AdvertiserManagerController {
             } else { // UPDATE
                 // GET CURRENT ITEM
                 $item = $this->model->find($id);
-
                 if ($item) {
                     if ($this->model->where("id", $id)->update($updateData)) {
                         //update audience id
