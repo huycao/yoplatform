@@ -514,20 +514,6 @@
             @endif
             </div>
        </div>
-       <!-- Like Facebook -->
-        <div class="form-group ad-info">
-            <label class="col-md-2">{{trans('text.fb_like')}}</label>
-            <div class="col-md-4">
-              <input type="text" class="form-control" id="fb_like" value="{{{ $item->fb_like or Input::get('fb_like') }}}" name="fb_like">
-              <br />
-              <label class="col-md-5">{{trans('text.margin_right')}}</label>
-              <input type="text" class="form-control" id="fb_margin_right" value="{{{ $item->fb_margin_right or Input::get('fb_margin_right') }}}" name="fb_margin_right"  style="width: 80px; float: left; margin: 0 5px 10px 0; text-align: right;"> {{trans('text.pixel')}}
-              <br clear="all" />
-              <label class="col-md-5">{{trans('text.margin_bottom')}}</label>
-              <input type="text" class="form-control" id="fb_margin_bottom" value="{{{ $item->fb_margin_bottom or Input::get('fb_margin_bottom') }}}" name="fb_margin_bottom"  style="width: 80px; float: left; margin: 0 5px 0 0; text-align: right;"> {{trans('text.pixel')}}
-            </div>
-        </div>
-        <!-- Like Facebook -->
       <!-- THIRD-PARTY TRACKING -->
       <div class="form-group ad-info">
             <label class="col-md-2">{{trans('text.third_party_tracking_event')}}</label>
