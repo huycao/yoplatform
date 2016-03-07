@@ -1211,4 +1211,82 @@ class TrackingSummaryBaseModel extends Eloquent {
 
         return $retval;
     }
+
+    public function getSummarryByWebsiteCampaign($data) {
+        $retval = array();
+        foreach ($data as $item) {
+            $flight_id = $item->flight_id;
+            $website_id = $item->website_id;
+            if (empty($retval[$website_id])) {
+                $retval[$website_id]['total_impression'] = 0;
+                $retval[$website_id]['total_unique_impression'] = 0;
+                $retval[$website_id]['total_click'] = 0;
+                $retval[$website_id]['total_unique_click'] = 0;
+                $retval[$website_id]['total_start'] = 0;
+                $retval[$website_id]['total_firstquartile'] = 0;
+                $retval[$website_id]['total_midpoint'] = 0;
+                $retval[$website_id]['total_thirdquartile'] = 0;
+                $retval[$website_id]['total_complete'] = 0;
+                $retval[$website_id]['total_pause'] = 0;
+                $retval[$website_id]['total_mute'] = 0;
+                $retval[$website_id]['total_fullscreen'] = 0;
+                $retval[$website_id]['total_unmute'] = 0;
+
+                $retval[$website_id]['total_impression_ovr'] = 0;
+                $retval[$website_id]['total_unique_impression_ovr'] = 0;
+                $retval[$website_id]['total_click_ovr'] = 0;
+                $retval[$website_id]['total_unique_click_ovr'] = 0;
+                $retval[$website_id]['total_start_ovr'] = 0;
+                $retval[$website_id]['total_firstquartile_ovr'] = 0;
+                $retval[$website_id]['total_midpoint_ovr'] = 0;
+                $retval[$website_id]['total_thirdquartile_ovr'] = 0;
+                $retval[$website_id]['total_complete_ovr'] = 0;
+                $retval[$website_id]['total_pause_ovr'] = 0;
+                $retval[$website_id]['total_mute_ovr'] = 0;
+                $retval[$website_id]['total_fullscreen_ovr'] = 0;
+                $retval[$website_id]['total_unmute_ovr'] = 0;
+
+                $retval[$website_id]['publisher_receive'] = 0;
+                $retval[$website_id]['url'] = $item->url;
+            }
+
+            if (!empty($item->ovr)) {
+                $retval[$website_id]['total_impression_ovr'] += $item->total_impression;
+                $retval[$website_id]['total_unique_impression_ovr'] += $item->total_unique_impression;
+                $retval[$website_id]['total_click_ovr'] += $item->total_click;
+                $retval[$website_id]['total_unique_click_ovr'] += $item->total_unique_click;
+                $retval[$website_id]['total_start_ovr'] += $item->total_start;
+                $retval[$website_id]['total_firstquartile_ovr'] += $item->total_firstquartile;
+                $retval[$website_id]['total_midpoint_ovr'] += $item->total_midpoint;
+                $retval[$website_id]['total_thirdquartile_ovr'] += $item->total_thirdquartile;
+                $retval[$website_id]['total_complete_ovr'] += $item->total_complete;
+                $retval[$website_id]['total_pause_ovr'] += $item->total_pause;
+                $retval[$website_id]['total_mute_ovr'] += $item->total_mute;
+                $retval[$website_id]['total_fullscreen_ovr'] += $item->total_fullscreen;
+                $retval[$website_id]['total_unmute_ovr'] += $item->total_unmute;
+            } else {
+                $retval[$website_id]['total_impression'] += $item->total_impression;
+                $retval[$website_id]['total_unique_impression'] += $item->total_unique_impression;
+                $retval[$website_id]['total_click'] += $item->total_click;
+                $retval[$website_id]['total_unique_click'] += $item->total_unique_click;
+                $retval[$website_id]['total_start'] += $item->total_start;
+                $retval[$website_id]['total_firstquartile'] += $item->total_firstquartile;
+                $retval[$website_id]['total_midpoint'] += $item->total_midpoint;
+                $retval[$website_id]['total_thirdquartile'] += $item->total_thirdquartile;
+                $retval[$website_id]['total_complete'] += $item->total_complete;
+                $retval[$website_id]['total_pause'] += $item->total_pause;
+                $retval[$website_id]['total_mute'] += $item->total_mute;
+                $retval[$website_id]['total_fullscreen'] += $item->total_fullscreen;
+                $retval[$website_id]['total_unmute'] += $item->total_unmute;
+
+                if ($item->cost_type === 'cpm') {
+                    $retval[$website_id]['publisher_receive'] += (round(($item->publisher_base_cost * ($item->total_impression/1000))));
+                } else {
+                    $retval[$website_id]['publisher_receive'] += (round(($item->publisher_base_cost * $item->total_click)));
+                }
+            }
+        }
+
+        return $retval;
+    }
 }

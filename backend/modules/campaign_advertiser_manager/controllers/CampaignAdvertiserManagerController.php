@@ -334,6 +334,22 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 					);
 				}
 
+				if( in_array("website_campaign", $options) ){
+					if (empty($data)) {
+						$data = $trackingSummaryModel->getCampaignSummaryDetail($range, false);
+					}
+					$listWebsiteCampaignTracking = $trackingSummaryModel->getSummarryByWebsiteCampaign($data);
+					$excel = $this->reportExportWebsiteCampaign(
+						$excel,
+						array(
+							'campaign'				=>	$campaign,
+							'listFlight'			=>	$listFlight,
+							'listWebsiteTracking'	=>	$listWebsiteCampaignTracking,
+							'filter'	=>	$input
+						)
+					);
+				}
+
 				$excel->export('xls');
 
 			}else{
@@ -383,6 +399,24 @@ class CampaignAdvertiserManagerController extends AdvertiserManagerController
 
 		$excel->sheet('Website Report Summary', function($sheet) use($data) {
 			$sheet->loadView('reportExportWebsite', $data);
+
+			$sheet->setColumnFormat(array(
+			    'A' => '#,##0',
+			    'B' => '#,##0',
+			    'C' => '#,##0',
+			    'E' => '#,##0',
+			    chr(count($data['filter']['filter']) + 68) => '#,##0',
+			));
+		});		   
+
+		return $excel; 
+
+	}
+
+	public function reportExportWebsiteCampaign($excel, $data){
+
+		$excel->sheet('Website Campaign Report', function($sheet) use($data) {
+			$sheet->loadView('reportExportWebsiteCampaign', $data);
 
 			$sheet->setColumnFormat(array(
 			    'A' => '#,##0',

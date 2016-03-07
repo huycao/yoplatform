@@ -464,6 +464,11 @@ $filters = getFilter(Input::get('filter', array()));
                             <input type="checkbox" name="option[]" id="reportOption3" value="website">Website
                         </label>
                     </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="option[]" id="reportOption3" value="website_campaign">Website Campaign
+                        </label>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
