@@ -19,7 +19,7 @@ $colum_number++;
 <body>
 
 <table>
-	<tr class="mb12"><th colspan="{{($colum_number+1)}}"  class="brand" valign="middle">Yomedia Digital - Flight Report Summary</th></tr>
+	<tr class="mb12"><th colspan="{{($colum_number+1)}}"  class="brand" valign="middle">Yomedia Digital - Website Campaign Report</th></tr>
 	<tr><th align="center">Campaign Name:</th><th  colspan="{{($colum_number)}}" align="center"  >{{$campaign->name}}</th></tr>
 	<tr><th align="center">Duration:</th><th colspan="{{$colum_number}}" align="center">{{$campaign->dateRange}}</th></tr>
 	<tr><th align="center">Advertise:</th><th colspan="{{$colum_number}}" align="center">{{$campaign->advertiser->name}}</th></tr>
@@ -115,7 +115,7 @@ $colum_number++;
     		
     	?>
 		<tr>
-			<td align="center">{{$tracking['url']}}</td>
+			<td align="left">{{$tracking['url']}}</td>
             @foreach($filters as $filter=>$filterName)
                 @if('Impressions' == $filter)
                     <td align="center">{{ $impressionRow }}</td>
